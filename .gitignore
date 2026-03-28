@@ -1,0 +1,15 @@
+node_modules/
+dist/
+
+# local dev logs/pids
+*.log
+*.pid
+dev-*.out.log
+dev-*.err.log
+
+# local preview screenshots
+hero-*.png
+
+# OS/editor
+.DS_Store
+Thumbs.db
