@@ -788,7 +788,7 @@ export default function App() {
             {introVideoEnabled ? (
               <video
                 className={cn(
-                  "h-full w-full object-cover object-[40%_center] transition-opacity duration-700 sm:object-center",
+                  "h-full w-full bg-black/30 object-contain object-center transition-opacity duration-700 sm:bg-transparent sm:object-cover sm:object-center",
                   introVideoReady ? "opacity-100" : "opacity-0",
                 )}
                 autoPlay
