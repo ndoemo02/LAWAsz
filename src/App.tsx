@@ -219,33 +219,33 @@ const sauces: Sauce[] = [
 const trustPoints = [
   {
     title: "Własna produkcja mięsa",
-    copy: "Mięso przygotowywane na miejscu, zamiast kopiować hurtowe schematy.",
+    copy: "Żadnych gotowców z hurtowni. Sami marynujemy i nabijamy rożen, dlatego smak jest nie do podrobienia.",
   },
   {
     title: "Autorski lawasz",
-    copy: "Podajemy mięso w formie, która jest częścią marki, a nie tylko nośnikiem dodatków.",
+    copy: "Wypiekany tak, by trzymał wszystko w ryzach i chrupał dokładnie tam, gdzie powinien.",
   },
   {
-    title: "Lokalny punkt z ruchem",
-    copy: "Piekary Śląskie, aktywne sociale i szybki odbiór osobisty bez aplikacji pośredników.",
+    title: "Ogień bez pośredników",
+    copy: "Szybkie zamówienie przez telefon i odbiór w Piekarach Śląskich. Zawsze świeżo i na czas.",
   },
 ];
 
 const pickupSteps = [
   {
     number: "01",
-    title: "Zadzwoń i złóż zamówienie",
-    copy: "Mówisz, na co masz ochotę i od razu ustalamy szczegóły odbioru.",
+    title: "Dzwonisz do nas",
+    copy: "Krótka piłka – mówisz, co jesz, a my od razu wrzucamy to na ruszt.",
   },
   {
     number: "02",
-    title: "Przygotowujemy wszystko na świeżo",
-    copy: "Mięso, lawasz, dodatki i sosy składamy tuż przed wydaniem.",
+    title: "Kręcimy na świeżo",
+    copy: "Samo mięso, rzemieślniczy lawasz i dopracowane sosy. Bez odgrzewania.",
   },
   {
     number: "03",
-    title: "Odbierasz na miejscu",
-    copy: "Podjeżdżasz pod lokal i bierzesz gotowe zamówienie bez zbędnego czekania.",
+    title: "Wpadasz po swoje",
+    copy: "Odbierasz gorącego lawasza na miejscu. Zero czekania, pełen konkret.",
   },
 ];
 
@@ -267,7 +267,7 @@ const footerSecondarySocial = [socialLinks[2], socialLinks[1]];
 
 const navLinks = [
   { href: "#menu", label: "Menu" },
-  { href: "#odbior", label: "Odbiór" },
+  { href: "#odbior", label: "Zamów" },
   { href: "#mieso", label: "Mięso" },
   { href: "#sosy", label: "Sosy" },
   { href: "#kontakt", label: "Kontakt" },
@@ -440,15 +440,15 @@ function MenuAccordion({ category }: { category: MenuCategory }) {
           +
         </span>
       </summary>
-      <div className="space-y-4 border-t border-white/8 px-5 py-5">
+      <div className="space-y-5 border-t border-white/8 px-5 py-5 bg-black/10">
         {category.items.map((item) => (
-          <div key={`${category.title}-${item.name}`} className="space-y-1">
-            <div className="flex items-end gap-3 text-white">
-              <span className="shrink-0 font-medium">{item.name}</span>
-              <span className="mb-1 h-px flex-1 border-b border-dotted border-white/15" />
-              <span className="shrink-0 font-semibold text-[color:var(--ember)]">{item.price}</span>
+          <div key={`${category.title}-${item.name}`} className="relative flex flex-col gap-1.5 sm:flex-row sm:items-end sm:justify-between">
+            <div className="flex flex-col gap-1 sm:pr-4">
+              <span className="font-medium text-white/90 text-[15px]">{item.name}</span>
+              {item.note && <span className="text-xs leading-relaxed text-white/50">{item.note}</span>}
             </div>
-            {item.note ? <p className="text-sm text-white/45">{item.note}</p> : null}
+            <div className="hidden sm:block mb-1.5 h-px flex-1 border-b border-dotted border-white/10" />
+            <span className="shrink-0 font-semibold text-[color:var(--ember)] text-base mt-1 sm:mt-0">{item.price}</span>
           </div>
         ))}
       </div>
@@ -576,7 +576,6 @@ export default function App() {
   const [isMobileViewport, setIsMobileViewport] = useState(() =>
     typeof window !== "undefined" ? window.innerWidth < 640 : false,
   );
-  const [showMobileHeroVideo, setShowMobileHeroVideo] = useState(() => !hasPlayedIntroInSession());
   const reduceMotion = useReducedMotion();
   const { scrollY } = useScroll();
   const heroParallax = useTransform(scrollY, [0, 500], [0, reduceMotion ? 0 : 60]);
@@ -610,7 +609,6 @@ export default function App() {
 
     setIntroVideoEnabled(!disableIntroVideo);
     setIntroVideoReady(disableIntroVideo || introWasPlayed);
-    setShowMobileHeroVideo(!disableIntroVideo && !introWasPlayed);
 
     if (disableIntroVideo || introWasPlayed) {
       setIntroDone(true);
@@ -750,7 +748,7 @@ export default function App() {
             aria-label="Zamknij menu mobilne"
             initial={false}
             animate={{ opacity: mobileMenuOpen ? 1 : 0, pointerEvents: mobileMenuOpen ? "auto" : "none" }}
-            className="fixed inset-0 z-40 bg-black/60 backdrop-blur-[2px] md:hidden"
+            className="fixed inset-0 z-40 bg-black/90 backdrop-blur-md md:hidden"
             onClick={() => setMobileMenuOpen(false)}
           />
 
@@ -777,22 +775,6 @@ export default function App() {
                   {link.label}
                 </a>
               ))}
-              <div className="mt-2 grid grid-cols-2 gap-3">
-                <a
-                  href={PHONE_URL}
-                  className="inline-flex min-h-12 items-center justify-center rounded-full bg-[color:var(--fire)] px-4 py-3 text-sm font-semibold uppercase tracking-[0.18em] text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
-                >
-                  Zadzwoń
-                </a>
-                <a
-                  href={MAPS_URL}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/14 bg-white/6 px-4 py-3 text-sm font-semibold uppercase tracking-[0.18em] text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
-                >
-                  Trasa
-                </a>
-              </div>
             </div>
           </motion.nav>
         </>
@@ -801,7 +783,7 @@ export default function App() {
       <main id="main-content" className="relative z-10">
         <section id="top" className="relative isolate min-h-screen scroll-mt-28">
           <motion.div style={{ y: heroParallax }} className="absolute inset-0">
-            {introVideoEnabled && (!isMobileViewport || showMobileHeroVideo) ? (
+            {introVideoEnabled ? (
               <div className="absolute inset-0">
                 {/* Desktop: pełnoekranowe tło video */}
                 <div className="hidden sm:block absolute inset-0">
@@ -811,7 +793,6 @@ export default function App() {
                       introVideoReady ? "opacity-100" : "opacity-0",
                     )}
                     autoPlay
-                    loop
                     muted
                     playsInline
                     preload="metadata"
@@ -826,27 +807,23 @@ export default function App() {
                   </video>
                 </div>
 
-                {/* Mobile: bento ramka z blurowanymi krawędziami */}
-                <div
-                  className="sm:hidden absolute inset-x-5 rounded-[2rem] overflow-hidden border border-white/10 shadow-[0_8px_48px_rgba(0,0,0,0.55)]"
+                {/* Mobile: video blendowane z tłem 3D (cegły), usuwa efekt 'naklejki' */}
+                <div 
+                  className="sm:hidden absolute inset-x-0 mix-blend-screen pointer-events-none"
                   style={{
                     top: "8rem",
                     height: "56svh",
-                    maskImage:
-                      "radial-gradient(ellipse 92% 88% at 50% 50%, black 55%, rgba(0,0,0,0.6) 72%, transparent 100%)",
-                    WebkitMaskImage:
-                      "radial-gradient(ellipse 92% 88% at 50% 50%, black 55%, rgba(0,0,0,0.6) 72%, transparent 100%)",
                   }}
                 >
                   <video
                     className={cn(
-                      "h-full w-full scale-[1.55] object-contain object-center transition-opacity duration-700",
+                      "h-full w-full scale-[1.55] translate-x-3 object-contain object-center transition-opacity duration-700",
                       introVideoReady ? "opacity-100" : "opacity-0",
                     )}
                     autoPlay
                     muted
                     playsInline
-                    preload="auto"
+                    preload="metadata"
                     aria-hidden="true"
                     onCanPlay={() => setIntroVideoReady(true)}
                     onEnded={finishIntro}
@@ -857,8 +834,6 @@ export default function App() {
                   >
                     <source src={INTRO_VIDEO_URL} type="video/mp4" />
                   </video>
-                  {/* Subtelny gradient wzmacniający głębię */}
-                  <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(9,9,9,0.28)_100%)]" />
                 </div>
               </div>
             ) : null}
@@ -939,7 +914,7 @@ export default function App() {
                     transition={{ delay: 0.28, duration: 0.72, ease: easeOutExpo }}
                     className="max-w-2xl text-base leading-8 text-white/74 sm:text-lg"
                   >
-                    Rzemieślniczy kebab w Piekarach Śląskich. Zadzwoń, złóż zamówienie i odbierz na miejscu bez aplikacji pośredników.
+                    Rzemieślniczy kebab w Piekarach Śląskich. Świeże mięso i bezkompromisowy smak, po który warto podjechać.
                   </motion.p>
                 </div>
 
@@ -991,9 +966,9 @@ export default function App() {
                 <div className="space-y-5">
                   <div className="space-y-2">
                     <div className="text-[11px] font-semibold uppercase tracking-[0.3em] text-[color:var(--ember)]">
-                      Kontakt i godziny
+                      Szybki kontakt
                     </div>
-                    <h2 className="font-display text-3xl uppercase tracking-[0.12em] text-white">Wpadasz po odbiór</h2>
+                    <h2 className="font-display text-3xl uppercase tracking-[0.12em] text-white">Zadzwoń i wpadaj po swoje</h2>
                   </div>
 
                   <div className="space-y-4">
@@ -1038,9 +1013,9 @@ export default function App() {
           <div className="mx-auto max-w-7xl">
             <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
               <SectionHeading
-                eyebrow="Odbiór osobisty"
-                title="Zamów z odbiorem osobistym"
-                subtitle="Najprostsza droga do LAWASZA: telefon, szybkie potwierdzenie i odbiór na miejscu bez zbędnych pośredników."
+                eyebrow="Jak zamawiasz"
+                title="Tu odbierasz bez kombinowania"
+                subtitle="Telefon, krótka piłka, odbiór na miejscu. Zero czekania na dostawców i zbędnych apek. Po prostu gorący lawasz w Twoich rękach."
               />
 
               <motion.div
@@ -1106,11 +1081,11 @@ export default function App() {
                 <div>
                   <h3 className="font-display text-4xl uppercase tracking-[0.1em] text-white sm:text-5xl">Pełne menu</h3>
                   <p className="mt-2 max-w-2xl text-sm leading-7 text-white/64">
-                    Struktura jest już gotowa pod przyszłe zarządzanie menu przez właściciela, ale na razie pokazujemy prototyp publicznej wersji.
+                    Przejrzyj nasze pełne menu, od klasyków w lawaszu, przez konkretne bowle, aż po doładowane fryty. Skomponuj swój idealny zestaw.
                   </p>
                 </div>
-                <div className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.24em] text-[color:var(--ember)]">
-                  Mobile-first accordions
+                <div className="rounded-full border border-white/10 bg-[color:var(--fire)]/10 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.24em] text-[color:var(--fire)] shadow-[0_0_15px_rgba(255,106,0,0.15)]">
+                  Wybierz coś dla siebie
                 </div>
               </div>
 
@@ -1133,8 +1108,8 @@ export default function App() {
           <div className="mx-auto max-w-7xl space-y-12">
             <SectionHeading
               eyebrow="Dlaczego LAWASZ"
-              title="Lokalny punkt, konkretny produkt"
-              subtitle="Ta strona ma od razu budować zaufanie: wiadomo, gdzie jesteśmy, jak działamy i dlaczego smak jest nasz, a nie skopiowany."
+              title="Twój nowy ulubiony spot"
+              subtitle="Wiemy, co robimy, bo wkładamy w to własne mięso i mnóstwo charakteru. Wpadnij do Piekar Śląskich przekonać się na własnych kubkach smakowych."
             />
 
             <div className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr]">
@@ -1207,7 +1182,7 @@ export default function App() {
             >
               <div className="space-y-5">
                 <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.3em] text-[color:var(--ember)] backdrop-blur-sm">
-                  Jak robimy mięso
+                  Tylko konkret
                 </div>
                 <h2 className="font-display text-5xl uppercase leading-none text-white sm:text-6xl lg:text-7xl">
                   Robimy to
@@ -1215,7 +1190,7 @@ export default function App() {
                   po swojemu
                 </h2>
                 <p className="max-w-2xl text-base leading-8 text-white/72 sm:text-lg">
-                  Bez hurtowej taśmy i bez gotowych schematów. LAWASZ buduje smak na mięsie własnej produkcji, ręcznym nakładaniu na rożen i marynacie, która ma zrobić robotę jeszcze zanim ogień zrobi resztę.
+                  Nasze mięso to nasza wizytówka. Ręcznie nabijamy na rożen autorską kompozycję z własną marynatą, dlatego masz pewność, że to co jesz, ma niepowtarzalny charakter.
                 </p>
               </div>
 
@@ -1236,7 +1211,7 @@ export default function App() {
             <SectionHeading
               eyebrow="Sosy"
               title="Dobierz swój ogień"
-              subtitle="Sosy dalej budują charakter marki, ale układ jest teraz spokojniejszy, bardziej czytelny i gotowy na szybkie skanowanie z telefonu."
+              subtitle="Od łagodnej klasyki po piekielną lawę. Sprawdź nasze sosy i znajdź swój idealny level ostrości."
             />
 
             <motion.div
@@ -1356,7 +1331,7 @@ export default function App() {
         </div>
       </footer>
 
-      {introDone ? <StickyBottomBar /> : null}
+      {introDone && scrolled && !mobileMenuOpen ? <StickyBottomBar /> : null}
     </div>
   );
 }
