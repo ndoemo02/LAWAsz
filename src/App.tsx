@@ -77,7 +77,6 @@ const ADDRESS_LABEL = "Księdza Józefa Krupy 11, 41-949 Piekary Śląskie";
 const INTRO_VIDEO_URL = "/video/intro.mp4";
 const HEADER_LOGO_MARK_URL = "/image/Projekt bez nazwy.png";
 const INTRO_PLAYED_KEY = "lawasz-intro-burn-played";
-const INTRO_ANIMATION_MS = 3200;
 
 const openingHours: HourRow[] = [
   { day: "Poniedziałek", hours: "Zamknięte" },
@@ -574,9 +573,34 @@ export default function App() {
   const [introPlaying, setIntroPlaying] = useState(() => !hasPlayedIntroInSession());
   const [introVideoEnabled, setIntroVideoEnabled] = useState(true);
   const [introVideoReady, setIntroVideoReady] = useState(false);
+  const [isMobileViewport, setIsMobileViewport] = useState(() =>
+    typeof window !== "undefined" ? window.innerWidth < 640 : false,
+  );
+  const [showMobileHeroVideo, setShowMobileHeroVideo] = useState(() => !hasPlayedIntroInSession());
   const reduceMotion = useReducedMotion();
   const { scrollY } = useScroll();
   const heroParallax = useTransform(scrollY, [0, 500], [0, reduceMotion ? 0 : 60]);
+
+  const finishIntro = () => {
+    setIntroPlaying(false);
+    setIntroDone(true);
+
+    try {
+      window.sessionStorage.setItem(INTRO_PLAYED_KEY, "1");
+    } catch {
+      // Brak sessionStorage nie powinien blokować startu strony.
+    }
+  };
+
+  useEffect(() => {
+    const syncViewport = () => {
+      setIsMobileViewport(window.innerWidth < 640);
+    };
+
+    syncViewport();
+    window.addEventListener("resize", syncViewport, { passive: true });
+    return () => window.removeEventListener("resize", syncViewport);
+  }, []);
 
   useEffect(() => {
     const connection = (navigator as NavigatorWithConnection).connection;
@@ -586,6 +610,7 @@ export default function App() {
 
     setIntroVideoEnabled(!disableIntroVideo);
     setIntroVideoReady(disableIntroVideo || introWasPlayed);
+    setShowMobileHeroVideo(!disableIntroVideo && !introWasPlayed);
 
     if (disableIntroVideo || introWasPlayed) {
       setIntroDone(true);
@@ -602,16 +627,7 @@ export default function App() {
       return;
     }
 
-    const timeoutId = window.setTimeout(() => {
-      setIntroPlaying(false);
-      setIntroDone(true);
-
-      try {
-        window.sessionStorage.setItem(INTRO_PLAYED_KEY, "1");
-      } catch {
-        // Brak sessionStorage nie powinien blokować startu strony.
-      }
-    }, INTRO_ANIMATION_MS);
+    const timeoutId = window.setTimeout(finishIntro, 5200);
 
     return () => window.clearTimeout(timeoutId);
   }, [introPlaying]);
@@ -785,26 +801,33 @@ export default function App() {
       <main id="main-content" className="relative z-10">
         <section id="top" className="relative isolate min-h-screen scroll-mt-28">
           <motion.div style={{ y: heroParallax }} className="absolute inset-0">
-            {introVideoEnabled ? (
-              <video
-                className={cn(
-                  "h-full w-full bg-black/30 object-contain object-center transition-opacity duration-700 sm:bg-transparent sm:object-cover sm:object-center",
-                  introVideoReady ? "opacity-100" : "opacity-0",
-                )}
-                autoPlay
-                loop
-                muted
-                playsInline
-                preload="metadata"
-                aria-hidden="true"
-                onCanPlay={() => setIntroVideoReady(true)}
-                onError={() => {
-                  setIntroVideoEnabled(false);
-                  setIntroVideoReady(true);
-                }}
-              >
-                <source src={INTRO_VIDEO_URL} type="video/mp4" />
-              </video>
+            {introVideoEnabled && (!isMobileViewport || showMobileHeroVideo) ? (
+              <div className="absolute inset-x-0 top-[5.25rem] h-[56svh] overflow-hidden sm:inset-0 sm:h-full">
+                <video
+                  className={cn(
+                    "h-full w-full transition-opacity duration-700",
+                    isMobileViewport
+                      ? "translate-y-6 scale-[1.08] object-contain object-center"
+                      : "object-cover object-center",
+                    introVideoReady ? "opacity-100" : "opacity-0",
+                  )}
+                  autoPlay
+                  loop={!isMobileViewport}
+                  muted
+                  playsInline
+                  preload={isMobileViewport ? "auto" : "metadata"}
+                  aria-hidden="true"
+                  onCanPlay={() => setIntroVideoReady(true)}
+                  onEnded={isMobileViewport ? finishIntro : undefined}
+                  onError={() => {
+                    setIntroVideoEnabled(false);
+                    setIntroVideoReady(true);
+                  }}
+                >
+                  <source src={INTRO_VIDEO_URL} type="video/mp4" />
+                </video>
+                <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(9,9,9,0.96)_0%,rgba(9,9,9,0.32)_16%,rgba(9,9,9,0)_30%,rgba(9,9,9,0)_64%,rgba(9,9,9,0.4)_80%,rgba(9,9,9,0.96)_100%)] sm:hidden" />
+              </div>
             ) : null}
 
             <div
@@ -821,29 +844,29 @@ export default function App() {
           {introPlaying ? (
             <motion.div
               initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="absolute inset-0 z-30 flex items-center justify-center bg-[radial-gradient(circle_at_center,rgba(255,106,0,0.08),transparent_34%),linear-gradient(180deg,rgba(5,5,5,0.92)_0%,rgba(8,8,8,0.9)_100%)] px-6"
+              animate={{ opacity: [1, 1, 0] }}
+              transition={{ duration: 4.8, times: [0, 0.76, 1], ease: "easeInOut" }}
+              className="absolute inset-0 z-30 flex items-center justify-center overflow-hidden bg-[radial-gradient(circle_at_center,rgba(255,106,0,0.07),transparent_34%),linear-gradient(180deg,rgba(5,5,5,0.4)_0%,rgba(8,8,8,0.18)_42%,rgba(8,8,8,0)_72%),linear-gradient(180deg,rgba(4,4,4,0.82)_0%,rgba(4,4,4,0.12)_54%,rgba(4,4,4,0)_100%)] px-4 sm:px-6"
             >
-              <div className="relative flex items-center justify-center">
+              <div className="relative flex w-full max-w-md items-center justify-center">
                 <motion.div
-                  className="absolute -inset-20 rounded-full bg-[radial-gradient(circle,rgba(255,130,36,0.42),rgba(255,61,0,0.04)_56%,transparent_74%)] blur-3xl"
-                  animate={{ opacity: [0.22, 0.9, 0.44, 0], scale: [0.84, 1.03, 1.14, 1.22], y: [18, -2, -18, -28] }}
-                  transition={{ duration: INTRO_ANIMATION_MS / 1000, times: [0, 0.4, 0.78, 1], ease: "easeInOut" }}
+                  className="absolute inset-x-6 h-52 rounded-full bg-[radial-gradient(circle,rgba(255,130,36,0.28),rgba(255,61,0,0.04)_58%,transparent_76%)] blur-3xl"
+                  animate={{ opacity: [0.16, 0.74, 0.28, 0], scale: [0.94, 1.03, 1.08, 1.12], y: [10, 0, -12, -18] }}
+                  transition={{ duration: 4.8, times: [0, 0.36, 0.78, 1], ease: "easeInOut" }}
                 />
                 <motion.div
                   animate={{
-                    opacity: [1, 1, 0.78, 0],
-                    y: [0, 0, -5, -18],
-                    scale: [1, 1.03, 1.01, 0.97],
+                    opacity: [0.78, 0.94, 0.22, 0],
+                    y: [0, 0, -10, -20],
+                    scale: [1, 1.02, 1, 0.98],
                     filter: [
-                      "drop-shadow(0 0 18px rgba(255,125,25,0.52)) brightness(1)",
-                      "drop-shadow(0 0 26px rgba(255,137,28,0.82)) brightness(1.2)",
-                      "drop-shadow(0 0 12px rgba(255,98,14,0.42)) grayscale(0.26) contrast(1.16)",
-                      "drop-shadow(0 0 3px rgba(255,92,0,0.15)) grayscale(1) contrast(1.3) brightness(0.72) blur(1px)",
+                      "drop-shadow(0 0 18px rgba(255,125,25,0.36)) brightness(1)",
+                      "drop-shadow(0 0 26px rgba(255,137,28,0.44)) brightness(1.08)",
+                      "drop-shadow(0 0 10px rgba(255,98,14,0.18)) contrast(1.08)",
+                      "drop-shadow(0 0 2px rgba(255,92,0,0.04)) contrast(1) brightness(0.96)",
                     ],
                   }}
-                  transition={{ duration: INTRO_ANIMATION_MS / 1000, times: [0, 0.42, 0.8, 1], ease: easeOutExpo }}
+                  transition={{ duration: 4.8, times: [0, 0.34, 0.8, 1], ease: easeOutExpo }}
                   className="relative"
                 >
                   <IntroBrand />

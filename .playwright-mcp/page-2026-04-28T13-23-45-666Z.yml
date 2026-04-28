@@ -1,0 +1,351 @@
+- generic [ref=e3]:
+  - link "Przejdź do treści" [ref=e4] [cursor=pointer]:
+    - /url: "#main-content"
+  - banner [ref=e5]:
+    - generic [ref=e6]:
+      - link "LAWASZ KEBAB" [ref=e7] [cursor=pointer]:
+        - /url: "#top"
+        - generic [ref=e8]:
+          - img [ref=e9]
+          - generic [ref=e10]:
+            - generic [ref=e11]: LAWASZ
+            - generic [ref=e12]: KEBAB
+      - button "Otwórz menu" [ref=e14]
+  - button "Zamknij menu mobilne"
+  - navigation "Nawigacja mobilna":
+    - generic:
+      - link "Menu":
+        - /url: "#menu"
+      - link "Odbiór":
+        - /url: "#odbior"
+      - link "Mięso":
+        - /url: "#mieso"
+      - link "Sosy":
+        - /url: "#sosy"
+      - link "Kontakt":
+        - /url: "#kontakt"
+      - generic:
+        - link "Zadzwoń":
+          - /url: tel:+48789969998
+        - link "Trasa":
+          - /url: https://www.google.com/maps/search/?api=1&query=Ksi%C4%99dza+J%C3%B3zefa+Krupy+11%2C+41-949+Piekary+%C5%9Al%C4%85skie
+  - main [ref=e19]:
+    - generic [ref=e25]:
+      - generic [ref=e26]:
+        - generic [ref=e27]: Piekary Śląskie · odbiór osobisty
+        - generic [ref=e29]:
+          - heading "Własne mięso. Autorski lawasz." [level=1] [ref=e30]:
+            - text: Własne mięso.
+            - text: Autorski lawasz.
+          - paragraph [ref=e31]: Rzemieślniczy kebab w Piekarach Śląskich. Zadzwoń, złóż zamówienie i odbierz na miejscu bez aplikacji pośredników.
+        - generic [ref=e32]:
+          - link "Zadzwoń i zamów" [ref=e33] [cursor=pointer]:
+            - /url: tel:+48789969998
+          - link "Otwórz trasę do lokalu" [ref=e34] [cursor=pointer]:
+            - /url: https://www.google.com/maps/search/?api=1&query=Ksi%C4%99dza+J%C3%B3zefa+Krupy+11%2C+41-949+Piekary+%C5%9Al%C4%85skie
+            - text: Jak dojechać
+        - generic [ref=e35]:
+          - generic [ref=e36]:
+            - generic [ref=e37]: Własna produkcja mięsa
+            - paragraph [ref=e38]: Mięso przygotowywane na miejscu, zamiast kopiować hurtowe schematy.
+          - generic [ref=e39]:
+            - generic [ref=e40]: Autorski lawasz
+            - paragraph [ref=e41]: Podajemy mięso w formie, która jest częścią marki, a nie tylko nośnikiem dodatków.
+          - generic [ref=e42]:
+            - generic [ref=e43]: Lokalny punkt z ruchem
+            - paragraph [ref=e44]: Piekary Śląskie, aktywne sociale i szybki odbiór osobisty bez aplikacji pośredników.
+      - complementary [ref=e45]:
+        - generic [ref=e46]:
+          - generic [ref=e47]:
+            - generic [ref=e48]: Kontakt i godziny
+            - heading "Wpadasz po odbiór" [level=2] [ref=e49]
+          - generic [ref=e50]:
+            - generic [ref=e51]:
+              - generic [ref=e52]: Adres
+              - generic [ref=e53]: Księdza Józefa Krupy 11, 41-949 Piekary Śląskie
+            - generic [ref=e54]:
+              - generic [ref=e55]: Telefon
+              - link "+48 789 969 998" [ref=e56] [cursor=pointer]:
+                - /url: tel:+48789969998
+            - generic [ref=e57]:
+              - generic [ref=e58]: Godziny
+              - generic [ref=e59]:
+                - generic [ref=e60]:
+                  - generic [ref=e62]: Poniedziałek
+                  - generic [ref=e63]: Zamknięte
+                - generic [ref=e64]:
+                  - generic [ref=e66]: Wtorek-Czwartek
+                  - generic [ref=e67]: 12:00-20:00
+                - generic [ref=e68]:
+                  - generic [ref=e70]: Piątek-Sobota
+                  - generic [ref=e71]: 12:00-21:00
+                - generic [ref=e72]:
+                  - generic [ref=e73]:
+                    - generic [ref=e74]: Niedziela
+                    - generic [ref=e75]: Weekendowe godziny warto potwierdzić w święta.
+                  - generic [ref=e76]: 12:00-21:00
+    - generic [ref=e79]:
+      - generic [ref=e80]:
+        - generic [ref=e81]: Odbiór osobisty
+        - generic [ref=e83]:
+          - heading "Zamów z odbiorem osobistym" [level=2] [ref=e84]
+          - paragraph [ref=e85]: "Najprostsza droga do LAWASZA: telefon, szybkie potwierdzenie i odbiór na miejscu bez zbędnych pośredników."
+      - generic [ref=e86]:
+        - article [ref=e87]:
+          - generic [ref=e88]: "01"
+          - heading "Zadzwoń i złóż zamówienie" [level=3] [ref=e89]
+          - paragraph [ref=e90]: Mówisz, na co masz ochotę i od razu ustalamy szczegóły odbioru.
+        - article [ref=e91]:
+          - generic [ref=e92]: "02"
+          - heading "Przygotowujemy wszystko na świeżo" [level=3] [ref=e93]
+          - paragraph [ref=e94]: Mięso, lawasz, dodatki i sosy składamy tuż przed wydaniem.
+        - article [ref=e95]:
+          - generic [ref=e96]: "03"
+          - heading "Odbierasz na miejscu" [level=3] [ref=e97]
+          - paragraph [ref=e98]: Podjeżdżasz pod lokal i bierzesz gotowe zamówienie bez zbędnego czekania.
+    - generic [ref=e100]:
+      - generic [ref=e101]:
+        - generic [ref=e102]: Menu
+        - generic [ref=e104]:
+          - heading "Najczęściej zamawiane" [level=2] [ref=e105]
+          - paragraph [ref=e106]: Najmocniejsze pozycje na szybki wybór z telefonu. Pełne menu zostawiamy niżej, żeby mobile był prostszy i czytelniejszy.
+      - generic [ref=e107]:
+        - article [ref=e108]:
+          - generic [ref=e109]:
+            - generic [ref=e110]:
+              - generic [ref=e111]: Bestseller
+              - heading "LAWASZ XL Mix" [level=3] [ref=e112]
+            - generic [ref=e113]: 38,00 zł
+          - paragraph [ref=e114]: 200 g mięsa, świeże warzywa, autorski lawasz i sos do wyboru.
+        - article [ref=e115]:
+          - generic [ref=e116]:
+            - generic [ref=e117]:
+              - generic [ref=e118]: Na start
+              - heading "LAWASZ L Karkówka" [level=3] [ref=e119]
+            - generic [ref=e120]: 30,00 zł
+          - paragraph [ref=e121]: Klasyczny rozmiar, wyraziste mięso i pełny balans dodatków.
+        - article [ref=e122]:
+          - generic [ref=e123]:
+            - generic [ref=e124]:
+              - generic [ref=e125]: Na głód
+              - heading "LAWASZ Bowl Mix" [level=3] [ref=e126]
+            - generic [ref=e127]: 36,00 zł
+          - paragraph [ref=e128]: Porcja obiadowa z 200 g mięsa i świeżymi dodatkami.
+        - article [ref=e129]:
+          - generic [ref=e130]:
+            - generic [ref=e131]:
+              - generic [ref=e132]: Do dokładki
+              - heading "Lava Fries" [level=3] [ref=e133]
+            - generic [ref=e134]: 20,00 zł
+          - paragraph [ref=e135]: Frytki z cheddarem, czerwoną cebulą i przyprawami.
+      - generic [ref=e136]:
+        - link "Zadzwoń i zamów" [ref=e137] [cursor=pointer]:
+          - /url: tel:+48789969998
+        - link "Pełne menu" [ref=e138] [cursor=pointer]:
+          - /url: "#pelne-menu"
+      - generic [ref=e139]:
+        - generic [ref=e140]:
+          - generic [ref=e141]:
+            - heading "Pełne menu" [level=3] [ref=e142]
+            - paragraph [ref=e143]: Struktura jest już gotowa pod przyszłe zarządzanie menu przez właściciela, ale na razie pokazujemy prototyp publicznej wersji.
+          - generic [ref=e144]: Mobile-first accordions
+        - generic [ref=e145]:
+          - group [ref=e146]:
+            - generic "Lawasz L 140 g mięsa Autorski lawasz, świeże warzywa i sosy. Klasyk w miejskim tempie." [ref=e147] [cursor=pointer]:
+              - generic [ref=e148]:
+                - generic [ref=e149]: Lawasz L
+                - generic [ref=e150]: 140 g mięsa
+                - paragraph [ref=e151]: Autorski lawasz, świeże warzywa i sosy. Klasyk w miejskim tempie.
+              - generic [ref=e152]: +
+          - group [ref=e153]:
+            - generic "Lawasz XL 200 g mięsa Więcej mięsa, więcej ognia, dalej bez kompromisów." [ref=e154] [cursor=pointer]:
+              - generic [ref=e155]:
+                - generic [ref=e156]: Lawasz XL
+                - generic [ref=e157]: 200 g mięsa
+                - paragraph [ref=e158]: Więcej mięsa, więcej ognia, dalej bez kompromisów.
+              - generic [ref=e159]: +
+          - group [ref=e160]:
+            - generic "Lawasz Bowl Porcja obiadowa 200 g mięsa, świeże warzywa i sosy. Konkret, kiedy chcesz czegoś większego." [ref=e161] [cursor=pointer]:
+              - generic [ref=e162]:
+                - generic [ref=e163]: Lawasz Bowl
+                - generic [ref=e164]: Porcja obiadowa
+                - paragraph [ref=e165]: 200 g mięsa, świeże warzywa i sosy. Konkret, kiedy chcesz czegoś większego.
+              - generic [ref=e166]: +
+          - group [ref=e167]:
+            - generic "Fryty Wołowy tłuszcz Frytki smażone na tłuszczu wołowym. Do wyboru ketchup albo mayo." [ref=e168] [cursor=pointer]:
+              - generic [ref=e169]:
+                - generic [ref=e170]: Fryty
+                - generic [ref=e171]: Wołowy tłuszcz
+                - paragraph [ref=e172]: Frytki smażone na tłuszczu wołowym. Do wyboru ketchup albo mayo.
+              - generic [ref=e173]: +
+          - group [ref=e174]:
+            - generic "Lava Fries Doładowane 150 g frytek, gorący sos cheddar, czerwona cebula i przyprawy." [ref=e175] [cursor=pointer]:
+              - generic [ref=e176]:
+                - generic [ref=e177]: Lava Fries
+                - generic [ref=e178]: Doładowane
+                - paragraph [ref=e179]: 150 g frytek, gorący sos cheddar, czerwona cebula i przyprawy.
+              - generic [ref=e180]: +
+          - group [ref=e181]:
+            - generic "Napoje Na zimno Klasyka do lawasza i coś pod ostre sosy." [ref=e182] [cursor=pointer]:
+              - generic [ref=e183]:
+                - generic [ref=e184]: Napoje
+                - generic [ref=e185]: Na zimno
+                - paragraph [ref=e186]: Klasyka do lawasza i coś pod ostre sosy.
+              - generic [ref=e187]: +
+          - group [ref=e188]:
+            - generic "Dodatki Personalizacja Dokręć zamówienie pod siebie albo dobierz opcję na wynos." [ref=e189] [cursor=pointer]:
+              - generic [ref=e190]:
+                - generic [ref=e191]: Dodatki
+                - generic [ref=e192]: Personalizacja
+                - paragraph [ref=e193]: Dokręć zamówienie pod siebie albo dobierz opcję na wynos.
+              - generic [ref=e194]: +
+    - generic [ref=e196]:
+      - generic [ref=e197]:
+        - generic [ref=e198]: Dlaczego LAWASZ
+        - generic [ref=e200]:
+          - heading "Lokalny punkt, konkretny produkt" [level=2] [ref=e201]
+          - paragraph [ref=e202]: "Ta strona ma od razu budować zaufanie: wiadomo, gdzie jesteśmy, jak działamy i dlaczego smak jest nasz, a nie skopiowany."
+      - generic [ref=e203]:
+        - generic [ref=e204]:
+          - article [ref=e205]:
+            - heading "Własna produkcja mięsa" [level=3] [ref=e206]
+            - paragraph [ref=e207]: Mięso przygotowywane na miejscu, zamiast kopiować hurtowe schematy.
+          - article [ref=e208]:
+            - heading "Autorski lawasz" [level=3] [ref=e209]
+            - paragraph [ref=e210]: Podajemy mięso w formie, która jest częścią marki, a nie tylko nośnikiem dodatków.
+          - article [ref=e211]:
+            - heading "Lokalny punkt z ruchem" [level=3] [ref=e212]
+            - paragraph [ref=e213]: Piekary Śląskie, aktywne sociale i szybki odbiór osobisty bez aplikacji pośredników.
+        - complementary [ref=e214]:
+          - generic [ref=e215]:
+            - generic [ref=e216]:
+              - generic [ref=e217]: Social proof
+              - heading "Lokal, który żyje offline i online" [level=3] [ref=e218]
+            - generic [ref=e219]:
+              - generic [ref=e220]: Adres
+              - paragraph [ref=e221]: Księdza Józefa Krupy 11, 41-949 Piekary Śląskie
+            - generic [ref=e222]:
+              - generic [ref=e223]: Social media
+              - generic [ref=e224]:
+                - link "Facebook · @LAWAszKebab" [ref=e225] [cursor=pointer]:
+                  - /url: https://www.facebook.com/LAWAszKebab
+                  - generic [ref=e226]: ↗
+                  - text: Facebook · @LAWAszKebab
+                - link "Instagram · @lawasz.kebab" [ref=e227] [cursor=pointer]:
+                  - /url: https://www.instagram.com/lawasz.kebab/
+                  - generic [ref=e228]: ↗
+                  - text: Instagram · @lawasz.kebab
+                - link "TikTok · @lawaszkebab" [ref=e229] [cursor=pointer]:
+                  - /url: https://www.tiktok.com/@lawaszkebab
+                  - generic [ref=e230]: ↗
+                  - text: TikTok · @lawaszkebab
+    - generic [ref=e255]:
+      - generic [ref=e256]:
+        - generic [ref=e257]: Jak robimy mięso
+        - heading "Robimy to po swojemu" [level=2] [ref=e258]:
+          - text: Robimy to
+          - text: po swojemu
+        - paragraph [ref=e259]: Bez hurtowej taśmy i bez gotowych schematów. LAWASZ buduje smak na mięsie własnej produkcji, ręcznym nakładaniu na rożen i marynacie, która ma zrobić robotę jeszcze zanim ogień zrobi resztę.
+      - generic [ref=e260]:
+        - generic [ref=e263]: Mięso przygotowywane na miejscu, bez hurtowych gotowców.
+        - generic [ref=e266]: Ręczne nakładanie warstw, żeby zachować soczystość i strukturę.
+        - generic [ref=e269]: Autorska marynata z charakterem, która pracuje jeszcze przed ogniem.
+        - generic [ref=e272]: Spójne podejście do mięsa, lawasza, dodatków i sosów.
+    - generic [ref=e274]:
+      - generic [ref=e275]:
+        - generic [ref=e276]: Sosy
+        - generic [ref=e278]:
+          - heading "Dobierz swój ogień" [level=2] [ref=e279]
+          - paragraph [ref=e280]: Sosy dalej budują charakter marki, ale układ jest teraz spokojniejszy, bardziej czytelny i gotowy na szybkie skanowanie z telefonu.
+      - generic [ref=e281]:
+        - article [ref=e282]:
+          - generic [ref=e283]:
+            - generic [ref=e284]: 🍯
+            - generic [ref=e285]:
+              - heading "Musztardowo-Miodowy" [level=3] [ref=e286]
+              - paragraph [ref=e287]: Balans słodyczy miodu i wyrazistej musztardy. Delikatny, ale z charakterem.
+            - paragraph [ref=e288]: Dobry do kurczaka i klasycznego lawasza.
+        - article [ref=e289]:
+          - generic [ref=e290]:
+            - generic [ref=e291]: 🌫️
+            - generic [ref=e292]:
+              - heading "Wędzona Śliwka" [level=3] [ref=e293]
+              - paragraph [ref=e294]: Lekko kwaśny, słodko-wędzony sos z głębokim aromatem dymu i nutą śliwki.
+            - paragraph [ref=e295]: Najlepiej siada z karkówką i bowlem.
+        - article [ref=e296]:
+          - generic [ref=e297]:
+            - generic [ref=e298]: 🌶️
+            - generic [ref=e299]:
+              - heading "Chili Ananas" [level=3] [ref=e300]
+              - paragraph [ref=e301]: Słodki sos z pieczonych warzyw i ananasa z subtelną, rozgrzewającą pikantnością.
+            - paragraph [ref=e302]: Świetny do mixa i Lava Fries.
+        - article [ref=e303]:
+          - generic [ref=e304]:
+            - generic [ref=e305]: 🧄
+            - generic [ref=e306]:
+              - heading "Czosnkowy" [level=3] [ref=e307]
+              - paragraph [ref=e308]: Klasyczny, intensywny i kremowy. Pewniak, gdy wchodzisz w markę pierwszy raz.
+            - paragraph [ref=e309]: Uniwersalny wybór do większości zamówień.
+        - article [ref=e310]:
+          - generic [ref=e311]:
+            - generic [ref=e312]: 🌋
+            - generic [ref=e313]:
+              - heading "Piekielna Lawa" [level=3] [ref=e314]
+              - paragraph [ref=e315]: Ekstremalnie ostry sos dla tych, którzy naprawdę lubią ogień.
+            - paragraph [ref=e316]: Bierz do XL, jeśli lubisz testować granice.
+  - contentinfo [ref=e317]:
+    - generic [ref=e318]:
+      - generic [ref=e319]:
+        - generic [ref=e321]:
+          - generic [ref=e322]: LAWASZ
+          - generic [ref=e323]: KEBAB
+        - paragraph [ref=e324]: LAWASZ KEBAB to lokalny kebab z własnym mięsem, autorskim lawaszem i prostym odbiorem osobistym. Dzwonisz, zamawiasz i wpadasz po gotowe.
+        - generic [ref=e325]:
+          - generic [ref=e326]: Księdza Józefa Krupy 11, 41-949 Piekary Śląskie
+          - paragraph [ref=e327]:
+            - link "+48 789 969 998" [ref=e328] [cursor=pointer]:
+              - /url: tel:+48789969998
+      - generic [ref=e329]:
+        - generic [ref=e330]:
+          - heading "Godziny" [level=3] [ref=e331]
+          - generic [ref=e333]:
+            - generic [ref=e334]:
+              - generic [ref=e336]: Poniedziałek
+              - generic [ref=e337]: Zamknięte
+            - generic [ref=e338]:
+              - generic [ref=e340]: Wtorek-Czwartek
+              - generic [ref=e341]: 12:00-20:00
+            - generic [ref=e342]:
+              - generic [ref=e344]: Piątek-Sobota
+              - generic [ref=e345]: 12:00-21:00
+            - generic [ref=e346]:
+              - generic [ref=e347]:
+                - generic [ref=e348]: Niedziela
+                - generic [ref=e349]: Weekendowe godziny warto potwierdzić w święta.
+              - generic [ref=e350]: 12:00-21:00
+        - generic [ref=e351]:
+          - heading "Kontakt i dojazd" [level=3] [ref=e352]
+          - generic [ref=e353]:
+            - paragraph [ref=e354]: Zamawiasz telefonicznie, odbierasz na miejscu i masz trasę pod ręką od razu po wejściu na stronę.
+            - generic [ref=e355]:
+              - link "Zadzwoń i zamów" [ref=e356] [cursor=pointer]:
+                - /url: tel:+48789969998
+              - link "Otwórz trasę" [ref=e357] [cursor=pointer]:
+                - /url: https://www.google.com/maps/search/?api=1&query=Ksi%C4%99dza+J%C3%B3zefa+Krupy+11%2C+41-949+Piekary+%C5%9Al%C4%85skie
+    - generic [ref=e359]:
+      - generic [ref=e360]:
+        - generic [ref=e361]: LAWASZ KEBAB · Piekary Śląskie
+        - link "Facebook · @LAWAszKebab" [ref=e362] [cursor=pointer]:
+          - /url: https://www.facebook.com/LAWAszKebab
+      - generic [ref=e363]:
+        - link "TikTok · @lawaszkebab" [ref=e364] [cursor=pointer]:
+          - /url: https://www.tiktok.com/@lawaszkebab
+        - link "Instagram · @lawasz.kebab" [ref=e365] [cursor=pointer]:
+          - /url: https://www.instagram.com/lawasz.kebab/
+  - generic [ref=e367]:
+    - link "Zadzwoń i zamów" [ref=e368] [cursor=pointer]:
+      - /url: tel:+48789969998
+      - text: Zadzwoń
+    - link "Otwórz trasę do lokalu" [ref=e369] [cursor=pointer]:
+      - /url: https://www.google.com/maps/search/?api=1&query=Ksi%C4%99dza+J%C3%B3zefa+Krupy+11%2C+41-949+Piekary+%C5%9Al%C4%85skie
+      - text: Trasa
