@@ -219,7 +219,7 @@ const sauces: Sauce[] = [
 const trustPoints = [
   {
     title: "Własna produkcja mięsa",
-    copy: "Żadnych gotowców z hurtowni. Sami marynujemy i nabijamy rożen, dlatego smak jest nie do podrobienia.",
+    copy: "Rzemieślniczy kebab w Piekarach Śląskich. Świeże mięso i bezkompromisowy smak. Żadnych gotowców z hurtowni, sami marynujemy i nabijamy rożen.",
   },
   {
     title: "Autorski lawasz",
@@ -566,6 +566,46 @@ function StickyBottomBar() {
   );
 }
 
+function CurvedTextOverlay({ className, visible }: { className?: string; visible?: boolean }) {
+  if (!visible) return null;
+  return (
+    <div className={cn("absolute inset-0 z-10 flex items-center justify-center pointer-events-none transition-opacity duration-700", className)}>
+      <motion.svg
+        initial={{ opacity: 0, scale: 0.85, rotate: -15 }}
+        animate={{ opacity: 1, scale: 1, rotate: 0 }}
+        transition={{ 
+          opacity: { delay: 0.12, duration: 0.88 }, 
+          scale: { delay: 0.12, duration: 0.88, ease: [0.16, 1, 0.3, 1] }
+        }}
+        viewBox="0 0 500 500"
+        className="w-[120%] max-w-[800px] h-auto drop-shadow-[0_0_15px_rgba(255,106,0,0.3)] mix-blend-screen"
+      >
+        <motion.g
+          animate={{ rotate: 360 }}
+          transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
+          style={{ transformOrigin: "250px 250px" }}
+        >
+          <defs>
+            <linearGradient id="fireTextGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="#ff761a" />
+              <stop offset="50%" stopColor="#ff3800" />
+              <stop offset="100%" stopColor="#ff761a" />
+            </linearGradient>
+            <path id="curve-top" d="M 50,250 A 200,200 0 0,1 450,250" fill="none" />
+            <path id="curve-bottom" d="M 50,250 A 200,200 0 0,0 450,250" fill="none" />
+          </defs>
+          <text className="font-display font-bold uppercase tracking-[0.06em]" fontSize="38" fill="url(#fireTextGrad)">
+            <textPath href="#curve-top" startOffset="50%" textAnchor="middle">WŁASNE MIĘSO</textPath>
+          </text>
+          <text className="font-display font-bold uppercase tracking-[0.06em]" fontSize="38" fill="white">
+            <textPath href="#curve-bottom" startOffset="50%" textAnchor="middle">AUTORSKI LAWASZ</textPath>
+          </text>
+        </motion.g>
+      </motion.svg>
+    </div>
+  );
+}
+
 export default function App() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -805,6 +845,7 @@ export default function App() {
                   >
                     <source src={INTRO_VIDEO_URL} type="video/mp4" />
                   </video>
+                  <CurvedTextOverlay visible={introDone} />
                 </div>
 
                 {/* Mobile: video blendowane z tłem 3D (cegły), usuwa efekt 'naklejki' */}
@@ -834,6 +875,7 @@ export default function App() {
                   >
                     <source src={INTRO_VIDEO_URL} type="video/mp4" />
                   </video>
+                  <CurvedTextOverlay visible={introDone} className="scale-[1.55] translate-x-3" />
                 </div>
               </div>
             ) : null}
@@ -894,28 +936,6 @@ export default function App() {
                 <div className="inline-flex w-fit items-center gap-3 rounded-full border border-white/12 bg-white/6 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.3em] text-white/80 backdrop-blur-sm">
                   <span className="h-2.5 w-2.5 rounded-full bg-[color:var(--fire)] shadow-[0_0_18px_rgba(255,106,0,0.9)]" />
                   Piekary Śląskie · odbiór osobisty
-                </div>
-
-                <div className="space-y-5">
-                  <motion.h1
-                    initial={{ opacity: 0, scale: 0.94, filter: "blur(10px)" }}
-                    animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-                    transition={{ delay: 0.12, duration: 0.88, ease: easeOutExpo }}
-                    className="font-display text-[3.8rem] uppercase leading-[0.88] text-white sm:text-[5.6rem] lg:text-[7.8rem]"
-                  >
-                    <span className="fire-gradient-text">Własne mięso.</span>
-                    <br />
-                    Autorski lawasz.
-                  </motion.h1>
-
-                  <motion.p
-                    initial={{ opacity: 0, y: 22 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.28, duration: 0.72, ease: easeOutExpo }}
-                    className="max-w-2xl text-base leading-8 text-white/74 sm:text-lg"
-                  >
-                    Rzemieślniczy kebab w Piekarach Śląskich. Świeże mięso i bezkompromisowy smak, po który warto podjechać.
-                  </motion.p>
                 </div>
 
                 <motion.div
