@@ -1,4 +1,4 @@
-﻿import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { useEffect, useState } from "react";
 import { cn } from "./utils/cn";
 
@@ -15,10 +15,42 @@ type MenuCategory = {
   items: MenuItem[];
 };
 
+type FeaturedItem = {
+  name: string;
+  detail: string;
+  price: string;
+  badge: string;
+};
+
+type HourRow = {
+  day: string;
+  hours: string;
+  note?: string;
+  highlight?: boolean;
+};
+
+type Sauce = {
+  emoji: string;
+  name: string;
+  description: string;
+  pairing: string;
+};
+
+type SocialItem = {
+  href: string;
+  label: string;
+};
+
+type UpdateItem = {
+  title: string;
+  date: string;
+  summary: string;
+};
+
 const easeOutExpo: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
 const revealItem = {
-  hidden: { opacity: 0, y: 28, filter: "blur(10px)" },
+  hidden: { opacity: 0, y: 24, filter: "blur(10px)" },
   visible: {
     opacity: 1,
     y: 0,
@@ -31,15 +63,60 @@ const staggerContainer = {
   hidden: {},
   visible: {
     transition: {
-      staggerChildren: 0.12,
+      staggerChildren: 0.1,
     },
   },
 };
 
-const menuCategories: MenuCategory[] = [
+const PHONE_DISPLAY = "+48 789 969 998";
+const PHONE_PLAIN = "+48789969998";
+const PHONE_URL = `tel:${PHONE_PLAIN}`;
+const MAPS_URL =
+  "https://www.google.com/maps/search/?api=1&query=Ksi%C4%99dza+J%C3%B3zefa+Krupy+11%2C+41-949+Piekary+%C5%9Al%C4%85skie";
+const ADDRESS_LABEL = "Księdza Józefa Krupy 11, 41-949 Piekary Śląskie";
+const INTRO_VIDEO_URL = "/video/intro.mp4";
+const HEADER_LOGO_MARK_URL = "/image/Projekt bez nazwy.png";
+const INTRO_PLAYED_KEY = "lawasz-intro-burn-played";
+const INTRO_ANIMATION_MS = 3200;
+
+const openingHours: HourRow[] = [
+  { day: "Poniedziałek", hours: "Zamknięte" },
+  { day: "Wtorek-Czwartek", hours: "12:00-20:00", highlight: true },
+  { day: "Piątek-Sobota", hours: "12:00-21:00", highlight: true },
+  { day: "Niedziela", hours: "12:00-21:00", note: "Weekendowe godziny warto potwierdzić w święta." },
+];
+
+const featuredMenuItems: FeaturedItem[] = [
   {
-    title: "LAWASZ L",
-    badge: "140g mięsa",
+    name: "LAWASZ XL Mix",
+    detail: "200 g mięsa, świeże warzywa, autorski lawasz i sos do wyboru.",
+    price: "38,00 zł",
+    badge: "Bestseller",
+  },
+  {
+    name: "LAWASZ L Karkówka",
+    detail: "Klasyczny rozmiar, wyraziste mięso i pełny balans dodatków.",
+    price: "30,00 zł",
+    badge: "Na start",
+  },
+  {
+    name: "LAWASZ Bowl Mix",
+    detail: "Porcja obiadowa z 200 g mięsa i świeżymi dodatkami.",
+    price: "36,00 zł",
+    badge: "Na głód",
+  },
+  {
+    name: "Lava Fries",
+    detail: "Frytki z cheddarem, czerwoną cebulą i przyprawami.",
+    price: "20,00 zł",
+    badge: "Do dokładki",
+  },
+];
+
+const fullMenuGroups: MenuCategory[] = [
+  {
+    title: "Lawasz L",
+    badge: "140 g mięsa",
     description: "Autorski lawasz, świeże warzywa i sosy. Klasyk w miejskim tempie.",
     items: [
       { name: "Kurczak", price: "28,00 zł" },
@@ -48,8 +125,8 @@ const menuCategories: MenuCategory[] = [
     ],
   },
   {
-    title: "LAWASZ XL",
-    badge: "200g mięsa",
+    title: "Lawasz XL",
+    badge: "200 g mięsa",
     description: "Więcej mięsa, więcej ognia, dalej bez kompromisów.",
     items: [
       { name: "Kurczak", price: "35,00 zł" },
@@ -58,9 +135,9 @@ const menuCategories: MenuCategory[] = [
     ],
   },
   {
-    title: "LAWASZ BOWL",
-    badge: "porcja obiadowa",
-    description: "200g mięsa, świeże warzywa i sosy. Konkret, kiedy chcesz usiąść z czymś większym.",
+    title: "Lawasz Bowl",
+    badge: "Porcja obiadowa",
+    description: "200 g mięsa, świeże warzywa i sosy. Konkret, kiedy chcesz czegoś większego.",
     items: [
       { name: "Kurczak", price: "34,00 zł" },
       { name: "Karkówka", price: "36,00 zł" },
@@ -68,36 +145,36 @@ const menuCategories: MenuCategory[] = [
     ],
   },
   {
-    title: "FRYTY",
-    badge: "wołowy tłuszcz",
-    description: "200g fryt smażonych na tłuszczu wołowym. Do wyboru ketchup albo mayo.",
+    title: "Fryty",
+    badge: "Wołowy tłuszcz",
+    description: "Frytki smażone na tłuszczu wołowym. Do wyboru ketchup albo mayo.",
     items: [
-      { name: "Klasyczne frytki", price: "14,00 zł" },
-      { name: "Frytki 150g", price: "6,00 zł", note: "mała porcja" },
+      { name: "Klasyczne frytki 200 g", price: "14,00 zł" },
+      { name: "Frytki 150 g", price: "6,00 zł", note: "Mała porcja" },
     ],
   },
   {
-    title: "LAVA FRIES",
-    badge: "doładowane",
-    description: "150g frytek, gorący sos cheddar, czerwona cebula i przyprawy. Street food z dopaleniem.",
+    title: "Lava Fries",
+    badge: "Doładowane",
+    description: "150 g frytek, gorący sos cheddar, czerwona cebula i przyprawy.",
     items: [{ name: "Frytki doładowane", price: "20,00 zł" }],
   },
   {
-    title: "NAPOJE",
-    badge: "na zimno",
+    title: "Napoje",
+    badge: "Na zimno",
     description: "Klasyka do lawasza i coś pod ostre sosy.",
     items: [
-      { name: "Fritz Napoje 330ml", price: "10,00 zł" },
-      { name: "Coca-Cola 330ml", price: "6,00 zł" },
-      { name: "Ayran 250ml", price: "6,00 zł" },
+      { name: "Fritz 330 ml", price: "10,00 zł" },
+      { name: "Coca-Cola 330 ml", price: "6,00 zł" },
+      { name: "Ayran 250 ml", price: "6,00 zł" },
     ],
   },
   {
-    title: "DODATKI",
-    badge: "personalizacja",
+    title: "Dodatki",
+    badge: "Personalizacja",
     description: "Dokręć zamówienie pod siebie albo dobierz opcję na wynos.",
     items: [
-      { name: "80g mięsa", price: "8,00 zł" },
+      { name: "80 g mięsa", price: "8,00 zł" },
       { name: "Ogórek kiszony", price: "2,00 zł" },
       { name: "Jalapeño", price: "2,00 zł" },
       { name: "Ser feta", price: "3,00 zł" },
@@ -107,61 +184,98 @@ const menuCategories: MenuCategory[] = [
   },
 ];
 
-const sauces = [
+const sauces: Sauce[] = [
   {
     emoji: "🍯",
     name: "Musztardowo-Miodowy",
-    description:
-      "Harmonia słodyczy miodu i wyrazistej musztardy — delikatny, ale z charakterem.",
-    pairing: "Top do kurczaka i klasycznego LAWASZA L.",
+    description: "Balans słodyczy miodu i wyrazistej musztardy. Delikatny, ale z charakterem.",
+    pairing: "Dobry do kurczaka i klasycznego lawasza.",
   },
   {
     emoji: "🌫️",
     name: "Wędzona Śliwka",
-    description:
-      "Lekko kwaśny, słodko-wędzony sos z głębokim aromatem dymu i nutą śliwki.",
-    pairing: "Idealny do karkówki i bowli.",
+    description: "Lekko kwaśny, słodko-wędzony sos z głębokim aromatem dymu i nutą śliwki.",
+    pairing: "Najlepiej siada z karkówką i bowlem.",
   },
   {
     emoji: "🌶️",
     name: "Chili Ananas",
-    description:
-      "Słodki sos z pieczonych warzyw i ananasa z subtelną, rozgrzewającą pikantnością chili.",
-    pairing: "Świetnie siada z mixem i Lava Fries.",
+    description: "Słodki sos z pieczonych warzyw i ananasa z subtelną, rozgrzewającą pikantnością.",
+    pairing: "Świetny do mixa i Lava Fries.",
   },
   {
     emoji: "🧄",
     name: "Czosnkowy",
-    description: "Klasyczny, intensywny, kremowy i uniwersalny. Pewniak dla większości ekipy.",
-    pairing: "Dobry starter, gdy wchodzisz w markę pierwszy raz.",
+    description: "Klasyczny, intensywny i kremowy. Pewniak, gdy wchodzisz w markę pierwszy raz.",
+    pairing: "Uniwersalny wybór do większości zamówień.",
   },
   {
     emoji: "🌋",
     name: "Piekielna Lawa",
-    description:
-      "Ekstremalnie ostry sos dla prawdziwych koneserów. Tutaj ostrość naprawdę wyprzedza smak.",
+    description: "Ekstremalnie ostry sos dla tych, którzy naprawdę lubią ogień.",
     pairing: "Bierz do XL, jeśli lubisz testować granice.",
   },
 ];
 
-const stats = [
-  { value: "100%", label: "Własna produkcja" },
-  { value: "0", label: "Kompromisów" },
-  { value: "24h", label: "Marynowania" },
+const trustPoints = [
+  {
+    title: "Własna produkcja mięsa",
+    copy: "Mięso przygotowywane na miejscu, zamiast kopiować hurtowe schematy.",
+  },
+  {
+    title: "Autorski lawasz",
+    copy: "Podajemy mięso w formie, która jest częścią marki, a nie tylko nośnikiem dodatków.",
+  },
+  {
+    title: "Lokalny punkt z ruchem",
+    copy: "Piekary Śląskie, aktywne sociale i szybki odbiór osobisty bez aplikacji pośredników.",
+  },
+];
+
+const pickupSteps = [
+  {
+    number: "01",
+    title: "Zadzwoń i złóż zamówienie",
+    copy: "Mówisz, na co masz ochotę i od razu ustalamy szczegóły odbioru.",
+  },
+  {
+    number: "02",
+    title: "Przygotowujemy wszystko na świeżo",
+    copy: "Mięso, lawasz, dodatki i sosy składamy tuż przed wydaniem.",
+  },
+  {
+    number: "03",
+    title: "Odbierasz na miejscu",
+    copy: "Podjeżdżasz pod lokal i bierzesz gotowe zamówienie bez zbędnego czekania.",
+  },
+];
+
+const meatFacts = [
+  "Mięso przygotowywane na miejscu, bez hurtowych gotowców.",
+  "Ręczne nakładanie warstw, żeby zachować soczystość i strukturę.",
+  "Autorska marynata z charakterem, która pracuje jeszcze przed ogniem.",
+  "Spójne podejście do mięsa, lawasza, dodatków i sosów.",
+];
+
+const socialLinks: SocialItem[] = [
+  { href: "https://www.facebook.com/LAWAszKebab", label: "Facebook · @LAWAszKebab" },
+  { href: "https://www.instagram.com/lawasz.kebab/", label: "Instagram · @lawasz.kebab" },
+  { href: "https://www.tiktok.com/@lawaszkebab", label: "TikTok · @lawaszkebab" },
 ];
 
 const navLinks = [
   { href: "#menu", label: "Menu" },
-  { href: "#historia", label: "Mięso" },
+  { href: "#odbior", label: "Odbiór" },
+  { href: "#mieso", label: "Mięso" },
   { href: "#sosy", label: "Sosy" },
-  { href: "#freeflow", label: "Voice" },
   { href: "#kontakt", label: "Kontakt" },
 ];
 
-const INTRO_VIDEO_URL = "/video/intro.mp4";
-const HEADER_LOGO_MARK_URL = "/image/Projekt bez nazwy.png";
-const INTRO_PLAYED_KEY = "lawasz-intro-burn-played";
-const INTRO_ANIMATION_MS = 3200;
+const contentStore = {
+  featuredMenu: featuredMenuItems,
+  menuGroups: fullMenuGroups,
+  updates: [] as UpdateItem[],
+};
 
 type NavigatorWithConnection = Navigator & {
   connection?: {
@@ -181,9 +295,10 @@ function hasPlayedIntroInSession() {
     return false;
   }
 }
+
 function Logo({ compact = false }: { compact?: boolean }) {
   return (
-    <div className={cn("flex items-center leading-none", compact ? "origin-left gap-3.5" : "gap-3") }>
+    <div className={cn("flex items-center leading-none", compact ? "origin-left gap-3" : "gap-3.5")}>
       {compact ? (
         <img
           src={HEADER_LOGO_MARK_URL}
@@ -195,10 +310,10 @@ function Logo({ compact = false }: { compact?: boolean }) {
         />
       ) : null}
       <div>
-        <div className="font-display text-3xl uppercase tracking-[0.26em] text-white sm:text-4xl">
+        <div className="font-display text-3xl uppercase tracking-[0.24em] text-white sm:text-4xl">
           LAWA<span className="text-[color:var(--fire)]">SZ</span>
         </div>
-        <div className="font-display -mt-1 text-xs uppercase tracking-[0.62em] text-white/70 sm:text-sm">
+        <div className="font-display -mt-1 text-xs uppercase tracking-[0.58em] text-white/68 sm:text-sm">
           KEBAB
         </div>
       </div>
@@ -220,14 +335,14 @@ function SectionHeading({
       variants={revealItem}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, amount: 0.35 }}
-      className="max-w-3xl space-y-5"
+      viewport={{ once: true, amount: 0.32 }}
+      className="max-w-3xl space-y-4"
     >
-      <div className="inline-flex items-center gap-2 rounded-full border border-[color:var(--fire)]/25 bg-[color:var(--fire)]/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.34em] text-[color:var(--ember)]">
+      <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/6 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.3em] text-[color:var(--ember)] backdrop-blur-sm">
         <span className="h-2 w-2 rounded-full bg-[color:var(--fire)] shadow-[0_0_20px_rgba(255,106,0,0.8)]" />
         {eyebrow}
       </div>
-      <div className="space-y-4">
+      <div className="space-y-3">
         <h2 className="font-display text-5xl uppercase leading-none text-white sm:text-6xl lg:text-7xl">
           {title}
         </h2>
@@ -237,35 +352,82 @@ function SectionHeading({
   );
 }
 
-function MenuCard({ category }: { category: MenuCategory }) {
+function HoursList({ compact = false }: { compact?: boolean }) {
+  return (
+    <div className={cn("space-y-3", compact ? "text-sm" : "text-base")}>
+      {openingHours.map((row) => (
+        <div
+          key={row.day}
+          className={cn(
+            "grid grid-cols-[minmax(0,1fr)_auto] gap-3 border-b border-white/8 pb-3 last:border-b-0 last:pb-0",
+            row.highlight ? "text-white" : "text-white/74",
+          )}
+        >
+          <div>
+            <div className="font-medium">{row.day}</div>
+            {row.note ? <div className="mt-1 text-xs leading-5 text-white/44">{row.note}</div> : null}
+          </div>
+          <div className="text-right font-semibold">{row.hours}</div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function FeaturedMenuCard({ item }: { item: FeaturedItem }) {
   return (
     <motion.article
       variants={revealItem}
-      className="group rounded-[2rem] border border-white/10 bg-white/[0.04] p-6 shadow-[0_24px_80px_rgba(0,0,0,0.24)] transition duration-300 hover:-translate-y-1 hover:border-[color:var(--fire)]/40 hover:bg-white/[0.06]"
+      className="rounded-[1.8rem] border border-white/10 bg-white/6 p-5 shadow-[0_20px_60px_rgba(0,0,0,0.22)] backdrop-blur-sm"
     >
-      <div className="mb-5 flex items-start justify-between gap-4">
+      <div className="flex items-start justify-between gap-4">
         <div className="space-y-2">
-          <h3 className="font-display text-3xl uppercase tracking-[0.12em] text-white">{category.title}</h3>
-          <p className="text-sm leading-7 text-white/65">{category.description}</p>
+          <div className="inline-flex rounded-full border border-white/10 bg-black/20 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.24em] text-[color:var(--gold)]">
+            {item.badge}
+          </div>
+          <h3 className="font-display text-3xl uppercase tracking-[0.08em] text-white">{item.name}</h3>
         </div>
-        <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.24em] text-[color:var(--gold)]">
-          {category.badge}
-        </span>
+        <div className="text-right font-display text-3xl text-[color:var(--fire)]">{item.price}</div>
       </div>
+      <p className="mt-4 text-sm leading-7 text-white/68">{item.detail}</p>
+    </motion.article>
+  );
+}
 
-      <div className="space-y-4">
+function MenuAccordion({ category }: { category: MenuCategory }) {
+  return (
+    <motion.details
+      variants={revealItem}
+      className="group overflow-hidden rounded-[1.6rem] border border-white/10 bg-white/[0.04] backdrop-blur-sm"
+    >
+      <summary className="flex min-h-11 cursor-pointer list-none items-start justify-between gap-4 px-5 py-4 marker:content-none">
+        <div className="space-y-2">
+          <div className="font-display text-2xl uppercase tracking-[0.1em] text-white">{category.title}</div>
+          <div className="inline-flex rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.24em] text-[color:var(--gold)]">
+            {category.badge}
+          </div>
+          <p className="text-sm leading-6 text-white/62">{category.description}</p>
+        </div>
+        <span
+          aria-hidden="true"
+          className="mt-1 inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white/72 transition group-open:rotate-45 group-open:text-white"
+        >
+          +
+        </span>
+      </summary>
+      <div className="space-y-4 border-t border-white/8 px-5 py-5">
         {category.items.map((item) => (
-          <div key={`${category.title}-${item.name}`} className="group/row space-y-1">
-            <div className="flex items-end gap-3 text-base text-white transition-colors group-hover/row:text-[color:var(--cream)]">
+          <div key={`${category.title}-${item.name}`} className="space-y-1">
+            <div className="flex items-end gap-3 text-white">
               <span className="shrink-0 font-medium">{item.name}</span>
-              <span className="mb-1 h-px flex-1 border-b border-dotted border-white/20 transition-colors group-hover/row:border-[color:var(--fire)]/60" />
+              <span className="mb-1 h-px flex-1 border-b border-dotted border-white/15" />
               <span className="shrink-0 font-semibold text-[color:var(--ember)]">{item.price}</span>
             </div>
             {item.note ? <p className="text-sm text-white/45">{item.note}</p> : null}
           </div>
         ))}
       </div>
-    </motion.article>
+    </motion.details>
   );
 }
 
@@ -280,20 +442,29 @@ function SpitIllustration() {
   ];
 
   return (
-    <div className="relative mx-auto flex aspect-[4/5] w-full max-w-md items-center justify-center overflow-hidden rounded-[2rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,106,0,0.12),rgba(255,106,0,0)_28%),radial-gradient(circle_at_center,rgba(255,149,0,0.14),transparent_45%),#121212] p-10 shadow-[0_30px_90px_rgba(0,0,0,0.45)]">
-      <div className="absolute inset-0 bg-[linear-gradient(120deg,transparent,rgba(255,255,255,0.05),transparent)] opacity-40" />
+    <div className="relative mx-auto flex aspect-[4/5] w-full max-w-md items-center justify-center overflow-hidden rounded-[2rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,106,0,0.1),rgba(255,106,0,0)_30%),radial-gradient(circle_at_center,rgba(255,149,0,0.12),transparent_46%),rgba(12,12,12,0.92)] p-10 shadow-[0_30px_90px_rgba(0,0,0,0.4)] backdrop-blur-sm">
+      <div className="absolute inset-0 bg-[linear-gradient(120deg,transparent,rgba(255,255,255,0.04),transparent)] opacity-40" />
       {Array.from({ length: 8 }).map((_, index) => (
         <motion.span
           key={index}
-          className="absolute rounded-full bg-[color:var(--gold)]/60 blur-md"
+          className="absolute rounded-full bg-[color:var(--gold)]/55 blur-md"
           style={{
             width: `${10 + (index % 3) * 6}px`,
             height: `${10 + (index % 3) * 6}px`,
             left: `${18 + index * 9}%`,
             bottom: `${8 + (index % 4) * 7}%`,
           }}
-          animate={{ y: [-6, -42 - (index % 2) * 18], opacity: [0, 0.9, 0], x: [0, (index % 2 === 0 ? -8 : 8)] }}
-          transition={{ duration: 2.8 + index * 0.15, ease: "easeOut", repeat: Number.POSITIVE_INFINITY, delay: index * 0.18 }}
+          animate={{
+            y: [-6, -42 - (index % 2) * 18],
+            opacity: [0, 0.9, 0],
+            x: [0, index % 2 === 0 ? -8 : 8],
+          }}
+          transition={{
+            duration: 2.8 + index * 0.15,
+            ease: "easeOut",
+            repeat: Number.POSITIVE_INFINITY,
+            delay: index * 0.18,
+          }}
         />
       ))}
       <motion.div
@@ -311,11 +482,7 @@ function SpitIllustration() {
           {slices.map((gradient, index) => (
             <div
               key={gradient}
-              className={cn(
-                "rounded-[45%] border border-white/10 shadow-[0_12px_30px_rgba(0,0,0,0.24)]",
-                "bg-gradient-to-r",
-                gradient,
-              )}
+              className={cn("rounded-[45%] border border-white/10 shadow-[0_12px_30px_rgba(0,0,0,0.24)]", "bg-gradient-to-r", gradient)}
               style={{
                 width: `${112 - Math.abs(2.5 - index) * 14}px`,
                 height: `${42 + (index % 2) * 8}px`,
@@ -332,18 +499,45 @@ function SpitIllustration() {
   );
 }
 
-function SocialLink({ href, label }: { href: string; label: string }) {
+function SocialLink({ href, label }: SocialItem) {
   return (
     <motion.a
       href={href}
       target="_blank"
       rel="noreferrer"
-      whileHover={{ y: -4 }}
-      className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-white/85 transition hover:border-[color:var(--fire)]/40 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
+      whileHover={{ y: -3 }}
+      className="inline-flex min-h-11 items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-white/84 transition hover:border-[color:var(--fire)]/40 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
     >
-      <span aria-hidden="true" className="text-[color:var(--ember)]">↗</span>
+      <span aria-hidden="true" className="text-[color:var(--ember)]">
+        ↗
+      </span>
       {label}
     </motion.a>
+  );
+}
+
+function StickyBottomBar() {
+  return (
+    <div className="fixed inset-x-0 bottom-0 z-50 border-t border-white/10 bg-[#090909]/92 px-4 py-3 backdrop-blur-xl md:hidden">
+      <div className="mx-auto grid max-w-md grid-cols-2 gap-3">
+        <a
+          href={PHONE_URL}
+          aria-label="Zadzwoń i zamów"
+          className="inline-flex min-h-12 items-center justify-center rounded-full bg-[color:var(--fire)] px-4 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-white shadow-[0_18px_40px_rgba(255,106,0,0.28)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
+        >
+          Zadzwoń
+        </a>
+        <a
+          href={MAPS_URL}
+          target="_blank"
+          rel="noreferrer"
+          aria-label="Otwórz trasę do lokalu"
+          className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/14 bg-white/8 px-4 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
+        >
+          Trasa
+        </a>
+      </div>
+    </div>
   );
 }
 
@@ -389,7 +583,7 @@ export default function App() {
       try {
         window.sessionStorage.setItem(INTRO_PLAYED_KEY, "1");
       } catch {
-        // no-op: brak dostępu do sessionStorage nie powinien zatrzymać UI
+        // Brak sessionStorage nie powinien blokować startu strony.
       }
     }, INTRO_ANIMATION_MS);
 
@@ -397,11 +591,12 @@ export default function App() {
   }, [introPlaying]);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 80);
+    const onScroll = () => setScrolled(window.scrollY > 48);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
   useEffect(() => {
     document.body.style.overflow = mobileMenuOpen || introPlaying ? "hidden" : "";
     return () => {
@@ -425,11 +620,11 @@ export default function App() {
   }, [mobileMenuOpen]);
 
   return (
-    <div className="relative overflow-x-hidden bg-[color:var(--dark)] text-[color:var(--cream)]">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,106,0,0.16),transparent_24%),radial-gradient(circle_at_80%_20%,rgba(255,61,0,0.12),transparent_18%),linear-gradient(180deg,#0a0a0a_0%,#111_46%,#0a0a0a_100%)]" />
+    <div className="relative overflow-x-hidden bg-[color:var(--dark)] pb-20 text-[color:var(--cream)] md:pb-0">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,106,0,0.14),transparent_22%),radial-gradient(circle_at_82%_16%,rgba(255,61,0,0.12),transparent_18%),linear-gradient(180deg,#090909_0%,#101010_46%,#090909_100%)]" />
       <a
         href="#main-content"
-        className="sr-only z-[60] rounded-full border border-[color:var(--fire)]/60 bg-[#0a0a0a] px-4 py-2 text-sm font-semibold text-white focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
+        className="sr-only z-[70] rounded-full border border-[color:var(--fire)]/60 bg-[#0a0a0a] px-4 py-2 text-sm font-semibold text-white focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
       >
         Przejdź do treści
       </a>
@@ -439,20 +634,30 @@ export default function App() {
           <header
             className={cn(
               "fixed inset-x-0 top-0 z-50 transition-all duration-300",
-              scrolled ? "bg-[#090909]/78 backdrop-blur-2xl border-b border-white/10" : "bg-transparent",
+              scrolled ? "border-b border-white/10 bg-[#090909]/78 backdrop-blur-2xl" : "bg-transparent",
             )}
           >
             <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-              <a href="#top" aria-label="LAWASZ KEBAB" className="transition-transform duration-300 hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]">
+              <a
+                href="#top"
+                aria-label="LAWASZ KEBAB"
+                className="transition-transform duration-300 hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
+              >
                 <Logo compact />
               </a>
-              <nav className="hidden items-center gap-7 text-sm font-medium text-white/70 md:flex">
+
+              <nav className="hidden items-center gap-7 text-sm font-medium text-white/72 md:flex">
                 {navLinks.map((link) => (
-                  <a key={link.href} href={link.href} className="transition hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]">
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    className="inline-flex min-h-11 items-center transition hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
+                  >
                     {link.label}
                   </a>
                 ))}
               </nav>
+
               <div className="flex items-center gap-3">
                 <button
                   type="button"
@@ -460,7 +665,7 @@ export default function App() {
                   aria-expanded={mobileMenuOpen}
                   aria-controls="mobile-menu"
                   onClick={() => setMobileMenuOpen((open) => !open)}
-                  className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/12 bg-white/5 text-white/85 transition hover:border-[color:var(--fire)]/45 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a] md:hidden"
+                  className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/12 bg-white/6 text-white/85 transition hover:border-[color:var(--fire)]/45 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a] md:hidden"
                 >
                   <span className="relative block h-3.5 w-5">
                     <span
@@ -485,20 +690,22 @@ export default function App() {
                 </button>
 
                 <a
-                  href="tel:+48789969998"
-                  className="inline-flex items-center rounded-full border border-[color:var(--fire)]/40 bg-[color:var(--fire)]/12 px-4 py-2 text-sm font-semibold text-white shadow-[0_0_30px_rgba(255,106,0,0.18)] transition hover:bg-[color:var(--fire)]/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
+                  href={PHONE_URL}
+                  aria-label="Zadzwoń i zamów"
+                  className="hidden min-h-11 items-center rounded-full border border-[color:var(--fire)]/40 bg-[color:var(--fire)]/12 px-4 py-2 text-sm font-semibold text-white shadow-[0_0_30px_rgba(255,106,0,0.18)] transition hover:bg-[color:var(--fire)]/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a] sm:inline-flex"
                 >
-                  Zadzwoń
+                  Zadzwoń i zamów
                 </a>
               </div>
             </div>
           </header>
+
           <motion.button
             type="button"
             aria-label="Zamknij menu mobilne"
             initial={false}
             animate={{ opacity: mobileMenuOpen ? 1 : 0, pointerEvents: mobileMenuOpen ? "auto" : "none" }}
-            className="fixed inset-0 z-40 bg-black/55 backdrop-blur-[2px] md:hidden"
+            className="fixed inset-0 z-40 bg-black/60 backdrop-blur-[2px] md:hidden"
             onClick={() => setMobileMenuOpen(false)}
           />
 
@@ -520,18 +727,34 @@ export default function App() {
                   key={`mobile-${link.href}`}
                   href={link.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className="rounded-xl px-4 py-3 text-sm font-semibold uppercase tracking-[0.22em] text-white/84 transition hover:bg-white/8 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
+                  className="inline-flex min-h-12 items-center rounded-xl px-4 py-3 text-sm font-semibold uppercase tracking-[0.22em] text-white/84 transition hover:bg-white/8 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
                 >
                   {link.label}
                 </a>
               ))}
+              <div className="mt-2 grid grid-cols-2 gap-3">
+                <a
+                  href={PHONE_URL}
+                  className="inline-flex min-h-12 items-center justify-center rounded-full bg-[color:var(--fire)] px-4 py-3 text-sm font-semibold uppercase tracking-[0.18em] text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
+                >
+                  Zadzwoń
+                </a>
+                <a
+                  href={MAPS_URL}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/14 bg-white/6 px-4 py-3 text-sm font-semibold uppercase tracking-[0.18em] text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
+                >
+                  Trasa
+                </a>
+              </div>
             </div>
           </motion.nav>
         </>
       ) : null}
 
       <main id="main-content" className="relative z-10">
-        <section id="top" className="relative isolate scroll-mt-28 min-h-screen">
+        <section id="top" className="relative isolate min-h-screen scroll-mt-28">
           <motion.div style={{ y: heroParallax }} className="absolute inset-0">
             {introVideoEnabled ? (
               <video
@@ -554,6 +777,7 @@ export default function App() {
                 <source src={INTRO_VIDEO_URL} type="video/mp4" />
               </video>
             ) : null}
+
             <div
               className={cn(
                 "absolute inset-0 transition-opacity duration-500",
@@ -561,16 +785,12 @@ export default function App() {
                 "bg-[radial-gradient(circle_at_20%_20%,rgba(255,118,26,0.34),transparent_50%),radial-gradient(circle_at_78%_12%,rgba(255,56,0,0.26),transparent_42%),linear-gradient(165deg,#0f0c0a_0%,#1b100d_38%,#080808_100%)]",
               )}
             />
-            <div className="absolute inset-0 bg-[linear-gradient(95deg,rgba(8,8,8,0.86)_16%,rgba(8,8,8,0.42)_52%,rgba(8,8,8,0.76)_100%)]" />
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom,rgba(255,106,0,0.26),transparent_44%),linear-gradient(180deg,rgba(7,7,7,0.28)_0%,rgba(7,7,7,0.78)_84%)]" />
+            <div className="absolute inset-0 bg-[linear-gradient(96deg,rgba(8,8,8,0.88)_14%,rgba(8,8,8,0.5)_50%,rgba(8,8,8,0.82)_100%)]" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom,rgba(255,106,0,0.24),transparent_44%),linear-gradient(180deg,rgba(7,7,7,0.2)_0%,rgba(7,7,7,0.82)_86%)]" />
           </motion.div>
 
           {introPlaying ? (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="absolute inset-0 z-30 flex items-center justify-center px-6"
-            >
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="absolute inset-0 z-30 flex items-center justify-center px-6">
               <div className="relative flex items-center justify-center">
                 <motion.div
                   className="absolute -inset-20 rounded-full bg-[radial-gradient(circle,rgba(255,130,36,0.45),rgba(255,61,0,0.06)_55%,transparent_72%)] blur-3xl"
@@ -599,148 +819,286 @@ export default function App() {
           ) : null}
 
           {introDone ? (
-            <>
+            <div className="relative z-10 mx-auto grid min-h-screen w-full max-w-7xl items-end gap-10 px-4 pb-18 pt-28 sm:px-6 lg:grid-cols-[minmax(0,1fr)_22rem] lg:px-8">
               <motion.div
                 initial={{ opacity: 0, y: 26 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.62, ease: easeOutExpo }}
-                className="relative z-10 mx-auto grid min-h-screen w-full max-w-7xl gap-12 px-4 pb-16 pt-28 sm:px-6 lg:grid-cols-[minmax(0,1fr)_340px] lg:items-end lg:px-8"
+                className="max-w-4xl space-y-8"
               >
-                <div className="max-w-4xl space-y-8 rounded-[2.2rem] border border-white/10 bg-black/25 p-6 backdrop-blur-sm sm:p-10 lg:bg-transparent lg:p-0 lg:backdrop-blur-0">
-                  <motion.div
-                    initial={{ opacity: 0, y: 24 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.45, duration: 0.6, ease: easeOutExpo }}
-                    className="inline-flex w-fit items-center gap-3 rounded-full border border-white/12 bg-white/6 px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-white/80 backdrop-blur"
-                  >
-                    <span className="h-2.5 w-2.5 rounded-full bg-[color:var(--fire)] shadow-[0_0_18px_rgba(255,106,0,0.9)]" />
-                    Piekary Śląskie — Street Food Nowej Generacji
-                  </motion.div>
-
-                  <div className="space-y-6">
-                    <motion.h1
-                      initial={{ opacity: 0, scale: 0.92, filter: "blur(10px)" }}
-                      animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-                      transition={{ delay: 0.8, duration: 1, ease: easeOutExpo }}
-                      className="font-display text-7xl uppercase leading-[0.88] text-white sm:text-[7rem] lg:text-[9rem]"
-                    >
-                      <span className="fire-gradient-text">ŚWIADOMY</span>
-                      <br />
-                      STREET FOOD
-                    </motion.h1>
-
-                    <motion.p
-                      initial={{ opacity: 0, y: 24 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 1.2, duration: 0.72, ease: easeOutExpo }}
-                      className="font-tagline text-2xl text-[color:var(--cream)]/90 sm:text-3xl"
-                    >
-                      Rzemieślnicze mięso. Autorski lawasz. Zero kompromisów.
-                    </motion.p>
-
-                    <motion.p
-                      initial={{ opacity: 0, y: 24 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 1.45, duration: 0.72, ease: easeOutExpo }}
-                      className="max-w-2xl text-base leading-8 text-white/72 sm:text-lg"
-                    >
-                      LAWASZ KEBAB to ciemny, ognisty i bezczelnie konkretny street food z Piekar Śląskich.
-                      Mięso robione na miejscu, autorski lawasz, świeże dodatki i karta, która nie udaje niczego,
-                      czym nie jest.
-                    </motion.p>
-                  </div>
-
-                  <motion.div
-                    initial={{ opacity: 0, y: 24 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 1.8, duration: 0.72, ease: easeOutExpo }}
-                    className="flex flex-col gap-4 sm:flex-row"
-                  >
-                    <a
-                      href="#menu"
-                      className="inline-flex items-center justify-center rounded-full bg-[color:var(--fire)] px-7 py-4 text-sm font-semibold uppercase tracking-[0.26em] text-white shadow-[0_16px_40px_rgba(255,106,0,0.35)] transition hover:translate-y-[-2px] hover:bg-[color:var(--lava)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
-                    >
-                      Zobacz Menu
-                    </a>
-                    <a
-                      href="#historia"
-                      className="inline-flex items-center justify-center rounded-full border border-white/14 bg-white/5 px-7 py-4 text-sm font-semibold uppercase tracking-[0.26em] text-white/88 transition hover:border-white/25 hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
-                    >
-                      Nasza Historia
-                    </a>
-                  </motion.div>
+                <div className="inline-flex w-fit items-center gap-3 rounded-full border border-white/12 bg-white/6 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.3em] text-white/80 backdrop-blur-sm">
+                  <span className="h-2.5 w-2.5 rounded-full bg-[color:var(--fire)] shadow-[0_0_18px_rgba(255,106,0,0.9)]" />
+                  Piekary Śląskie · odbiór osobisty
                 </div>
 
-                <motion.aside
-                  initial={{ opacity: 0, y: 30 }}
+                <div className="space-y-5">
+                  <motion.h1
+                    initial={{ opacity: 0, scale: 0.94, filter: "blur(10px)" }}
+                    animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+                    transition={{ delay: 0.12, duration: 0.88, ease: easeOutExpo }}
+                    className="font-display text-[3.8rem] uppercase leading-[0.88] text-white sm:text-[5.6rem] lg:text-[7.8rem]"
+                  >
+                    <span className="fire-gradient-text">Własne mięso.</span>
+                    <br />
+                    Autorski lawasz.
+                  </motion.h1>
+
+                  <motion.p
+                    initial={{ opacity: 0, y: 22 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.28, duration: 0.72, ease: easeOutExpo }}
+                    className="max-w-2xl text-base leading-8 text-white/74 sm:text-lg"
+                  >
+                    Rzemieślniczy kebab w Piekarach Śląskich. Zadzwoń, złóż zamówienie i odbierz na miejscu bez aplikacji pośredników.
+                  </motion.p>
+                </div>
+
+                <motion.div
+                  initial={{ opacity: 0, y: 22 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 1.55, duration: 0.72, ease: easeOutExpo }}
-                  className="hidden rounded-[2rem] border border-white/10 bg-black/35 p-6 backdrop-blur-md lg:block"
+                  transition={{ delay: 0.44, duration: 0.72, ease: easeOutExpo }}
+                  className="flex flex-col gap-4 sm:flex-row"
                 >
-                  <div className="space-y-5">
-                    <Logo />
-                    <div className="space-y-3 text-sm leading-7 text-white/72">
-                      <p>
-                        <span className="font-semibold text-white">Slogan:</span> Świadomy street food. Zero kompromisów.
-                      </p>
-                      <p>
-                        <span className="font-semibold text-white">Signature:</span> Mięso naszej produkcji zawinięte w autorski LAWASZ.
-                      </p>
+                  <a
+                    href={PHONE_URL}
+                    aria-label="Zadzwoń i zamów"
+                    className="inline-flex min-h-12 items-center justify-center rounded-full bg-[color:var(--fire)] px-7 py-4 text-sm font-semibold uppercase tracking-[0.24em] text-white shadow-[0_16px_40px_rgba(255,106,0,0.34)] transition hover:translate-y-[-2px] hover:bg-[color:var(--lava)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
+                  >
+                    Zadzwoń i zamów
+                  </a>
+                  <a
+                    href={MAPS_URL}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label="Otwórz trasę do lokalu"
+                    className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/14 bg-white/6 px-7 py-4 text-sm font-semibold uppercase tracking-[0.24em] text-white/88 backdrop-blur-sm transition hover:border-white/24 hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
+                  >
+                    Jak dojechać
+                  </a>
+                </motion.div>
+
+                <motion.div
+                  initial={{ opacity: 0, y: 22 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.56, duration: 0.72, ease: easeOutExpo }}
+                  className="grid gap-3 sm:grid-cols-3"
+                >
+                  {trustPoints.map((point) => (
+                    <div key={point.title} className="rounded-[1.5rem] border border-white/10 bg-black/24 p-4 backdrop-blur-sm">
+                      <div className="text-sm font-semibold uppercase tracking-[0.16em] text-white">{point.title}</div>
+                      <p className="mt-2 text-sm leading-6 text-white/62">{point.copy}</p>
                     </div>
-                    <div className="grid grid-cols-2 gap-3 text-sm">
-                      <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-                        <div className="text-white/45">Adres</div>
-                        <div className="mt-2 font-medium text-white">ul. Księdza Józefa Krupy 11</div>
-                      </div>
-                      <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-                        <div className="text-white/45">Telefon</div>
-                        <div className="mt-2 font-medium text-white">+48 789 969 998</div>
-                      </div>
+                  ))}
+                </motion.div>
+              </motion.div>
+
+              <motion.aside
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.66, duration: 0.72, ease: easeOutExpo }}
+                className="rounded-[2rem] border border-white/10 bg-black/28 p-5 shadow-[0_24px_70px_rgba(0,0,0,0.3)] backdrop-blur-xl"
+              >
+                <div className="space-y-5">
+                  <div className="space-y-2">
+                    <div className="text-[11px] font-semibold uppercase tracking-[0.3em] text-[color:var(--ember)]">
+                      Kontakt i godziny
+                    </div>
+                    <h2 className="font-display text-3xl uppercase tracking-[0.12em] text-white">Wpadasz po odbiór</h2>
+                  </div>
+
+                  <div className="space-y-4">
+                    <div className="rounded-[1.4rem] border border-white/10 bg-white/6 p-4">
+                      <div className="text-xs uppercase tracking-[0.22em] text-white/45">Adres</div>
+                      <address className="mt-2 not-italic text-sm leading-7 text-white/84">{ADDRESS_LABEL}</address>
+                    </div>
+                    <div className="rounded-[1.4rem] border border-white/10 bg-white/6 p-4">
+                      <div className="text-xs uppercase tracking-[0.22em] text-white/45">Telefon</div>
+                      <a
+                        href={PHONE_URL}
+                        className="mt-2 inline-flex min-h-11 items-center text-sm font-semibold text-white transition hover:text-[color:var(--gold)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
+                      >
+                        {PHONE_DISPLAY}
+                      </a>
+                    </div>
+                    <div className="rounded-[1.4rem] border border-white/10 bg-white/6 p-4">
+                      <div className="mb-3 text-xs uppercase tracking-[0.22em] text-white/45">Godziny</div>
+                      <HoursList compact />
                     </div>
                   </div>
-                </motion.aside>
-              </motion.div>
+                </div>
+              </motion.aside>
 
               <motion.a
                 href="#menu"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 2.2, duration: 0.8 }}
-                className="absolute bottom-6 left-1/2 z-20 flex -translate-x-1/2 flex-col items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.32em] text-white/55 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
+                transition={{ delay: 0.96, duration: 0.8 }}
+                className="absolute bottom-6 left-1/2 z-20 hidden -translate-x-1/2 flex-col items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.32em] text-white/55 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a] lg:flex"
               >
                 Scroll
                 <span className="flex h-12 w-7 items-start justify-center rounded-full border border-white/16 p-1.5">
                   <span className="h-2.5 w-2.5 animate-bounce rounded-full bg-[color:var(--fire)]" />
                 </span>
               </motion.a>
-            </>
+            </div>
           ) : null}
         </section>
 
-        <section id="menu" className="scroll-mt-28 px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
-          <div className="mx-auto max-w-7xl space-y-14">
+        <section id="odbior" className="scroll-mt-28 px-4 py-20 sm:px-6 lg:px-8 lg:py-24">
+          <div className="mx-auto max-w-7xl">
+            <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
+              <SectionHeading
+                eyebrow="Odbiór osobisty"
+                title="Zamów z odbiorem osobistym"
+                subtitle="Najprostsza droga do LAWASZA: telefon, szybkie potwierdzenie i odbiór na miejscu bez zbędnych pośredników."
+              />
+
+              <motion.div
+                variants={staggerContainer}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.18 }}
+                className="grid gap-4 md:grid-cols-3"
+              >
+                {pickupSteps.map((step) => (
+                  <motion.article
+                    key={step.number}
+                    variants={revealItem}
+                    className="rounded-[1.7rem] border border-white/10 bg-white/6 p-5 shadow-[0_18px_50px_rgba(0,0,0,0.2)] backdrop-blur-sm"
+                  >
+                    <div className="font-display text-3xl text-[color:var(--fire)]">{step.number}</div>
+                    <h3 className="mt-3 text-lg font-semibold text-white">{step.title}</h3>
+                    <p className="mt-3 text-sm leading-7 text-white/66">{step.copy}</p>
+                  </motion.article>
+                ))}
+              </motion.div>
+            </div>
+          </div>
+        </section>
+
+        <section id="menu" className="scroll-mt-28 px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
+          <div className="mx-auto max-w-7xl space-y-12">
             <SectionHeading
               eyebrow="Menu"
-              title="OGIEŃ NA KARCIE"
-              subtitle="Pełne menu LAWASZ KEBAB w ciemnej, surowej oprawie. Czytelnie, szybko i dokładnie tak, jak powinno wyglądać dobre streetfoodowe menu online."
+              title="Najczęściej zamawiane"
+              subtitle="Najmocniejsze pozycje na szybki wybór z telefonu. Pełne menu zostawiamy niżej, żeby mobile był prostszy i czytelniejszy."
             />
 
             <motion.div
               variants={staggerContainer}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true, amount: 0.15 }}
-              className="grid gap-6 lg:grid-cols-2 xl:grid-cols-3"
+              viewport={{ once: true, amount: 0.16 }}
+              className="grid gap-5 md:grid-cols-2 xl:grid-cols-4"
             >
-              {menuCategories.map((category) => (
-                <MenuCard key={category.title} category={category} />
+              {contentStore.featuredMenu.map((item) => (
+                <FeaturedMenuCard key={item.name} item={item} />
               ))}
             </motion.div>
+
+            <div className="flex flex-col gap-4 sm:flex-row">
+              <a
+                href={PHONE_URL}
+                className="inline-flex min-h-12 items-center justify-center rounded-full bg-[color:var(--fire)] px-7 py-4 text-sm font-semibold uppercase tracking-[0.22em] text-white shadow-[0_16px_40px_rgba(255,106,0,0.28)] transition hover:bg-[color:var(--lava)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
+              >
+                Zadzwoń i zamów
+              </a>
+              <a
+                href="#pelne-menu"
+                className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/14 bg-white/6 px-7 py-4 text-sm font-semibold uppercase tracking-[0.22em] text-white/86 backdrop-blur-sm transition hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
+              >
+                Pełne menu
+              </a>
+            </div>
+
+            <div id="pelne-menu" className="space-y-5">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+                <div>
+                  <h3 className="font-display text-4xl uppercase tracking-[0.1em] text-white sm:text-5xl">Pełne menu</h3>
+                  <p className="mt-2 max-w-2xl text-sm leading-7 text-white/64">
+                    Struktura jest już gotowa pod przyszłe zarządzanie menu przez właściciela, ale na razie pokazujemy prototyp publicznej wersji.
+                  </p>
+                </div>
+                <div className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.24em] text-[color:var(--ember)]">
+                  Mobile-first accordions
+                </div>
+              </div>
+
+              <motion.div
+                variants={staggerContainer}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.12 }}
+                className="grid gap-4 lg:grid-cols-2"
+              >
+                {contentStore.menuGroups.map((category) => (
+                  <MenuAccordion key={category.title} category={category} />
+                ))}
+              </motion.div>
+            </div>
           </div>
         </section>
 
-        <section id="historia" className="scroll-mt-28 px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
-          <div className="mx-auto grid max-w-7xl gap-14 lg:grid-cols-[0.92fr_1.08fr] lg:items-center">
+        <section className="px-4 py-20 sm:px-6 lg:px-8 lg:py-24">
+          <div className="mx-auto max-w-7xl space-y-12">
+            <SectionHeading
+              eyebrow="Dlaczego LAWASZ"
+              title="Lokalny punkt, konkretny produkt"
+              subtitle="Ta strona ma od razu budować zaufanie: wiadomo, gdzie jesteśmy, jak działamy i dlaczego smak jest nasz, a nie skopiowany."
+            />
+
+            <div className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr]">
+              <motion.div
+                variants={staggerContainer}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.15 }}
+                className="grid gap-4 md:grid-cols-3"
+              >
+                {trustPoints.map((point) => (
+                  <motion.article
+                    key={point.title}
+                    variants={revealItem}
+                    className="rounded-[1.7rem] border border-white/10 bg-white/6 p-5 shadow-[0_20px_60px_rgba(0,0,0,0.18)] backdrop-blur-sm"
+                  >
+                    <h3 className="text-lg font-semibold text-white">{point.title}</h3>
+                    <p className="mt-3 text-sm leading-7 text-white/66">{point.copy}</p>
+                  </motion.article>
+                ))}
+              </motion.div>
+
+              <motion.aside
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.72, ease: easeOutExpo }}
+                className="rounded-[1.9rem] border border-white/10 bg-white/6 p-6 shadow-[0_20px_60px_rgba(0,0,0,0.2)] backdrop-blur-sm"
+              >
+                <div className="space-y-5">
+                  <div>
+                    <div className="text-[11px] font-semibold uppercase tracking-[0.3em] text-[color:var(--ember)]">Social proof</div>
+                    <h3 className="mt-3 font-display text-4xl uppercase tracking-[0.1em] text-white">Lokal, który żyje offline i online</h3>
+                  </div>
+                  <div className="rounded-[1.4rem] border border-white/10 bg-black/18 p-4">
+                    <div className="text-xs uppercase tracking-[0.2em] text-white/45">Adres</div>
+                    <p className="mt-2 text-sm leading-7 text-white/82">{ADDRESS_LABEL}</p>
+                  </div>
+                  <div className="rounded-[1.4rem] border border-white/10 bg-black/18 p-4">
+                    <div className="text-xs uppercase tracking-[0.2em] text-white/45">Social media</div>
+                    <div className="mt-3 flex flex-wrap gap-3">
+                      {socialLinks.map((item) => (
+                        <SocialLink key={item.href} href={item.href} label={item.label} />
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </motion.aside>
+            </div>
+          </div>
+        </section>
+
+        <section id="mieso" className="scroll-mt-28 px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
+          <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[0.92fr_1.08fr] lg:items-center">
             <motion.div
               initial={{ opacity: 0, x: -40, filter: "blur(12px)" }}
               whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
@@ -758,46 +1116,24 @@ export default function App() {
               className="space-y-8"
             >
               <div className="space-y-5">
-                <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-[color:var(--ember)]">
-                  Mięso naszej produkcji
+                <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.3em] text-[color:var(--ember)] backdrop-blur-sm">
+                  Jak robimy mięso
                 </div>
                 <h2 className="font-display text-5xl uppercase leading-none text-white sm:text-6xl lg:text-7xl">
-                  ROBIMY TO
+                  Robimy to
                   <br />
-                  PO SWOJEMU
+                  po swojemu
                 </h2>
                 <p className="max-w-2xl text-base leading-8 text-white/72 sm:text-lg">
-                  Bez hurtowej taśmy. Bez gotowców. LAWASZ KEBAB opiera smak na mięsie własnej produkcji,
-                  ręcznym nakładaniu na rożen i autorskiej marynacie, która robi robotę jeszcze zanim ogień zrobi resztę.
+                  Bez hurtowej taśmy i bez gotowych schematów. LAWASZ buduje smak na mięsie własnej produkcji, ręcznym nakładaniu na rożen i marynacie, która ma zrobić robotę jeszcze zanim ogień zrobi resztę.
                 </p>
               </div>
 
-              <div className="grid gap-4 sm:grid-cols-3">
-                {stats.map((stat, index) => (
-                  <motion.div
-                    key={stat.label}
-                    initial={{ opacity: 0, y: 24 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, amount: 0.4 }}
-                    transition={{ delay: 0.12 * index, duration: 0.65, ease: easeOutExpo }}
-                    className="rounded-[1.7rem] border border-white/10 bg-white/5 p-5"
-                  >
-                    <div className="font-display text-4xl uppercase text-[color:var(--fire)]">{stat.value}</div>
-                    <div className="mt-2 text-sm uppercase tracking-[0.22em] text-white/58">{stat.label}</div>
-                  </motion.div>
-                ))}
-              </div>
-
               <div className="grid gap-4 sm:grid-cols-2">
-                {[
-                  "Mięso przygotowywane na miejscu, zamiast kopiować hurtowe schematy.",
-                  "Ręczne nakładanie warstw, żeby zachować strukturę i soczystość.",
-                  "Autorska marynata z charakterem, nie z katalogu producenta.",
-                  "Lawasz, świeże warzywa i sosy spięte w jedną, konsekwentną markę.",
-                ].map((line) => (
-                  <div key={line} className="flex gap-3 rounded-[1.5rem] border border-white/10 bg-[#141414] p-4 text-sm leading-7 text-white/72">
+                {meatFacts.map((fact) => (
+                  <div key={fact} className="flex gap-3 rounded-[1.5rem] border border-white/10 bg-white/6 p-4 text-sm leading-7 text-white/72 backdrop-blur-sm">
                     <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-[color:var(--fire)] shadow-[0_0_15px_rgba(255,106,0,0.85)]" />
-                    <span>{line}</span>
+                    <span>{fact}</span>
                   </div>
                 ))}
               </div>
@@ -805,26 +1141,26 @@ export default function App() {
           </div>
         </section>
 
-        <section id="sosy" className="scroll-mt-28 px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
-          <div className="mx-auto max-w-7xl space-y-14">
+        <section id="sosy" className="scroll-mt-28 px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
+          <div className="mx-auto max-w-7xl space-y-12">
             <SectionHeading
               eyebrow="Sosy"
-              title="DOBIERZ SWÓJ Ogień"
-              subtitle="Karta sosów nie jest dodatkiem do obowiązku. To część charakteru marki — od słodkiego balansu po totalną, piekielną przesadę."
+              title="Dobierz swój ogień"
+              subtitle="Sosy dalej budują charakter marki, ale układ jest teraz spokojniejszy, bardziej czytelny i gotowy na szybkie skanowanie z telefonu."
             />
 
             <motion.div
               variants={staggerContainer}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true, amount: 0.18 }}
-              className="grid gap-6 md:grid-cols-2 xl:grid-cols-5"
+              viewport={{ once: true, amount: 0.14 }}
+              className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3"
             >
               {sauces.map((sauce) => (
                 <motion.article
                   key={sauce.name}
                   variants={revealItem}
-                  className="group relative overflow-hidden rounded-[1.8rem] border border-white/10 bg-white/[0.04] p-6 transition duration-300 hover:-translate-y-1 hover:border-[color:var(--fire)]/40 hover:bg-white/[0.06]"
+                  className="group relative overflow-hidden rounded-[1.7rem] border border-white/10 bg-white/6 p-5 shadow-[0_18px_50px_rgba(0,0,0,0.18)] backdrop-blur-sm transition duration-300 hover:-translate-y-1 hover:border-[color:var(--fire)]/35"
                 >
                   <div className="absolute inset-x-0 top-0 h-1 origin-left scale-x-0 bg-[linear-gradient(90deg,var(--fire),var(--gold))] transition duration-300 group-hover:scale-x-100" />
                   <div className="space-y-4">
@@ -833,7 +1169,7 @@ export default function App() {
                       <h3 className="text-lg font-semibold text-white">{sauce.name}</h3>
                       <p className="mt-3 text-sm leading-7 text-white/68">{sauce.description}</p>
                     </div>
-                    <p className="rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-sm leading-6 text-[color:var(--ember)]">
+                    <p className="rounded-[1.2rem] border border-white/10 bg-black/20 px-4 py-3 text-sm leading-6 text-[color:var(--ember)]">
                       {sauce.pairing}
                     </p>
                   </div>
@@ -842,75 +1178,23 @@ export default function App() {
             </motion.div>
           </div>
         </section>
-
-        <section id="freeflow" className="scroll-mt-28 px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
-          <div className="mx-auto max-w-7xl">
-            <motion.div
-              initial={{ opacity: 0, y: 28, filter: "blur(10px)" }}
-              whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              viewport={{ once: true, amount: 0.35 }}
-              transition={{ duration: 0.75, ease: easeOutExpo }}
-              className="overflow-hidden rounded-[2.2rem] border border-[color:var(--fire)]/25 bg-[linear-gradient(135deg,rgba(255,106,0,0.16),rgba(255,61,0,0.08)_32%,rgba(20,20,20,0.96)_72%)] p-8 shadow-[0_30px_100px_rgba(255,106,0,0.14)] sm:p-10 lg:p-12"
-            >
-              <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
-                <div className="space-y-6">
-                  <div className="inline-flex items-center gap-2 rounded-full border border-white/14 bg-black/20 px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-[color:var(--gold)]">
-                    FreeFlow Voice to Order
-                  </div>
-                  <div className="space-y-4">
-                    <h2 className="font-display text-5xl uppercase leading-none text-white sm:text-6xl">
-                      Ten prototyp jest gotowy na voice commerce.
-                    </h2>
-                    <p className="max-w-2xl text-base leading-8 text-white/76 sm:text-lg">
-                      To nie musi być tylko wizytówka. LAWASZ KEBAB może dostać wersję rozwojową z FreeFlow Voice to Order —
-                      zamawianiem głosowym, szybszym kontaktem z klientem i nowym formatem obsługi poza social mediami.
-                    </p>
-                  </div>
-                  <div className="grid gap-4 sm:grid-cols-3">
-                    {[
-                      "Zamówienia głosowe bez tarcia",
-                      "Lepsza konwersja z ruchu mobilnego",
-                      "Silniejsza pozycja marki poza socialami",
-                    ].map((item) => (
-                      <div key={item} className="rounded-[1.4rem] border border-white/10 bg-black/20 p-4 text-sm leading-7 text-white/72">
-                        {item}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
-                  {[
-                    ["01", "Landing, który sprzedaje", "Menu, storytelling, SEO i jasne CTA zamiast samego feedu social media."],
-                    ["02", "Warstwa operacyjna", "Po podpięciu FreeFlow strona może przejąć realne zamówienia i pytania głosowe."],
-                    ["03", "Skalowanie marki", "Jeden spójny brand experience od pierwszego kliknięcia po finalne zamówienie."],
-                  ].map(([number, title, copy]) => (
-                    <div key={number} className="rounded-[1.6rem] border border-white/10 bg-black/25 p-5">
-                      <div className="font-display text-3xl text-[color:var(--fire)]">{number}</div>
-                      <div className="mt-2 text-lg font-semibold text-white">{title}</div>
-                      <p className="mt-2 text-sm leading-7 text-white/68">{copy}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </section>
       </main>
 
       <footer id="kontakt" className="relative z-10 border-t border-white/10 px-4 py-16 sm:px-6 lg:px-8">
-        <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[0.95fr_1.05fr]">
+        <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.9fr_1.1fr]">
           <div className="space-y-6">
             <Logo />
             <p className="max-w-xl text-base leading-8 text-white/72 sm:text-lg">
-              Świadomy street food. Zero kompromisów. Prototyp strony pokazujący, jak LAWASZ KEBAB może wyglądać online —
-              nowocześnie, wyraziście i gotowo do rozwoju.
+              LAWASZ KEBAB to lokalny kebab z własnym mięsem, autorskim lawaszem i prostym odbiorem osobistym. Dzwonisz, zamawiasz i wpadasz po gotowe.
             </p>
             <div className="space-y-3 text-white/78">
-              <p>ul. Księdza Józefa Krupy 11, Piekary Śląskie</p>
+              <address className="not-italic">{ADDRESS_LABEL}</address>
               <p>
-                <a href="tel:+48789969998" className="transition hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]">
-                  +48 789 969 998
+                <a
+                  href={PHONE_URL}
+                  className="transition hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
+                >
+                  {PHONE_DISPLAY}
                 </a>
               </p>
             </div>
@@ -918,49 +1202,56 @@ export default function App() {
 
           <div className="grid gap-8 sm:grid-cols-2">
             <div className="space-y-4">
-              <h3 className="font-display text-2xl uppercase tracking-[0.16em] text-white">Social</h3>
-              <div className="flex flex-wrap gap-3">
-                <SocialLink href="https://www.facebook.com/LAWAszKebab" label="Facebook · @LAWAszKebab" />
-                <SocialLink href="https://www.instagram.com/lawasz.kebab/" label="Instagram · @lawasz.kebab" />
-                <SocialLink href="https://www.tiktok.com/@lawaszkebab" label="TikTok · @lawaszkebab" />
+              <h3 className="font-display text-2xl uppercase tracking-[0.16em] text-white">Godziny</h3>
+              <div className="rounded-[1.8rem] border border-white/10 bg-white/[0.04] p-5 backdrop-blur-sm">
+                <HoursList compact />
               </div>
             </div>
 
             <div className="space-y-4">
               <h3 className="font-display text-2xl uppercase tracking-[0.16em] text-white">Kontakt i dojazd</h3>
-              <div className="space-y-3 rounded-[1.8rem] border border-white/10 bg-white/[0.04] p-5 text-sm leading-7 text-white/72">
-                <p>Najprościej: kliknij, zadzwoń albo odpal mapę i wpadaj po lawasza.</p>
-                <a
-                  href="https://www.google.com/maps/search/?api=1&query=Ksi%C4%99dza+J%C3%B3zefa+Krupy+11%2C+Piekary+%C5%9Al%C4%85skie"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-2 font-semibold text-[color:var(--ember)] transition hover:text-[color:var(--gold)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
-                >
-                  Otwórz w Google Maps <span aria-hidden="true">↗</span>
-                </a>
+              <div className="space-y-4 rounded-[1.8rem] border border-white/10 bg-white/[0.04] p-5 text-sm leading-7 text-white/72 backdrop-blur-sm">
+                <p>Zamawiasz telefonicznie, odbierasz na miejscu i masz trasę pod ręką od razu po wejściu na stronę.</p>
+                <div className="flex flex-col gap-3">
+                  <a
+                    href={PHONE_URL}
+                    className="inline-flex min-h-11 items-center justify-center rounded-full bg-[color:var(--fire)] px-4 py-3 text-sm font-semibold uppercase tracking-[0.18em] text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
+                  >
+                    Zadzwoń i zamów
+                  </a>
+                  <a
+                    href={MAPS_URL}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex min-h-11 items-center justify-center rounded-full border border-white/14 bg-white/6 px-4 py-3 text-sm font-semibold uppercase tracking-[0.18em] text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
+                  >
+                    Otwórz trasę
+                  </a>
+                </div>
               </div>
             </div>
           </div>
         </div>
+
+        <div className="mx-auto mt-10 flex max-w-7xl flex-col gap-4 border-t border-white/8 pt-6 text-sm text-white/45 sm:flex-row sm:items-center sm:justify-between">
+          <div>LAWASZ KEBAB · Piekary Śląskie</div>
+          <div className="flex flex-wrap gap-3">
+            {socialLinks.map((item) => (
+              <a
+                key={item.href}
+                href={item.href}
+                target="_blank"
+                rel="noreferrer"
+                className="transition hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
+              >
+                {item.label}
+              </a>
+            ))}
+          </div>
+        </div>
       </footer>
+
+      {introDone ? <StickyBottomBar /> : null}
     </div>
   );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
