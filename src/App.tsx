@@ -802,31 +802,64 @@ export default function App() {
         <section id="top" className="relative isolate min-h-screen scroll-mt-28">
           <motion.div style={{ y: heroParallax }} className="absolute inset-0">
             {introVideoEnabled && (!isMobileViewport || showMobileHeroVideo) ? (
-              <div className="absolute inset-x-0 top-[5.25rem] h-[56svh] overflow-hidden sm:inset-0 sm:h-full">
-                <video
-                  className={cn(
-                    "h-full w-full transition-opacity duration-700",
-                    isMobileViewport
-                      ? "translate-y-6 scale-[1.08] object-contain object-center"
-                      : "object-cover object-center",
-                    introVideoReady ? "opacity-100" : "opacity-0",
-                  )}
-                  autoPlay
-                  loop={!isMobileViewport}
-                  muted
-                  playsInline
-                  preload={isMobileViewport ? "auto" : "metadata"}
-                  aria-hidden="true"
-                  onCanPlay={() => setIntroVideoReady(true)}
-                  onEnded={isMobileViewport ? finishIntro : undefined}
-                  onError={() => {
-                    setIntroVideoEnabled(false);
-                    setIntroVideoReady(true);
+              <div className="absolute inset-0">
+                {/* Desktop: pełnoekranowe tło video */}
+                <div className="hidden sm:block absolute inset-0">
+                  <video
+                    className={cn(
+                      "h-full w-full object-cover object-center transition-opacity duration-700",
+                      introVideoReady ? "opacity-100" : "opacity-0",
+                    )}
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    preload="metadata"
+                    aria-hidden="true"
+                    onCanPlay={() => setIntroVideoReady(true)}
+                    onError={() => {
+                      setIntroVideoEnabled(false);
+                      setIntroVideoReady(true);
+                    }}
+                  >
+                    <source src={INTRO_VIDEO_URL} type="video/mp4" />
+                  </video>
+                </div>
+
+                {/* Mobile: bento ramka z blurowanymi krawędziami */}
+                <div
+                  className="sm:hidden absolute inset-x-5 rounded-[2rem] overflow-hidden border border-white/10 shadow-[0_8px_48px_rgba(0,0,0,0.55)]"
+                  style={{
+                    top: "8rem",
+                    height: "56svh",
+                    maskImage:
+                      "radial-gradient(ellipse 88% 80% at 50% 50%, black 42%, transparent 100%)",
+                    WebkitMaskImage:
+                      "radial-gradient(ellipse 88% 80% at 50% 50%, black 42%, transparent 100%)",
                   }}
                 >
-                  <source src={INTRO_VIDEO_URL} type="video/mp4" />
-                </video>
-                <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(9,9,9,0.96)_0%,rgba(9,9,9,0.32)_16%,rgba(9,9,9,0)_30%,rgba(9,9,9,0)_64%,rgba(9,9,9,0.4)_80%,rgba(9,9,9,0.96)_100%)] sm:hidden" />
+                  <video
+                    className={cn(
+                      "h-full w-full scale-[1.55] object-contain object-center transition-opacity duration-700",
+                      introVideoReady ? "opacity-100" : "opacity-0",
+                    )}
+                    autoPlay
+                    muted
+                    playsInline
+                    preload="auto"
+                    aria-hidden="true"
+                    onCanPlay={() => setIntroVideoReady(true)}
+                    onEnded={finishIntro}
+                    onError={() => {
+                      setIntroVideoEnabled(false);
+                      setIntroVideoReady(true);
+                    }}
+                  >
+                    <source src={INTRO_VIDEO_URL} type="video/mp4" />
+                  </video>
+                  {/* Subtelny gradient wzmacniający głębię */}
+                  <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(9,9,9,0.28)_100%)]" />
+                </div>
               </div>
             ) : null}
 
