@@ -926,23 +926,24 @@ export default function App() {
           ) : null}
 
           {introDone ? (
-            <div className="relative z-10 mx-auto grid min-h-screen w-full max-w-7xl items-end gap-10 px-4 pb-18 pt-28 sm:px-6 lg:grid-cols-[minmax(0,1fr)_22rem] lg:px-8">
-              <motion.div
-                initial={{ opacity: 0, y: 26 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.62, ease: easeOutExpo }}
-                className="max-w-4xl space-y-8"
-              >
-                <div className="inline-flex w-fit items-center gap-3 rounded-full border border-white/12 bg-white/6 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.3em] text-white/80 backdrop-blur-sm">
+            <>
+              {/* --- HERO SCREEN --- */}
+              <div className="relative z-10 mx-auto flex min-h-[100svh] w-full max-w-7xl flex-col items-center justify-end px-4 pb-12 pt-32 sm:px-6 lg:px-8 pointer-events-none">
+                <motion.div
+                  initial={{ opacity: 0, y: 26 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.62, ease: easeOutExpo }}
+                  className="pointer-events-auto mb-6 inline-flex w-fit items-center gap-3 rounded-full border border-white/12 bg-white/6 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.3em] text-white/80 backdrop-blur-sm"
+                >
                   <span className="h-2.5 w-2.5 rounded-full bg-[color:var(--fire)] shadow-[0_0_18px_rgba(255,106,0,0.9)]" />
                   Piekary Śląskie · odbiór osobisty
-                </div>
+                </motion.div>
 
                 <motion.div
                   initial={{ opacity: 0, y: 22 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.44, duration: 0.72, ease: easeOutExpo }}
-                  className="flex flex-col gap-4 sm:flex-row"
+                  className="pointer-events-auto mb-8 flex w-full max-w-md flex-col justify-center gap-4 sm:max-w-2xl sm:flex-row"
                 >
                   <a
                     href={PHONE_URL}
@@ -962,70 +963,75 @@ export default function App() {
                   </a>
                 </motion.div>
 
+                <motion.a
+                  href="#odbior"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.96, duration: 0.8 }}
+                  className="pointer-events-auto hidden flex-col items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.32em] text-white/55 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a] lg:flex"
+                >
+                  Scroll
+                  <span className="flex h-12 w-7 items-start justify-center rounded-full border border-white/16 p-1.5">
+                    <span className="h-2.5 w-2.5 animate-bounce rounded-full bg-[color:var(--fire)]" />
+                  </span>
+                </motion.a>
+              </div>
+
+              {/* --- POST HERO CONTACT & TRUST POINTS --- */}
+              <div className="relative z-10 mx-auto grid w-full max-w-7xl items-start gap-10 px-4 py-16 sm:px-6 lg:grid-cols-[minmax(0,1fr)_22rem] lg:px-8">
                 <motion.div
                   initial={{ opacity: 0, y: 22 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.56, duration: 0.72, ease: easeOutExpo }}
-                  className="grid gap-3 sm:grid-cols-3"
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.2 }}
+                  transition={{ duration: 0.72, ease: easeOutExpo }}
+                  className="grid gap-4 sm:grid-cols-3 lg:pt-8"
                 >
                   {trustPoints.map((point) => (
-                    <div key={point.title} className="rounded-[1.5rem] border border-white/10 bg-black/24 p-4 backdrop-blur-sm">
+                    <div key={point.title} className="rounded-[1.5rem] border border-white/10 bg-black/24 p-5 shadow-[0_18px_50px_rgba(0,0,0,0.2)] backdrop-blur-sm">
                       <div className="text-sm font-semibold uppercase tracking-[0.16em] text-white">{point.title}</div>
-                      <p className="mt-2 text-sm leading-6 text-white/62">{point.copy}</p>
+                      <p className="mt-3 text-sm leading-6 text-white/62">{point.copy}</p>
                     </div>
                   ))}
                 </motion.div>
-              </motion.div>
 
-              <motion.aside
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.66, duration: 0.72, ease: easeOutExpo }}
-                className="rounded-[2rem] border border-white/10 bg-black/28 p-5 shadow-[0_24px_70px_rgba(0,0,0,0.3)] backdrop-blur-xl"
-              >
-                <div className="space-y-5">
-                  <div className="space-y-2">
-                    <div className="text-[11px] font-semibold uppercase tracking-[0.3em] text-[color:var(--ember)]">
-                      Szybki kontakt
+                <motion.aside
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.2 }}
+                  transition={{ duration: 0.72, ease: easeOutExpo }}
+                  className="rounded-[2rem] border border-white/10 bg-black/28 p-5 shadow-[0_24px_70px_rgba(0,0,0,0.3)] backdrop-blur-xl"
+                >
+                  <div className="space-y-5">
+                    <div className="space-y-2">
+                      <div className="text-[11px] font-semibold uppercase tracking-[0.3em] text-[color:var(--ember)]">
+                        Szybki kontakt
+                      </div>
+                      <h2 className="font-display text-3xl uppercase tracking-[0.12em] text-white">Zadzwoń i wpadaj po swoje</h2>
                     </div>
-                    <h2 className="font-display text-3xl uppercase tracking-[0.12em] text-white">Zadzwoń i wpadaj po swoje</h2>
+
+                    <div className="space-y-4">
+                      <div className="rounded-[1.4rem] border border-white/10 bg-white/6 p-4">
+                        <div className="text-xs uppercase tracking-[0.22em] text-white/45">Adres</div>
+                        <address className="mt-2 not-italic text-sm leading-7 text-white/84">{ADDRESS_LABEL}</address>
+                      </div>
+                      <div className="rounded-[1.4rem] border border-white/10 bg-white/6 p-4">
+                        <div className="text-xs uppercase tracking-[0.22em] text-white/45">Telefon</div>
+                        <a
+                          href={PHONE_URL}
+                          className="mt-2 inline-flex min-h-11 items-center text-sm font-semibold text-white transition hover:text-[color:var(--gold)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
+                        >
+                          {PHONE_DISPLAY}
+                        </a>
+                      </div>
+                      <div className="rounded-[1.4rem] border border-white/10 bg-white/6 p-4">
+                        <div className="mb-3 text-xs uppercase tracking-[0.22em] text-white/45">Godziny</div>
+                        <HoursList compact />
+                      </div>
+                    </div>
                   </div>
-
-                  <div className="space-y-4">
-                    <div className="rounded-[1.4rem] border border-white/10 bg-white/6 p-4">
-                      <div className="text-xs uppercase tracking-[0.22em] text-white/45">Adres</div>
-                      <address className="mt-2 not-italic text-sm leading-7 text-white/84">{ADDRESS_LABEL}</address>
-                    </div>
-                    <div className="rounded-[1.4rem] border border-white/10 bg-white/6 p-4">
-                      <div className="text-xs uppercase tracking-[0.22em] text-white/45">Telefon</div>
-                      <a
-                        href={PHONE_URL}
-                        className="mt-2 inline-flex min-h-11 items-center text-sm font-semibold text-white transition hover:text-[color:var(--gold)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
-                      >
-                        {PHONE_DISPLAY}
-                      </a>
-                    </div>
-                    <div className="rounded-[1.4rem] border border-white/10 bg-white/6 p-4">
-                      <div className="mb-3 text-xs uppercase tracking-[0.22em] text-white/45">Godziny</div>
-                      <HoursList compact />
-                    </div>
-                  </div>
-                </div>
-              </motion.aside>
-
-              <motion.a
-                href="#menu"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.96, duration: 0.8 }}
-                className="absolute bottom-6 left-1/2 z-20 hidden -translate-x-1/2 flex-col items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.32em] text-white/55 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a] lg:flex"
-              >
-                Scroll
-                <span className="flex h-12 w-7 items-start justify-center rounded-full border border-white/16 p-1.5">
-                  <span className="h-2.5 w-2.5 animate-bounce rounded-full bg-[color:var(--fire)]" />
-                </span>
-              </motion.a>
-            </div>
+                </motion.aside>
+              </div>
+            </>
           ) : null}
         </section>
 
