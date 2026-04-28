@@ -263,6 +263,9 @@ const socialLinks: SocialItem[] = [
   { href: "https://www.tiktok.com/@lawaszkebab", label: "TikTok · @lawaszkebab" },
 ];
 
+const footerPrimarySocial = [socialLinks[0]];
+const footerSecondarySocial = [socialLinks[2], socialLinks[1]];
+
 const navLinks = [
   { href: "#menu", label: "Menu" },
   { href: "#odbior", label: "Odbiór" },
@@ -314,6 +317,29 @@ function Logo({ compact = false }: { compact?: boolean }) {
           LAWA<span className="text-[color:var(--fire)]">SZ</span>
         </div>
         <div className="font-display -mt-1 text-xs uppercase tracking-[0.58em] text-white/68 sm:text-sm">
+          KEBAB
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function IntroBrand() {
+  return (
+    <div className="flex flex-col items-center gap-5 text-center">
+      <img
+        src={HEADER_LOGO_MARK_URL}
+        alt=""
+        aria-hidden="true"
+        className="h-24 w-24 object-contain [filter:drop-shadow(0_0_14px_rgba(255,106,0,0.22))_brightness(1.24)_contrast(1.28)] sm:h-28 sm:w-28"
+        loading="eager"
+        decoding="async"
+      />
+      <div className="space-y-1">
+        <div className="font-display text-6xl uppercase leading-none tracking-[0.22em] text-white sm:text-7xl">
+          LAWA<span className="text-[color:var(--fire)]">SZ</span>
+        </div>
+        <div className="font-display text-sm uppercase tracking-[0.7em] text-white/62 sm:text-base">
           KEBAB
         </div>
       </div>
@@ -631,7 +657,10 @@ export default function App() {
 
       {introDone ? (
         <>
-          <header
+          <motion.header
+            initial={{ opacity: 0, y: -14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.48, delay: 0.08, ease: easeOutExpo }}
             className={cn(
               "fixed inset-x-0 top-0 z-50 transition-all duration-300",
               scrolled ? "border-b border-white/10 bg-[#090909]/78 backdrop-blur-2xl" : "bg-transparent",
@@ -698,7 +727,7 @@ export default function App() {
                 </a>
               </div>
             </div>
-          </header>
+          </motion.header>
 
           <motion.button
             type="button"
@@ -790,29 +819,34 @@ export default function App() {
           </motion.div>
 
           {introPlaying ? (
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="absolute inset-0 z-30 flex items-center justify-center px-6">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 z-30 flex items-center justify-center bg-[radial-gradient(circle_at_center,rgba(255,106,0,0.08),transparent_34%),linear-gradient(180deg,rgba(5,5,5,0.92)_0%,rgba(8,8,8,0.9)_100%)] px-6"
+            >
               <div className="relative flex items-center justify-center">
                 <motion.div
-                  className="absolute -inset-20 rounded-full bg-[radial-gradient(circle,rgba(255,130,36,0.45),rgba(255,61,0,0.06)_55%,transparent_72%)] blur-3xl"
-                  animate={{ opacity: [0.25, 0.95, 0.5, 0], scale: [0.85, 1.05, 1.18, 1.28], y: [22, -2, -22, -34] }}
+                  className="absolute -inset-20 rounded-full bg-[radial-gradient(circle,rgba(255,130,36,0.42),rgba(255,61,0,0.04)_56%,transparent_74%)] blur-3xl"
+                  animate={{ opacity: [0.22, 0.9, 0.44, 0], scale: [0.84, 1.03, 1.14, 1.22], y: [18, -2, -18, -28] }}
                   transition={{ duration: INTRO_ANIMATION_MS / 1000, times: [0, 0.4, 0.78, 1], ease: "easeInOut" }}
                 />
                 <motion.div
                   animate={{
                     opacity: [1, 1, 0.78, 0],
-                    y: [0, 0, -6, -24],
-                    scale: [1, 1.04, 1.01, 0.95],
+                    y: [0, 0, -5, -18],
+                    scale: [1, 1.03, 1.01, 0.97],
                     filter: [
-                      "drop-shadow(0 0 14px rgba(255,125,25,0.58)) brightness(1)",
-                      "drop-shadow(0 0 22px rgba(255,137,28,0.88)) brightness(1.24)",
-                      "drop-shadow(0 0 10px rgba(255,98,14,0.46)) grayscale(0.35) contrast(1.22)",
-                      "drop-shadow(0 0 3px rgba(255,92,0,0.16)) grayscale(1) contrast(1.4) brightness(0.62) blur(1px)",
+                      "drop-shadow(0 0 18px rgba(255,125,25,0.52)) brightness(1)",
+                      "drop-shadow(0 0 26px rgba(255,137,28,0.82)) brightness(1.2)",
+                      "drop-shadow(0 0 12px rgba(255,98,14,0.42)) grayscale(0.26) contrast(1.16)",
+                      "drop-shadow(0 0 3px rgba(255,92,0,0.15)) grayscale(1) contrast(1.3) brightness(0.72) blur(1px)",
                     ],
                   }}
                   transition={{ duration: INTRO_ANIMATION_MS / 1000, times: [0, 0.42, 0.8, 1], ease: easeOutExpo }}
                   className="relative"
                 >
-                  <Logo />
+                  <IntroBrand />
                 </motion.div>
               </div>
             </motion.div>
@@ -1233,20 +1267,35 @@ export default function App() {
           </div>
         </div>
 
-        <div className="mx-auto mt-10 flex max-w-7xl flex-col gap-4 border-t border-white/8 pt-6 text-sm text-white/45 sm:flex-row sm:items-center sm:justify-between">
-          <div>LAWASZ KEBAB · Piekary Śląskie</div>
-          <div className="flex flex-wrap gap-3">
-            {socialLinks.map((item) => (
-              <a
-                key={item.href}
-                href={item.href}
-                target="_blank"
-                rel="noreferrer"
-                className="transition hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
-              >
-                {item.label}
-              </a>
-            ))}
+        <div className="mx-auto mt-10 max-w-7xl border-t border-white/8 pt-6 text-sm text-white/45">
+          <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+              <div>LAWASZ KEBAB · Piekary Śląskie</div>
+              {footerPrimarySocial.map((item) => (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="transition hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
+                >
+                  {item.label}
+                </a>
+              ))}
+            </div>
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+              {footerSecondarySocial.map((item) => (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="transition hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
+                >
+                  {item.label}
+                </a>
+              ))}
+            </div>
           </div>
         </div>
       </footer>
