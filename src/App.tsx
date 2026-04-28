@@ -833,9 +833,9 @@ export default function App() {
                     top: "8rem",
                     height: "56svh",
                     maskImage:
-                      "radial-gradient(ellipse 88% 80% at 50% 50%, black 42%, transparent 100%)",
+                      "radial-gradient(ellipse 92% 88% at 50% 50%, black 55%, rgba(0,0,0,0.6) 72%, transparent 100%)",
                     WebkitMaskImage:
-                      "radial-gradient(ellipse 88% 80% at 50% 50%, black 42%, transparent 100%)",
+                      "radial-gradient(ellipse 92% 88% at 50% 50%, black 55%, rgba(0,0,0,0.6) 72%, transparent 100%)",
                   }}
                 >
                   <video
