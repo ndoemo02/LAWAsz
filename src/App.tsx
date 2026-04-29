@@ -580,19 +580,15 @@ function CurvedTextOverlay({ className, visible }: { className?: string; visible
         viewBox="0 0 500 500"
         className="w-[90%] max-w-[700px] h-auto drop-shadow-[0_0_15px_rgba(255,106,0,0.3)] mix-blend-screen"
       >
-        <motion.g
-          animate={{ rotate: 360 }}
-          transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
-          style={{ transformOrigin: "250px 250px" }}
-        >
+        <g style={{ transformOrigin: "250px 250px" }}>
           <defs>
             <linearGradient id="fireTextGrad" x1="0%" y1="0%" x2="100%" y2="0%">
               <stop offset="0%" stopColor="#ff761a" />
               <stop offset="50%" stopColor="#ff3800" />
               <stop offset="100%" stopColor="#ff761a" />
             </linearGradient>
-            <path id="curve-top" d="M 70,250 A 180,180 0 0,1 430,250" fill="none" />
-            <path id="curve-bottom" d="M 30,250 A 220,220 0 0,0 470,250" fill="none" />
+            <path id="curve-top" d="M 100,250 A 150,150 0 0,1 400,250" fill="none" />
+            <path id="curve-bottom" d="M 60,250 A 190,190 0 0,0 440,250" fill="none" />
           </defs>
           <text className="font-display font-bold uppercase tracking-[0.06em]" fontSize="38" fill="#ff6a00">
             <textPath href="#curve-top" startOffset="50%" textAnchor="middle">WŁASNE MIĘSO</textPath>
@@ -600,7 +596,7 @@ function CurvedTextOverlay({ className, visible }: { className?: string; visible
           <text className="font-display font-bold uppercase tracking-[0.06em]" fontSize="38" fill="white">
             <textPath href="#curve-bottom" startOffset="50%" textAnchor="middle">AUTORSKI LAWASZ</textPath>
           </text>
-        </motion.g>
+        </g>
       </motion.svg>
     </div>
   );
