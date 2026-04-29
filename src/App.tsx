@@ -578,7 +578,7 @@ function CurvedTextOverlay({ className, visible }: { className?: string; visible
           scale: { delay: 0.12, duration: 0.88, ease: [0.16, 1, 0.3, 1] }
         }}
         viewBox="0 0 500 500"
-        className="w-[120%] max-w-[800px] h-auto drop-shadow-[0_0_15px_rgba(255,106,0,0.3)] mix-blend-screen"
+        className="w-[90%] max-w-[700px] h-auto drop-shadow-[0_0_15px_rgba(255,106,0,0.3)] mix-blend-screen"
       >
         <motion.g
           animate={{ rotate: 360 }}
