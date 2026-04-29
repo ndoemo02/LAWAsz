@@ -591,8 +591,8 @@ function CurvedTextOverlay({ className, visible }: { className?: string; visible
               <stop offset="50%" stopColor="#ff3800" />
               <stop offset="100%" stopColor="#ff761a" />
             </linearGradient>
-            <path id="curve-top" d="M 50,250 A 200,200 0 0,1 450,250" fill="none" />
-            <path id="curve-bottom" d="M 50,250 A 200,200 0 0,0 450,250" fill="none" />
+            <path id="curve-top" d="M 70,250 A 180,180 0 0,1 430,250" fill="none" />
+            <path id="curve-bottom" d="M 30,250 A 220,220 0 0,0 470,250" fill="none" />
           </defs>
           <text className="font-display font-bold uppercase tracking-[0.06em]" fontSize="38" fill="#ff6a00">
             <textPath href="#curve-top" startOffset="50%" textAnchor="middle">WŁASNE MIĘSO</textPath>
