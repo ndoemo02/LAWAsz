@@ -1,5 +1,5 @@
-import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
-import { useEffect, useState } from "react";
+import { AnimatePresence, motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 import { cn } from "./utils/cn";
 
 type MenuItem = {
@@ -75,6 +75,7 @@ const MAPS_URL =
   "https://www.google.com/maps/search/?api=1&query=Ksi%C4%99dza+J%C3%B3zefa+Krupy+11%2C+41-949+Piekary+%C5%9Al%C4%85skie";
 const ADDRESS_LABEL = "Księdza Józefa Krupy 11, 41-949 Piekary Śląskie";
 const INTRO_VIDEO_URL = "/video/intro.mp4";
+const INTRO_VIDEO_MOBILE_URL = "/video/Modern,_efficient_transition_202604290608.mp4";
 const HEADER_LOGO_MARK_URL = "/image/Projekt bez nazwy.png";
 const INTRO_PLAYED_KEY = "lawasz-intro-burn-played";
 
@@ -543,26 +544,38 @@ function SocialLink({ href, label }: SocialItem) {
 
 function StickyBottomBar() {
   return (
-    <div className="fixed inset-x-0 bottom-0 z-50 border-t border-white/10 bg-[#090909]/92 px-4 py-3 backdrop-blur-xl md:hidden">
+    <motion.div
+      initial={{ y: 72, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      exit={{ y: 72, opacity: 0 }}
+      transition={{ type: "spring", damping: 28, stiffness: 340, mass: 0.8 }}
+      className="fixed inset-x-0 bottom-0 z-50 border-t border-white/10 bg-[#090909]/92 px-4 py-3 backdrop-blur-xl md:hidden"
+    >
       <div className="mx-auto grid max-w-md grid-cols-2 gap-3">
-        <a
+        <motion.a
           href={PHONE_URL}
           aria-label="Zadzwoń i zamów"
+          initial={{ scale: 0.92, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ delay: 0.06, type: "spring", damping: 22, stiffness: 300 }}
           className="inline-flex min-h-12 items-center justify-center rounded-full bg-[color:var(--fire)] px-4 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-white shadow-[0_18px_40px_rgba(255,106,0,0.28)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
         >
           Zadzwoń
-        </a>
-        <a
+        </motion.a>
+        <motion.a
           href={MAPS_URL}
           target="_blank"
           rel="noreferrer"
           aria-label="Otwórz trasę do lokalu"
+          initial={{ scale: 0.92, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ delay: 0.12, type: "spring", damping: 22, stiffness: 300 }}
           className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/14 bg-white/8 px-4 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
         >
           Trasa
-        </a>
+        </motion.a>
       </div>
-    </div>
+    </motion.div>
   );
 }
 
@@ -615,6 +628,8 @@ export default function App() {
   const reduceMotion = useReducedMotion();
   const { scrollY } = useScroll();
   const heroParallax = useTransform(scrollY, [0, 500], [0, reduceMotion ? 0 : 60]);
+  const heroCtaOpacity = useTransform(scrollY, [0, 60], [1, 0]);
+  const heroCtaY = useTransform(scrollY, [0, 60], [0, 40]);
 
   const finishIntro = () => {
     setIntroPlaying(false);
@@ -844,34 +859,29 @@ export default function App() {
                   <CurvedTextOverlay visible={introDone} />
                 </div>
 
-                {/* Mobile: video blendowane z tłem 3D (cegły), usuwa efekt 'naklejki' */}
+                {/* Mobile: dedykowane video pod portrait, fullscreen blend */}
                 <div 
-                  className="sm:hidden absolute inset-x-0 mix-blend-screen pointer-events-none"
-                  style={{
-                    top: "8rem",
-                    height: "56svh",
-                  }}
+                  className="sm:hidden absolute inset-0 mix-blend-screen pointer-events-none"
                 >
                   <video
                     className={cn(
-                      "h-full w-full scale-[1.55] translate-x-3 object-contain object-center transition-opacity duration-700",
+                      "h-full w-full object-cover object-center transition-opacity duration-700",
                       introVideoReady ? "opacity-100" : "opacity-0",
                     )}
                     autoPlay
                     muted
                     playsInline
+                    loop
                     preload="metadata"
                     aria-hidden="true"
                     onCanPlay={() => setIntroVideoReady(true)}
-                    onEnded={finishIntro}
                     onError={() => {
                       setIntroVideoEnabled(false);
                       setIntroVideoReady(true);
                     }}
                   >
-                    <source src={INTRO_VIDEO_URL} type="video/mp4" />
+                    <source src={INTRO_VIDEO_MOBILE_URL} type="video/mp4" />
                   </video>
-                  <CurvedTextOverlay visible={introDone} className="scale-[1.55] translate-x-3" />
                 </div>
               </div>
             ) : null}
@@ -924,39 +934,72 @@ export default function App() {
           {introDone ? (
             <>
               {/* --- HERO SCREEN --- */}
-              <div className="relative z-10 mx-auto flex min-h-[100svh] w-full max-w-7xl flex-col items-center justify-end px-4 pb-4 pt-32 sm:px-6 lg:px-8 pointer-events-none">
+              <div className="relative z-10 mx-auto flex min-h-[100svh] w-full max-w-7xl flex-col items-center justify-between px-4 pb-4 pt-28 sm:justify-end sm:pt-32 sm:px-6 lg:px-8 pointer-events-none">
+                {/* Mobile brand identity – widoczna tylko na mobile w górnej części hero */}
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9, y: -10 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  transition={{ duration: 0.78, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+                  className="pointer-events-none flex sm:hidden flex-col items-center gap-3 pt-4 text-center"
+                >
+                  <motion.div
+                    animate={{ opacity: [0.7, 1, 0.7] }}
+                    transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}
+                    className="h-2 w-2 rounded-full bg-[color:var(--fire)] shadow-[0_0_16px_rgba(255,106,0,1)]"
+                  />
+                  <div className="font-display text-[2.6rem] uppercase leading-none tracking-[0.18em] text-white drop-shadow-[0_2px_24px_rgba(255,106,0,0.5)]">
+                    LAWA<span className="text-[color:var(--fire)]">SZ</span>
+                  </div>
+                  <div className="font-display -mt-1 text-[10px] uppercase tracking-[0.6em] text-white/60">
+                    KEBAB
+                  </div>
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.5, duration: 0.6 }}
+                    className="mt-2 inline-flex items-center gap-2 rounded-full border border-white/12 bg-black/30 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.28em] text-white/70 backdrop-blur-sm"
+                  >
+                    <span className="h-1.5 w-1.5 rounded-full bg-[color:var(--fire)] shadow-[0_0_10px_rgba(255,106,0,0.9)]" />
+                    Piekary Śląskie · odbiór osobisty
+                  </motion.div>
+                </motion.div>
+
+                {/* Desktop location badge */}
                 <motion.div
                   initial={{ opacity: 0, y: 26 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.62, ease: easeOutExpo }}
-                  className="pointer-events-auto mb-4 inline-flex w-fit items-center gap-3 rounded-full border border-white/12 bg-white/6 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.3em] text-white/80 backdrop-blur-sm"
+                  className="pointer-events-auto mb-4 hidden sm:inline-flex w-fit items-center gap-3 rounded-full border border-white/12 bg-white/6 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.3em] text-white/80 backdrop-blur-sm"
                 >
                   <span className="h-2.5 w-2.5 rounded-full bg-[color:var(--fire)] shadow-[0_0_18px_rgba(255,106,0,0.9)]" />
                   Piekary Śląskie · odbiór osobisty
                 </motion.div>
 
-                <motion.div
-                  initial={{ opacity: 0, y: 22 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.44, duration: 0.72, ease: easeOutExpo }}
-                  className="pointer-events-auto mb-6 flex w-full max-w-md flex-col justify-center gap-4 sm:max-w-2xl sm:flex-row"
-                >
-                  <a
-                    href={PHONE_URL}
-                    aria-label="Zadzwoń i zamów"
-                    className="inline-flex min-h-12 items-center justify-center rounded-full bg-[color:var(--fire)] px-7 py-4 text-sm font-semibold uppercase tracking-[0.24em] text-white shadow-[0_16px_40px_rgba(255,106,0,0.34)] transition hover:translate-y-[-2px] hover:bg-[color:var(--lava)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
+                {/* CTA buttons */}
+                <motion.div style={{ opacity: heroCtaOpacity, y: heroCtaY }} className="w-full flex justify-center z-20">
+                  <motion.div
+                    initial={{ opacity: 0, y: 22 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.44, duration: 0.72, ease: easeOutExpo }}
+                    className="pointer-events-auto mb-4 sm:mb-6 flex w-full max-w-md flex-col justify-center gap-3 sm:max-w-2xl sm:flex-row sm:gap-4"
                   >
-                    Zadzwoń i zamów
-                  </a>
-                  <a
-                    href={MAPS_URL}
-                    target="_blank"
-                    rel="noreferrer"
-                    aria-label="Otwórz trasę do lokalu"
-                    className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/14 bg-white/6 px-7 py-4 text-sm font-semibold uppercase tracking-[0.24em] text-white/88 backdrop-blur-sm transition hover:border-white/24 hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
-                  >
-                    Jak dojechać
-                  </a>
+                    <a
+                      href={PHONE_URL}
+                      aria-label="Zadzwoń i zamów"
+                      className="inline-flex min-h-12 items-center justify-center rounded-full bg-[color:var(--fire)] px-7 py-4 text-sm font-semibold uppercase tracking-[0.24em] text-white shadow-[0_16px_40px_rgba(255,106,0,0.34)] transition hover:translate-y-[-2px] hover:bg-[color:var(--lava)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
+                    >
+                      Zadzwoń i zamów
+                    </a>
+                    <a
+                      href={MAPS_URL}
+                      target="_blank"
+                      rel="noreferrer"
+                      aria-label="Otwórz trasę do lokalu"
+                      className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/14 bg-white/6 px-7 py-4 text-sm font-semibold uppercase tracking-[0.24em] text-white/88 backdrop-blur-sm transition hover:border-white/24 hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
+                    >
+                      Jak dojechać
+                    </a>
+                  </motion.div>
                 </motion.div>
 
                 <motion.a
@@ -1353,7 +1396,9 @@ export default function App() {
         </div>
       </footer>
 
-      {introDone && scrolled && !mobileMenuOpen ? <StickyBottomBar /> : null}
+      <AnimatePresence>
+        {introDone && scrolled && !mobileMenuOpen ? <StickyBottomBar key="sticky-bar" /> : null}
+      </AnimatePresence>
     </div>
   );
 }
