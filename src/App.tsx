@@ -594,7 +594,7 @@ function CurvedTextOverlay({ className, visible }: { className?: string; visible
             <path id="curve-top" d="M 50,250 A 200,200 0 0,1 450,250" fill="none" />
             <path id="curve-bottom" d="M 50,250 A 200,200 0 0,0 450,250" fill="none" />
           </defs>
-          <text className="font-display font-bold uppercase tracking-[0.06em]" fontSize="38" fill="url(#fireTextGrad)">
+          <text className="font-display font-bold uppercase tracking-[0.06em]" fontSize="38" fill="#ff6a00">
             <textPath href="#curve-top" startOffset="50%" textAnchor="middle">WŁASNE MIĘSO</textPath>
           </text>
           <text className="font-display font-bold uppercase tracking-[0.06em]" fontSize="38" fill="white">
@@ -928,12 +928,12 @@ export default function App() {
           {introDone ? (
             <>
               {/* --- HERO SCREEN --- */}
-              <div className="relative z-10 mx-auto flex min-h-[100svh] w-full max-w-7xl flex-col items-center justify-end px-4 pb-12 pt-32 sm:px-6 lg:px-8 pointer-events-none">
+              <div className="relative z-10 mx-auto flex min-h-[100svh] w-full max-w-7xl flex-col items-center justify-end px-4 pb-4 pt-32 sm:px-6 lg:px-8 pointer-events-none">
                 <motion.div
                   initial={{ opacity: 0, y: 26 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.62, ease: easeOutExpo }}
-                  className="pointer-events-auto mb-6 inline-flex w-fit items-center gap-3 rounded-full border border-white/12 bg-white/6 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.3em] text-white/80 backdrop-blur-sm"
+                  className="pointer-events-auto mb-4 inline-flex w-fit items-center gap-3 rounded-full border border-white/12 bg-white/6 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.3em] text-white/80 backdrop-blur-sm"
                 >
                   <span className="h-2.5 w-2.5 rounded-full bg-[color:var(--fire)] shadow-[0_0_18px_rgba(255,106,0,0.9)]" />
                   Piekary Śląskie · odbiór osobisty
@@ -943,7 +943,7 @@ export default function App() {
                   initial={{ opacity: 0, y: 22 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.44, duration: 0.72, ease: easeOutExpo }}
-                  className="pointer-events-auto mb-8 flex w-full max-w-md flex-col justify-center gap-4 sm:max-w-2xl sm:flex-row"
+                  className="pointer-events-auto mb-6 flex w-full max-w-md flex-col justify-center gap-4 sm:max-w-2xl sm:flex-row"
                 >
                   <a
                     href={PHONE_URL}
