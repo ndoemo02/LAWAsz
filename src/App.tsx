@@ -866,15 +866,19 @@ export default function App() {
               </div>
             ) : null}
 
-            <div
-              className={cn(
-                "absolute inset-0 transition-opacity duration-500",
-                introVideoReady ? "opacity-0" : "opacity-100",
-                "bg-[radial-gradient(circle_at_20%_20%,rgba(255,118,26,0.34),transparent_50%),radial-gradient(circle_at_78%_12%,rgba(255,56,0,0.26),transparent_42%),linear-gradient(165deg,#0f0c0a_0%,#1b100d_38%,#080808_100%)]",
-              )}
+            {/* Dynamiczne przyciemnienie wideo po zakończeniu intro */}
+            <motion.div
+              initial={false}
+              animate={{
+                opacity: introDone ? 0.85 : 0.4,
+              }}
+              transition={{ duration: 1.2, ease: "easeInOut" }}
+              className="absolute inset-0 z-10 bg-black"
             />
-            <div className="absolute inset-0 bg-[linear-gradient(96deg,rgba(8,8,8,0.88)_14%,rgba(8,8,8,0.5)_50%,rgba(8,8,8,0.82)_100%)]" />
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom,rgba(255,106,0,0.24),transparent_44%),linear-gradient(180deg,rgba(7,7,7,0.2)_0%,rgba(7,7,7,0.82)_86%)]" />
+            
+            <div className="absolute inset-0 z-20 bg-[linear-gradient(96deg,rgba(8,8,8,0.6)_14%,rgba(8,8,8,0.2)_50%,rgba(8,8,8,0.5)_100%)]" />
+            <div className="absolute inset-0 z-20 bg-[radial-gradient(circle_at_bottom,rgba(255,106,0,0.15),transparent_44%),linear-gradient(180deg,rgba(7,7,7,0.1)_0%,rgba(7,7,7,0.6)_86%)]" />
+          </motion.div>
           </motion.div>
 
           {introPlaying ? (
@@ -915,32 +919,38 @@ export default function App() {
             <>
               {/* --- HERO SCREEN --- */}
               <div className="relative z-10 mx-auto flex min-h-[100svh] w-full max-w-7xl flex-col items-center justify-between px-4 pb-4 pt-28 sm:justify-end sm:pt-32 sm:px-6 lg:px-8 pointer-events-none">
-                {/* Mobile brand identity – widoczna tylko na mobile w górnej części hero */}
+                {/* Mobile brand identity – eleganckie wejście po intro */}
                 <motion.div
-                  initial={{ opacity: 0, scale: 0.9, y: -10 }}
-                  animate={{ opacity: 1, scale: 1, y: 0 }}
-                  transition={{ duration: 0.78, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 1, delay: 0.3, ease: easeOutExpo }}
                   className="pointer-events-none flex sm:hidden flex-col items-center gap-3 pt-4 text-center"
                 >
                   <motion.div
-                    animate={{ opacity: [0.7, 1, 0.7] }}
-                    transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ delay: 0.8, type: "spring", stiffness: 200 }}
                     className="h-2 w-2 rounded-full bg-[color:var(--fire)] shadow-[0_0_16px_rgba(255,106,0,1)]"
                   />
-                  <div className="text-[10px] font-semibold uppercase tracking-[0.38em] text-[color:var(--fire)] shadow-[0_0_12px_rgba(255,106,0,0.4)]">
+                  <motion.div 
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 1 }}
+                    className="text-[10px] font-semibold uppercase tracking-[0.38em] text-[color:var(--fire)]"
+                  >
                     Świadomy Street Food
-                  </div>
-                  <h1 className="font-display text-[2.4rem] uppercase leading-[1.1] tracking-[0.08em] text-white drop-shadow-[0_2px_24px_rgba(0,0,0,0.8)]">
+                  </motion.div>
+                  <h1 className="font-display text-[2.4rem] uppercase leading-[1.1] tracking-[0.08em] text-white drop-shadow-[0_4px_32px_rgba(0,0,0,0.9)]">
                     Własne mięso.<br/>Autorski lawasz.
                   </h1>
-                  <p className="max-w-[280px] text-[11px] leading-relaxed tracking-wider text-white/70">
+                  <p className="max-w-[280px] text-[11px] leading-relaxed tracking-wider text-white/80">
                     Rzemieślniczy kebab w Piekarach Śląskich, na miejscu i na wynos.
                   </p>
                   <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.5, duration: 0.6 }}
-                    className="mt-2 inline-flex items-center gap-2 rounded-full border border-white/12 bg-black/30 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.28em] text-white/70 backdrop-blur-sm"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 1.4, duration: 0.6 }}
+                    className="mt-2 inline-flex items-center gap-2 rounded-full border border-white/12 bg-black/40 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.28em] text-white/70 backdrop-blur-sm"
                   >
                     <span className="h-1.5 w-1.5 rounded-full bg-[color:var(--fire)] shadow-[0_0_10px_rgba(255,106,0,0.9)]" />
                     Piekary Śląskie · odbiór osobisty
