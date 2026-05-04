@@ -75,7 +75,7 @@ const MAPS_URL =
   "https://www.google.com/maps/search/?api=1&query=Ksi%C4%99dza+J%C3%B3zefa+Krupy+11%2C+41-949+Piekary+%C5%9Al%C4%85skie";
 const ADDRESS_LABEL = "Księdza Józefa Krupy 11, 41-949 Piekary Śląskie";
 const INTRO_VIDEO_URL = "/video/intro.mp4";
-const INTRO_VIDEO_MOBILE_URL = "/video/Modern,_efficient_transition_202604290608.mp4";
+const INTRO_VIDEO_MOBILE_URL = "/video/backgroundmobile.mp4";
 const HEADER_LOGO_MARK_URL = "/image/Projekt bez nazwy.png";
 const INTRO_PLAYED_KEY = "lawasz-intro-burn-played";
 
@@ -871,7 +871,6 @@ export default function App() {
                     autoPlay
                     muted
                     playsInline
-                    loop
                     preload="metadata"
                     aria-hidden="true"
                     onCanPlay={() => setIntroVideoReady(true)}
