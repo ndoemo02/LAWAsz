@@ -75,7 +75,7 @@ const MAPS_URL =
   "https://www.google.com/maps/search/?api=1&query=Ksi%C4%99dza+J%C3%B3zefa+Krupy+11%2C+41-949+Piekary+%C5%9Al%C4%85skie";
 const ADDRESS_LABEL = "Księdza Józefa Krupy 11, 41-949 Piekary Śląskie";
 const INTRO_VIDEO_URL = "/video/intro.mp4";
-const INTRO_VIDEO_MOBILE_URL = "/video/mobile.mp4";
+const INTRO_VIDEO_MOBILE_URL = "/video/mobile.mp4?v=2";
 const HEADER_LOGO_MARK_URL = "/image/Projekt bez nazwy.png";
 const INTRO_PLAYED_KEY = "lawasz-intro-burn-played";
 
@@ -836,52 +836,31 @@ export default function App() {
           <motion.div style={{ y: heroParallax }} className="absolute inset-0">
             {introVideoEnabled ? (
               <div className="absolute inset-0">
-                {/* Desktop: pełnoekranowe tło video */}
-                <div className="hidden sm:block absolute inset-0">
-                  <video
-                    className={cn(
-                      "h-full w-full object-cover object-center transition-opacity duration-700",
-                      introVideoReady ? "opacity-100" : "opacity-0",
-                    )}
-                    autoPlay
-                    muted
-                    playsInline
-                    preload="metadata"
-                    aria-hidden="true"
-                    onCanPlay={() => setIntroVideoReady(true)}
-                    onError={() => {
-                      setIntroVideoEnabled(false);
-                      setIntroVideoReady(true);
-                    }}
-                  >
-                    <source src={INTRO_VIDEO_URL} type="video/mp4" />
-                  </video>
-                  <CurvedTextOverlay visible={introDone} />
-                </div>
-
-                {/* Mobile: dedykowane video pod portrait, fullscreen blend */}
-                <div 
-                  className="sm:hidden absolute inset-0 mix-blend-screen pointer-events-none"
+                <video
+                  key={isMobileViewport ? "mobile" : "desktop"}
+                  className={cn(
+                    "h-full w-full object-cover object-center transition-opacity duration-700",
+                    isMobileViewport && "mix-blend-screen pointer-events-none",
+                    introVideoReady ? "opacity-100" : "opacity-0",
+                  )}
+                  autoPlay
+                  muted
+                  playsInline
+                  loop={!isMobileViewport}
+                  preload="metadata"
+                  aria-hidden="true"
+                  onCanPlay={() => setIntroVideoReady(true)}
+                  onError={() => {
+                    setIntroVideoEnabled(false);
+                    setIntroVideoReady(true);
+                  }}
                 >
-                  <video
-                    className={cn(
-                      "h-full w-full object-cover object-center transition-opacity duration-700",
-                      introVideoReady ? "opacity-100" : "opacity-0",
-                    )}
-                    autoPlay
-                    muted
-                    playsInline
-                    preload="metadata"
-                    aria-hidden="true"
-                    onCanPlay={() => setIntroVideoReady(true)}
-                    onError={() => {
-                      setIntroVideoEnabled(false);
-                      setIntroVideoReady(true);
-                    }}
-                  >
-                    <source src={INTRO_VIDEO_MOBILE_URL} type="video/mp4" />
-                  </video>
-                </div>
+                  <source 
+                    src={isMobileViewport ? INTRO_VIDEO_MOBILE_URL : INTRO_VIDEO_URL} 
+                    type="video/mp4" 
+                  />
+                </video>
+                {!isMobileViewport && <CurvedTextOverlay visible={introDone} />}
               </div>
             ) : null}
 
