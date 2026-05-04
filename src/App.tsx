@@ -1,5 +1,5 @@
 import { AnimatePresence, motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { cn } from "./utils/cn";
 
 type MenuItem = {
@@ -525,23 +525,6 @@ function SpitIllustration() {
   );
 }
 
-function SocialLink({ href, label }: SocialItem) {
-  return (
-    <motion.a
-      href={href}
-      target="_blank"
-      rel="noreferrer"
-      whileHover={{ y: -3 }}
-      className="inline-flex min-h-11 items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-white/84 transition hover:border-[color:var(--fire)]/40 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
-    >
-      <span aria-hidden="true" className="text-[color:var(--ember)]">
-        ↗
-      </span>
-      {label}
-    </motion.a>
-  );
-}
-
 function StickyBottomBar() {
   return (
     <motion.div
@@ -878,7 +861,7 @@ export default function App() {
             
             <div className="absolute inset-0 z-20 bg-[linear-gradient(96deg,rgba(8,8,8,0.6)_14%,rgba(8,8,8,0.2)_50%,rgba(8,8,8,0.5)_100%)]" />
             <div className="absolute inset-0 z-20 bg-[radial-gradient(circle_at_bottom,rgba(255,106,0,0.15),transparent_44%),linear-gradient(180deg,rgba(7,7,7,0.1)_0%,rgba(7,7,7,0.6)_86%)]" />
-            
+
             {/* Potężny gradient blendujący dół sekcji z resztą strony */}
             <div className="absolute inset-x-0 bottom-0 z-25 h-32 bg-gradient-to-t from-[#090909] to-transparent" />
           </motion.div>
@@ -1160,64 +1143,6 @@ export default function App() {
                   <MenuAccordion key={category.title} category={category} />
                 ))}
               </motion.div>
-            </div>
-          </div>
-        </section>
-
-        <section className="px-4 py-20 sm:px-6 lg:px-8 lg:py-24">
-          <div className="mx-auto max-w-7xl space-y-12">
-            <SectionHeading
-              eyebrow="Dlaczego LAWASZ"
-              title="Twój nowy ulubiony spot"
-              subtitle="Wiemy, co robimy, bo wkładamy w to własne mięso i mnóstwo charakteru. Wpadnij do Piekar Śląskich przekonać się na własnych kubkach smakowych."
-            />
-
-            <div className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr]">
-              <motion.div
-                variants={staggerContainer}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.15 }}
-                className="grid gap-4 md:grid-cols-3"
-              >
-                {trustPoints.map((point) => (
-                  <motion.article
-                    key={point.title}
-                    variants={revealItem}
-                    className="rounded-[1.7rem] border border-white/10 bg-white/6 p-5 shadow-[0_20px_60px_rgba(0,0,0,0.18)] backdrop-blur-sm"
-                  >
-                    <h3 className="text-lg font-semibold text-white">{point.title}</h3>
-                    <p className="mt-3 text-sm leading-7 text-white/66">{point.copy}</p>
-                  </motion.article>
-                ))}
-              </motion.div>
-
-              <motion.aside
-                initial={{ opacity: 0, x: 20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 0.72, ease: easeOutExpo }}
-                className="rounded-[1.9rem] border border-white/10 bg-white/6 p-6 shadow-[0_20px_60px_rgba(0,0,0,0.2)] backdrop-blur-sm"
-              >
-                <div className="space-y-5">
-                  <div>
-                    <div className="text-[11px] font-semibold uppercase tracking-[0.3em] text-[color:var(--ember)]">Social proof</div>
-                    <h3 className="mt-3 font-display text-4xl uppercase tracking-[0.1em] text-white">Lokal, który żyje offline i online</h3>
-                  </div>
-                  <div className="rounded-[1.4rem] border border-white/10 bg-black/18 p-4">
-                    <div className="text-xs uppercase tracking-[0.2em] text-white/45">Adres</div>
-                    <p className="mt-2 text-sm leading-7 text-white/82">{ADDRESS_LABEL}</p>
-                  </div>
-                  <div className="rounded-[1.4rem] border border-white/10 bg-black/18 p-4">
-                    <div className="text-xs uppercase tracking-[0.2em] text-white/45">Social media</div>
-                    <div className="mt-3 flex flex-wrap gap-3">
-                      {socialLinks.map((item) => (
-                        <SocialLink key={item.href} href={item.href} label={item.label} />
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </motion.aside>
             </div>
           </div>
         </section>
