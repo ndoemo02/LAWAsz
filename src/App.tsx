@@ -841,14 +841,14 @@ export default function App() {
                   key={isMobileViewport ? "mobile" : "desktop"}
                   className={cn(
                     "h-full w-full transition-opacity duration-700",
-                    isMobileViewport ? "object-contain object-top" : "object-cover object-center",
+                    isMobileViewport ? "object-contain object-top [mask-image:linear-gradient(to_bottom,black_80%,transparent_100%)]" : "object-cover object-center",
                     isMobileViewport && "mix-blend-screen pointer-events-none",
                     introVideoReady ? "opacity-100" : "opacity-0",
                   )}
                   autoPlay
                   muted
                   playsInline
-                  loop={true}
+                  loop={false}
                   preload="metadata"
                   aria-hidden="true"
                   onCanPlay={() => setIntroVideoReady(true)}
