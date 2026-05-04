@@ -946,12 +946,15 @@ export default function App() {
                     transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}
                     className="h-2 w-2 rounded-full bg-[color:var(--fire)] shadow-[0_0_16px_rgba(255,106,0,1)]"
                   />
-                  <div className="font-display text-[2.6rem] uppercase leading-none tracking-[0.18em] text-white drop-shadow-[0_2px_24px_rgba(255,106,0,0.5)]">
-                    LAWA<span className="text-[color:var(--fire)]">SZ</span>
+                  <div className="text-[10px] font-semibold uppercase tracking-[0.38em] text-[color:var(--fire)] shadow-[0_0_12px_rgba(255,106,0,0.4)]">
+                    Świadomy Street Food
                   </div>
-                  <div className="font-display -mt-1 text-[10px] uppercase tracking-[0.6em] text-white/60">
-                    KEBAB
-                  </div>
+                  <h1 className="font-display text-[2.4rem] uppercase leading-[1.1] tracking-[0.08em] text-white drop-shadow-[0_2px_24px_rgba(0,0,0,0.8)]">
+                    Własne mięso.<br/>Autorski lawasz.
+                  </h1>
+                  <p className="max-w-[280px] text-[11px] leading-relaxed tracking-wider text-white/70">
+                    Rzemieślniczy kebab w Piekarach Śląskich, na miejscu i na wynos.
+                  </p>
                   <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
