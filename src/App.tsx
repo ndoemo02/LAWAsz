@@ -852,7 +852,7 @@ export default function App() {
                   ref={isMobileViewport ? mobileVideoRef : null}
                   className={cn(
                     "h-full w-full transition-opacity duration-700",
-                    isMobileViewport ? "object-contain" : "object-cover object-center",
+                    isMobileViewport ? "object-contain object-top" : "object-cover object-center",
                     isMobileViewport && "mix-blend-screen pointer-events-none",
                     introVideoReady ? "opacity-100" : "opacity-0",
                   )}
