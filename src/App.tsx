@@ -75,7 +75,7 @@ const MAPS_URL =
   "https://www.google.com/maps/search/?api=1&query=Ksi%C4%99dza+J%C3%B3zefa+Krupy+11%2C+41-949+Piekary+%C5%9Al%C4%85skie";
 const ADDRESS_LABEL = "Księdza Józefa Krupy 11, 41-949 Piekary Śląskie";
 const INTRO_VIDEO_URL = "/video/intro.mp4?v=3";
-const INTRO_VIDEO_MOBILE_URL = "/video/mobile_modern.mp4";
+const INTRO_VIDEO_MOBILE_URL = "/video/mobile_clean_loop.mp4?v=5";
 const HEADER_LOGO_MARK_URL = "/image/Projekt bez nazwy.png";
 const INTRO_PLAYED_KEY = "lawasz-intro-burn-played";
 
@@ -622,6 +622,7 @@ export default function App() {
   const [introPlaying, setIntroPlaying] = useState(() => !hasPlayedIntroInSession());
   const [introVideoEnabled, setIntroVideoEnabled] = useState(true);
   const [introVideoReady, setIntroVideoReady] = useState(false);
+  const mobileVideoRef = useRef<HTMLVideoElement>(null);
   const [isMobileViewport, setIsMobileViewport] = useState(() =>
     typeof window !== "undefined" ? window.innerWidth < 768 : false,
   );
@@ -639,6 +640,15 @@ export default function App() {
       window.sessionStorage.setItem(INTRO_PLAYED_KEY, "1");
     } catch {
       // Brak sessionStorage nie powinien blokować startu strony.
+    }
+  };
+
+  const handleTimeUpdate = (e: React.SyntheticEvent<HTMLVideoElement>) => {
+    if (!isMobileViewport) return;
+    const video = e.currentTarget;
+    // Zapętlamy przed pojawieniem się jedzenia (5.5s) i rozmyciem logo
+    if (video.currentTime >= 5.4) {
+      video.currentTime = 0;
     }
   };
 
@@ -833,12 +843,13 @@ export default function App() {
 
       <main id="main-content" className="relative z-10">
         <section id="top" className="relative isolate min-h-screen scroll-mt-28">
-          <div className="hidden">v3-burn-active</div>
+          <div className="hidden">v5-clean-loop-active</div>
           <motion.div style={{ y: heroParallax }} className="absolute inset-0">
             {introVideoEnabled ? (
               <div className="absolute inset-0">
                 <video
                   key={isMobileViewport ? "mobile" : "desktop"}
+                  ref={isMobileViewport ? mobileVideoRef : null}
                   className={cn(
                     "h-full w-full object-cover object-center transition-opacity duration-700",
                     isMobileViewport && "mix-blend-screen pointer-events-none",
@@ -848,6 +859,7 @@ export default function App() {
                   muted
                   playsInline
                   loop={!isMobileViewport}
+                  onTimeUpdate={handleTimeUpdate}
                   preload="metadata"
                   aria-hidden="true"
                   onCanPlay={() => setIntroVideoReady(true)}
