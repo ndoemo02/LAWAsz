@@ -878,6 +878,9 @@ export default function App() {
             
             <div className="absolute inset-0 z-20 bg-[linear-gradient(96deg,rgba(8,8,8,0.6)_14%,rgba(8,8,8,0.2)_50%,rgba(8,8,8,0.5)_100%)]" />
             <div className="absolute inset-0 z-20 bg-[radial-gradient(circle_at_bottom,rgba(255,106,0,0.15),transparent_44%),linear-gradient(180deg,rgba(7,7,7,0.1)_0%,rgba(7,7,7,0.6)_86%)]" />
+            
+            {/* Potężny gradient blendujący dół sekcji z resztą strony */}
+            <div className="absolute inset-x-0 bottom-0 z-25 h-32 bg-gradient-to-t from-[#090909] to-transparent" />
           </motion.div>
 
           {introPlaying ? (
@@ -917,7 +920,7 @@ export default function App() {
           {introDone ? (
             <>
               {/* --- HERO SCREEN --- */}
-              <div className="relative z-10 mx-auto flex min-h-[100svh] w-full max-w-7xl flex-col items-center justify-between px-4 pb-4 pt-28 sm:justify-end sm:pt-32 sm:px-6 lg:px-8 pointer-events-none">
+              <div className="relative z-30 mx-auto flex min-h-[100svh] w-full max-w-7xl flex-col items-center justify-between px-4 pb-4 pt-28 sm:justify-end sm:pt-32 sm:px-6 lg:px-8 pointer-events-none">
                 {/* Mobile brand identity – eleganckie wejście po intro */}
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
