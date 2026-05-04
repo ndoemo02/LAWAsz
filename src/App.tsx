@@ -623,7 +623,7 @@ export default function App() {
   const [introVideoEnabled, setIntroVideoEnabled] = useState(true);
   const [introVideoReady, setIntroVideoReady] = useState(false);
   const [isMobileViewport, setIsMobileViewport] = useState(() =>
-    typeof window !== "undefined" ? window.innerWidth < 640 : false,
+    typeof window !== "undefined" ? window.innerWidth < 768 : false,
   );
   const reduceMotion = useReducedMotion();
   const { scrollY } = useScroll();
@@ -644,7 +644,7 @@ export default function App() {
 
   useEffect(() => {
     const syncViewport = () => {
-      setIsMobileViewport(window.innerWidth < 640);
+      setIsMobileViewport(window.innerWidth < 768);
     };
 
     syncViewport();
