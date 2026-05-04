@@ -39,6 +39,8 @@ type Sauce = {
 type SocialItem = {
   href: string;
   label: string;
+  handle: string;
+  icon: React.ReactNode;
 };
 
 type UpdateItem = {
@@ -258,13 +260,39 @@ const meatFacts = [
 ];
 
 const socialLinks: SocialItem[] = [
-  { href: "https://www.facebook.com/LAWAszKebab", label: "Facebook · @LAWAszKebab" },
-  { href: "https://www.instagram.com/lawasz.kebab/", label: "Instagram · @lawasz.kebab" },
-  { href: "https://www.tiktok.com/@lawaszkebab", label: "TikTok · @lawaszkebab" },
+  {
+    href: "https://www.facebook.com/LAWAszKebab",
+    label: "Facebook",
+    handle: "@LAWAszKebab",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+        <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+      </svg>
+    )
+  },
+  {
+    href: "https://www.instagram.com/lawasz.kebab/",
+    label: "Instagram",
+    handle: "@lawasz.kebab",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+        <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+        <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+      </svg>
+    )
+  },
+  {
+    href: "https://www.tiktok.com/@lawaszkebab",
+    label: "TikTok",
+    handle: "@lawaszkebab",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+        <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5" />
+      </svg>
+    )
+  },
 ];
-
-const footerPrimarySocial = [socialLinks[0]];
-const footerSecondarySocial = [socialLinks[2], socialLinks[1]];
 
 const navLinks = [
   { href: "#menu", label: "Menu" },
@@ -994,59 +1022,22 @@ export default function App() {
                 </motion.a>
               </div>
 
-              {/* --- POST HERO CONTACT & TRUST POINTS --- */}
-              <div className="relative z-10 mx-auto grid w-full max-w-7xl items-start gap-10 px-4 py-16 sm:px-6 lg:grid-cols-[minmax(0,1fr)_22rem] lg:px-8">
+              {/* --- POST HERO TRUST POINTS --- */}
+              <div className="relative z-10 mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
                 <motion.div
                   initial={{ opacity: 0, y: 22 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, amount: 0.2 }}
                   transition={{ duration: 0.72, ease: easeOutExpo }}
-                  className="grid gap-4 sm:grid-cols-3 lg:pt-8"
+                  className="grid gap-6 md:grid-cols-3 lg:pt-8"
                 >
                   {trustPoints.map((point) => (
-                    <div key={point.title} className="rounded-[1.5rem] border border-white/10 bg-black/24 p-5 shadow-[0_18px_50px_rgba(0,0,0,0.2)] backdrop-blur-sm">
-                      <div className="text-sm font-semibold uppercase tracking-[0.16em] text-white">{point.title}</div>
-                      <p className="mt-3 text-sm leading-6 text-white/62">{point.copy}</p>
+                    <div key={point.title} className="rounded-[1.7rem] border border-white/10 bg-white/6 p-6 shadow-[0_18px_50px_rgba(0,0,0,0.2)] backdrop-blur-sm">
+                      <h3 className="font-display text-xl tracking-wider text-[color:var(--fire)]">{point.title}</h3>
+                      <p className="mt-3 text-sm leading-7 text-white/70">{point.copy}</p>
                     </div>
                   ))}
                 </motion.div>
-
-                <motion.aside
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.2 }}
-                  transition={{ duration: 0.72, ease: easeOutExpo }}
-                  className="rounded-[2rem] border border-white/10 bg-black/28 p-5 shadow-[0_24px_70px_rgba(0,0,0,0.3)] backdrop-blur-xl"
-                >
-                  <div className="space-y-5">
-                    <div className="space-y-2">
-                      <div className="text-[11px] font-semibold uppercase tracking-[0.3em] text-[color:var(--ember)]">
-                        Szybki kontakt
-                      </div>
-                      <h2 className="font-display text-3xl uppercase tracking-[0.12em] text-white">Zadzwoń i wpadaj po swoje</h2>
-                    </div>
-
-                    <div className="space-y-4">
-                      <div className="rounded-[1.4rem] border border-white/10 bg-white/6 p-4">
-                        <div className="text-xs uppercase tracking-[0.22em] text-white/45">Adres</div>
-                        <address className="mt-2 not-italic text-sm leading-7 text-white/84">{ADDRESS_LABEL}</address>
-                      </div>
-                      <div className="rounded-[1.4rem] border border-white/10 bg-white/6 p-4">
-                        <div className="text-xs uppercase tracking-[0.22em] text-white/45">Telefon</div>
-                        <a
-                          href={PHONE_URL}
-                          className="mt-2 inline-flex min-h-11 items-center text-sm font-semibold text-white transition hover:text-[color:var(--gold)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
-                        >
-                          {PHONE_DISPLAY}
-                        </a>
-                      </div>
-                      <div className="rounded-[1.4rem] border border-white/10 bg-white/6 p-4">
-                        <div className="mb-3 text-xs uppercase tracking-[0.22em] text-white/45">Godziny</div>
-                        <HoursList compact />
-                      </div>
-                    </div>
-                  </div>
-                </motion.aside>
               </div>
             </>
           ) : null}
@@ -1283,34 +1274,37 @@ export default function App() {
           </div>
         </div>
 
-        <div className="mx-auto mt-10 max-w-7xl border-t border-white/8 pt-6 text-sm text-white/45">
-          <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-            <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-              <div>LAWASZ KEBAB · Piekary Śląskie</div>
-              {footerPrimarySocial.map((item) => (
-                <a
-                  key={item.href}
-                  href={item.href}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="transition hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
-                >
-                  {item.label}
-                </a>
-              ))}
+        <div className="mx-auto mt-12 max-w-7xl">
+          <div className="rounded-[2rem] border border-white/10 bg-white/[0.03] p-6 backdrop-blur-md">
+            <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+              <div className="flex flex-col gap-1">
+                <div className="font-display text-xl tracking-wider text-white">LAWASZ <span className="text-[color:var(--fire)]">KEBAB</span></div>
+                <div className="text-xs uppercase tracking-[0.2em] text-white/40">Piekary Śląskie · Autorski street food</div>
+              </div>
+              
+              <div className="flex flex-wrap gap-3">
+                {socialLinks.map((item) => (
+                  <a
+                    key={item.href}
+                    href={item.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="group flex items-center gap-3 rounded-2xl border border-white/8 bg-white/5 px-4 py-3 text-sm font-medium text-white transition-all duration-300 hover:border-[color:var(--fire)]/40 hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)]"
+                  >
+                    <span className="text-white/60 transition-colors group-hover:text-[color:var(--fire)]">
+                      {item.icon}
+                    </span>
+                    <div className="flex flex-col leading-none">
+                      <span className="text-[10px] uppercase tracking-wider text-white/40 group-hover:text-white/60 transition-colors">{item.label}</span>
+                      <span className="mt-1 text-sm">{item.handle}</span>
+                    </div>
+                  </a>
+                ))}
+              </div>
             </div>
-            <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-              {footerSecondarySocial.map((item) => (
-                <a
-                  key={item.href}
-                  href={item.href}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="transition hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
-                >
-                  {item.label}
-                </a>
-              ))}
+            
+            <div className="mt-8 border-t border-white/5 pt-6 text-center text-[10px] uppercase tracking-[0.3em] text-white/20">
+              © {new Date().getFullYear()} LAWASZ KEBAB. WSZYSTKIE PRAWA ZASTRZEŻONE.
             </div>
           </div>
         </div>
