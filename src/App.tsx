@@ -879,7 +879,6 @@ export default function App() {
             <div className="absolute inset-0 z-20 bg-[linear-gradient(96deg,rgba(8,8,8,0.6)_14%,rgba(8,8,8,0.2)_50%,rgba(8,8,8,0.5)_100%)]" />
             <div className="absolute inset-0 z-20 bg-[radial-gradient(circle_at_bottom,rgba(255,106,0,0.15),transparent_44%),linear-gradient(180deg,rgba(7,7,7,0.1)_0%,rgba(7,7,7,0.6)_86%)]" />
           </motion.div>
-          </motion.div>
 
           {introPlaying ? (
             <motion.div
