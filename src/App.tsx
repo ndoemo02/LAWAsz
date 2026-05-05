@@ -953,7 +953,7 @@ export default function App() {
           {introDone ? (
             <>
               {/* --- HERO SCREEN --- */}
-              <div className="relative z-30 mx-auto flex min-h-[100svh] w-full max-w-7xl flex-col items-start justify-end px-4 pb-6 pt-16 sm:px-6 lg:px-8 pointer-events-none">
+              <div className="relative z-30 mx-auto flex min-h-[100svh] w-full max-w-7xl flex-col items-start justify-center px-4 pb-6 pt-16 sm:px-6 lg:px-8 pointer-events-none">
                 
                 {/* HUD Elements (Dekoracja w stylu premium brutalism) */}
                 <motion.div 
