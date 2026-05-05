@@ -83,9 +83,12 @@ const INTRO_PLAYED_KEY = "lawasz-intro-burn-played";
 
 const openingHours: HourRow[] = [
   { day: "Poniedziałek", hours: "Zamknięte" },
-  { day: "Wtorek-Czwartek", hours: "12:00-20:00", highlight: true },
-  { day: "Piątek-Sobota", hours: "12:00-21:00", highlight: true },
-  { day: "Niedziela", hours: "12:00-21:00", note: "Weekendowe godziny warto potwierdzić w święta." },
+  { day: "Wtorek", hours: "12:00–20:00", highlight: true },
+  { day: "Środa", hours: "12:00–20:00", highlight: true },
+  { day: "Czwartek", hours: "12:00–20:00", highlight: true },
+  { day: "Piątek", hours: "12:00–21:00", highlight: true },
+  { day: "Sobota", hours: "12:00–21:00", highlight: true },
+  { day: "Niedziela", hours: "12:00–21:00", highlight: true, note: "Godziny w święta warto potwierdzić." },
 ];
 
 const featuredMenuItems: FeaturedItem[] = [
@@ -552,38 +555,31 @@ function SpitIllustration() {
   );
 }
 
-function StickyBottomBar() {
+function StickyBottomBar({ visible }: { visible: boolean }) {
   return (
     <motion.div
-      initial={{ y: 72, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      exit={{ y: 72, opacity: 0 }}
+      initial={{ y: 80 }}
+      animate={{ y: visible ? 0 : 80 }}
       transition={{ type: "spring", damping: 28, stiffness: 340, mass: 0.8 }}
-      className="fixed inset-x-0 bottom-0 z-50 border-t border-white/10 bg-[#090909]/92 px-4 py-3 backdrop-blur-xl md:hidden"
+      className="fixed inset-x-0 bottom-0 z-50 border-t border-white/10 bg-[#090909]/94 px-4 py-3 backdrop-blur-xl md:hidden"
     >
       <div className="mx-auto grid max-w-md grid-cols-2 gap-3">
-        <motion.a
+        <a
           href={PHONE_URL}
           aria-label="Zadzwoń i zamów"
-          initial={{ scale: 0.92, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ delay: 0.06, type: "spring", damping: 22, stiffness: 300 }}
           className="inline-flex min-h-12 items-center justify-center rounded-full bg-[color:var(--fire)] px-4 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-white shadow-[0_18px_40px_rgba(255,106,0,0.28)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
         >
           Zadzwoń
-        </motion.a>
-        <motion.a
+        </a>
+        <a
           href={MAPS_URL}
           target="_blank"
           rel="noreferrer"
           aria-label="Otwórz trasę do lokalu"
-          initial={{ scale: 0.92, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ delay: 0.12, type: "spring", damping: 22, stiffness: 300 }}
           className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/14 bg-white/8 px-4 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
         >
           Trasa
-        </motion.a>
+        </a>
       </div>
     </motion.div>
   );
@@ -1000,18 +996,21 @@ export default function App() {
                   Piekary Śląskie · odbiór osobisty
                 </motion.div>
 
-                {/* CTA buttons */}
-                <motion.div style={{ opacity: heroCtaOpacity, y: heroCtaY }} className="w-full flex justify-center z-20">
+                {/* CTA buttons – ukryte na mobile (zastępuje je StickyBottomBar), widoczne na sm+ */}
+                <motion.div
+                  style={{ opacity: heroCtaOpacity, y: heroCtaY }}
+                  className="w-full flex justify-center z-20"
+                >
                   <motion.div
                     initial={{ opacity: 0, y: 22 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.44, duration: 0.72, ease: easeOutExpo }}
-                    className="pointer-events-auto mb-4 sm:mb-6 flex w-full max-w-md flex-col justify-center gap-3 sm:max-w-2xl sm:flex-row sm:gap-4"
+                    className="pointer-events-auto mb-4 sm:mb-6 hidden w-full max-w-2xl sm:flex flex-row gap-4"
                   >
                     <a
                       href={PHONE_URL}
                       aria-label="Zadzwoń i zamów"
-                      className="inline-flex min-h-12 items-center justify-center rounded-full bg-[color:var(--fire)] px-7 py-4 text-sm font-semibold uppercase tracking-[0.24em] text-white shadow-[0_16px_40px_rgba(255,106,0,0.34)] transition hover:translate-y-[-2px] hover:bg-[color:var(--lava)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
+                      className="inline-flex min-h-14 flex-1 items-center justify-center rounded-full bg-[color:var(--fire)] px-7 py-4 text-sm font-semibold uppercase tracking-[0.24em] text-white shadow-[0_16px_40px_rgba(255,106,0,0.34)] transition hover:translate-y-[-2px] hover:bg-[color:var(--lava)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
                     >
                       Zadzwoń i zamów
                     </a>
@@ -1020,7 +1019,7 @@ export default function App() {
                       target="_blank"
                       rel="noreferrer"
                       aria-label="Otwórz trasę do lokalu"
-                      className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/14 bg-white/6 px-7 py-4 text-sm font-semibold uppercase tracking-[0.24em] text-white/88 backdrop-blur-sm transition hover:border-white/24 hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
+                      className="inline-flex min-h-14 flex-1 items-center justify-center rounded-full border border-white/14 bg-white/6 px-7 py-4 text-sm font-semibold uppercase tracking-[0.24em] text-white/88 backdrop-blur-sm transition hover:border-white/24 hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
                     >
                       Jak dojechać
                     </a>
@@ -1185,8 +1184,8 @@ export default function App() {
               className="space-y-8"
             >
               <div className="space-y-5">
-                <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.3em] text-[color:var(--ember)] backdrop-blur-sm">
-                  Tylko konkret
+                <div className="font-mono text-xs font-semibold uppercase tracking-[0.3em] text-[color:var(--gold)]">
+                  // Tylko konkret
                 </div>
                 <h2 className="font-display text-5xl uppercase leading-none text-white sm:text-6xl lg:text-7xl">
                   Robimy to
@@ -1255,7 +1254,7 @@ export default function App() {
       <footer id="kontakt" className="relative z-10 border-t border-white/10 px-4 py-16 sm:px-6 lg:px-8">
         <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.9fr_1.1fr]">
           <div className="space-y-6">
-            <Logo />
+            <Logo compact />
             <p className="max-w-xl text-base leading-8 text-white/72 sm:text-lg">
               LAWASZ KEBAB to lokalny kebab z własnym mięsem, autorskim lawaszem i prostym odbiorem osobistym. Dzwonisz, zamawiasz i wpadasz po gotowe.
             </p>
@@ -1341,9 +1340,7 @@ export default function App() {
         </div>
       </footer>
 
-      <AnimatePresence>
-        {introDone && scrolled && !mobileMenuOpen ? <StickyBottomBar key="sticky-bar" /> : null}
-      </AnimatePresence>
+      {introDone && !mobileMenuOpen ? <StickyBottomBar visible={!mobileMenuOpen} /> : null}
     </div>
   );
 }
