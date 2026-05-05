@@ -237,6 +237,33 @@ const trustPoints = [
   },
 ];
 
+const whyEatPoints = [
+  {
+    num: "01",
+    title: "W\u0142asne Mi\u0119so",
+    copy: "\u017cadnych gotowc\u00f3w z hurtowni. Sami marynujemy i nabijamy ro\u017cen autorsk\u0105 kompozycj\u0105 z w\u0142asn\u0105 receptur\u0105.",
+    accent: true,
+  },
+  {
+    num: "02",
+    title: "Autorski Lawasz",
+    copy: "Wypiekany tak, by chrupia\u0142 dok\u0142adnie tam gdzie powinien. Nie z worka, nie z mro\u017conki. Z rzemios\u0142a.",
+    accent: false,
+  },
+  {
+    num: "03",
+    title: "Zero Po\u015breednik\u00f3w",
+    copy: "Dzwonisz, odbierasz gor\u0105cego lawasza. Bez apek, bez kuriera, bez kompromis\u00f3w. Prosty jak ogie\u0144.",
+    accent: true,
+  },
+  {
+    num: "04",
+    title: "Smak Kt\u00f3ry Wraca",
+    copy: "Robimy to inaczej ni\u017c inni i po to wracasz. Ka\u017cda porcja to dow\u00f3d, \u017ce street food mo\u017ce by\u0107 rzemios\u0142em.",
+    accent: false,
+  },
+];
+
 const pickupSteps = [
   {
     number: "01",
