@@ -1,4 +1,4 @@
-import { AnimatePresence, motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { AnimatePresence, MotionValue, motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { useEffect, useState } from "react";
 import { cn } from "./utils/cn";
 
@@ -555,12 +555,10 @@ function SpitIllustration() {
   );
 }
 
-function StickyBottomBar({ visible }: { visible: boolean }) {
+function StickyBottomBar({ yOffset }: { yOffset: MotionValue<number> }) {
   return (
     <motion.div
-      initial={{ y: 80 }}
-      animate={{ y: visible ? 0 : 80 }}
-      transition={{ type: "spring", damping: 28, stiffness: 340, mass: 0.8 }}
+      style={{ y: yOffset }}
       className="fixed inset-x-0 bottom-0 z-50 border-t border-white/10 bg-[#090909]/94 px-4 py-3 backdrop-blur-xl md:hidden"
     >
       <div className="mx-auto grid max-w-md grid-cols-2 gap-3">
@@ -634,8 +632,10 @@ export default function App() {
   const reduceMotion = useReducedMotion();
   const { scrollY } = useScroll();
   const heroParallax = useTransform(scrollY, [0, 500], [0, reduceMotion ? 0 : 60]);
-  const heroCtaOpacity = useTransform(scrollY, [0, 60], [1, 0]);
-  const heroCtaY = useTransform(scrollY, [0, 60], [0, 40]);
+  const heroCtaOpacity = useTransform(scrollY, [0, 90], [1, 0]);
+  const heroCtaY = useTransform(scrollY, [0, 90], [0, 28]);
+  const heroCtaScale = useTransform(scrollY, [0, 90], [1, 0.88]);
+  const stickyBarY = useTransform(scrollY, [30, 110], [80, 0]);
 
   const finishIntro = () => {
     setIntroPlaying(false);
@@ -996,21 +996,21 @@ export default function App() {
                   Piekary Śląskie · odbiór osobisty
                 </motion.div>
 
-                {/* CTA buttons – ukryte na mobile (zastępuje je StickyBottomBar), widoczne na sm+ */}
+                {/* CTA buttons z animacją morph — na mobile znikają i “stają się” sticky barem */}
                 <motion.div
-                  style={{ opacity: heroCtaOpacity, y: heroCtaY }}
+                  style={{ opacity: heroCtaOpacity, y: heroCtaY, scale: heroCtaScale }}
                   className="w-full flex justify-center z-20"
                 >
                   <motion.div
                     initial={{ opacity: 0, y: 22 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.44, duration: 0.72, ease: easeOutExpo }}
-                    className="pointer-events-auto mb-4 sm:mb-6 hidden w-full max-w-2xl sm:flex flex-row gap-4"
+                    className="pointer-events-auto mb-4 sm:mb-6 flex w-full max-w-md flex-col gap-3 sm:max-w-2xl sm:flex-row sm:gap-4"
                   >
                     <a
                       href={PHONE_URL}
                       aria-label="Zadzwoń i zamów"
-                      className="inline-flex min-h-14 flex-1 items-center justify-center rounded-full bg-[color:var(--fire)] px-7 py-4 text-sm font-semibold uppercase tracking-[0.24em] text-white shadow-[0_16px_40px_rgba(255,106,0,0.34)] transition hover:translate-y-[-2px] hover:bg-[color:var(--lava)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
+                      className="inline-flex min-h-14 flex-1 items-center justify-center rounded-full bg-[color:var(--fire)] px-7 py-4 text-sm font-semibold uppercase tracking-[0.24em] text-white shadow-[0_16px_40px_rgba(255,106,0,0.34)] transition hover:bg-[color:var(--lava)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
                     >
                       Zadzwoń i zamów
                     </a>
@@ -1059,6 +1059,84 @@ export default function App() {
               </div>
             </>
           ) : null}
+        </section>
+
+        {/* === DLACZEGO TU JESZ? === */}
+        <section id="dlaczego" className="scroll-mt-28">
+          {/* Eyebrow header */}
+          <div className="mx-auto max-w-7xl px-4 pb-6 pt-16 sm:px-6 lg:px-8">
+            <div className="font-mono text-xs font-semibold uppercase tracking-[0.3em] text-[color:var(--gold)]">
+              // Dlaczego tu jesz?
+            </div>
+          </div>
+
+          {/* Numbered rows */}
+          {whyEatPoints.map((point, i) => (
+            <motion.div
+              key={point.num}
+              initial={{ opacity: 0, y: 28 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.25 }}
+              transition={{ duration: 0.55, delay: i * 0.07, ease: easeOutExpo }}
+              className={cn(
+                "border-b border-white/8",
+                point.accent ? "bg-white/[0.015]" : ""
+              )}
+            >
+              <div className="mx-auto grid max-w-7xl grid-cols-[80px_1fr] gap-4 px-4 py-8 sm:grid-cols-[120px_1fr_auto] sm:gap-8 sm:px-6 lg:grid-cols-[180px_1fr_auto] lg:items-center lg:gap-16 lg:px-8">
+                {/* Number */}
+                <div className={cn(
+                  "font-display leading-none",
+                  "text-7xl sm:text-8xl lg:text-[9rem]",
+                  point.accent ? "text-[color:var(--fire)]" : "text-white/12"
+                )}>
+                  {point.num}
+                </div>
+
+                {/* Title */}
+                <div className="flex flex-col justify-center gap-2">
+                  <h3 className={cn(
+                    "font-display uppercase leading-none",
+                    "text-4xl sm:text-5xl lg:text-6xl",
+                    point.accent ? "text-white" : "text-[color:var(--fire)]"
+                  )}>
+                    {point.title}
+                  </h3>
+                  {/* Copy visible only on mobile below title */}
+                  <p className="mt-1 text-sm leading-7 text-white/56 sm:hidden">{point.copy}</p>
+                </div>
+
+                {/* Copy visible on sm+ in right column */}
+                <p className="hidden max-w-xs text-sm leading-7 text-white/56 sm:block lg:max-w-sm">{point.copy}</p>
+              </div>
+            </motion.div>
+          ))}
+
+          {/* Bottom CTA strip */}
+          <div className="border-b border-white/8 bg-[color:var(--fire)]/[0.06]">
+            <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 px-4 py-10 sm:flex-row sm:px-6 lg:px-8">
+              <div className="space-y-1 text-center sm:text-left">
+                <div className="font-display text-3xl uppercase tracking-wide text-white sm:text-4xl">
+                  Przekonany?
+                </div>
+                <div className="text-sm text-white/52 uppercase tracking-[0.2em]">Piekary Śląskie &middot; odbiór osobisty</div>
+              </div>
+              <div className="flex flex-col gap-3 sm:flex-row">
+                <a
+                  href={PHONE_URL}
+                  className="inline-flex min-h-12 items-center justify-center rounded-full bg-[color:var(--fire)] px-8 py-3 text-sm font-semibold uppercase tracking-[0.22em] text-white shadow-[0_14px_36px_rgba(255,106,0,0.32)] transition hover:bg-[color:var(--lava)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)]"
+                >
+                  Zadzwoń i zamów
+                </a>
+                <a
+                  href="#menu"
+                  className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/14 bg-white/6 px-8 py-3 text-sm font-semibold uppercase tracking-[0.22em] text-white/86 backdrop-blur-sm transition hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)]"
+                >
+                  Zobacz menu
+                </a>
+              </div>
+            </div>
+          </div>
         </section>
 
         <section id="odbior" className="relative scroll-mt-28 overflow-hidden px-4 py-20 sm:px-6 lg:px-8 lg:py-24">
@@ -1340,7 +1418,7 @@ export default function App() {
         </div>
       </footer>
 
-      {introDone && !mobileMenuOpen ? <StickyBottomBar visible={!mobileMenuOpen} /> : null}
+      {introDone && !mobileMenuOpen ? <StickyBottomBar yOffset={stickyBarY} /> : null}
     </div>
   );
 }
