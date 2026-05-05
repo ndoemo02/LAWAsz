@@ -1,0 +1,91 @@
+TASK: Mobile UX improvements — lawasz.vercel.app
+Context
+You are working on a Next.js / static site project for a local Polish street food restaurant "LAWASZ KEBAB" (Piekary Śląskie). The live site is at https://lawasz.vercel.app/
+
+Read all files in the project to understand the current structure before making any changes. The site is a single-page layout with sections: hero, how-it-works, bestsellers, full menu, about, sauces, footer/contact.
+
+Goal
+Implement two focused mobile UX improvements:
+
+1. Sticky top navigation — keep "Menu" link in top-right
+The current header/nav should:
+
+On desktop: keep current layout as-is (do not modify desktop styles)
+
+On mobile (max-width: 768px):
+
+Logo/brand name stays on the left
+
+Single text link "Menu" on the right — anchor-scrolls to #pelne-menu section
+
+Sticky: position: sticky; top: 0; z-index: 50;
+
+Background: same as current nav or semi-transparent with backdrop-filter: blur(8px)
+
+Keep it minimal — no hamburger menu, no extra items
+
+2. Sticky bottom bar — mobile only
+Add a fixed bottom action bar visible only on mobile (max-width: 768px):
+
+text
+┌─────────────────────────────────────────────┐
+│  📞  Zadzwoń          🗺️  Trasa             │
+└─────────────────────────────────────────────┘
+Specs:
+
+position: fixed; bottom: 0; left: 0; right: 0; z-index: 50;
+
+Two equal-width buttons side by side
+
+Left button — "Zadzwoń":
+
+href="tel:+48789969998"
+
+Phone icon (use existing icon system or simple SVG inline)
+
+Primary accent color (dark/charcoal background matching current brand, white text)
+
+Right button — "Trasa":
+
+href="https://www.google.com/maps/search/?api=1&query=Ksi%C4%99dza+J%C3%B3zefa+Krupy+11%2C+41-949+Piekary+%C5%9Al%C4%85skie"
+
+target="_blank" rel="noopener noreferrer"
+
+Map pin icon
+
+Secondary style (lighter background, contrasting text — match existing secondary button style)
+
+Height: min 56px (touch target ≥ 44px per WCAG)
+
+Add padding-bottom: env(safe-area-inset-bottom) for iPhone notch support
+
+Add padding-bottom: 72px to the page <body> or main wrapper on mobile so the bottom bar doesn't cover the footer content
+
+3. Remove or relocate duplicate CTAs
+The current page has "ZADZWOŃ I ZAMÓW" + "PEŁNE MENU" buttons after the bestsellers section. After adding the sticky bottom bar:
+
+Keep the "PEŁNE MENU" button as anchor CTA in that section (it's useful in-context)
+
+The "ZADZWOŃ I ZAMÓW" button in that mid-page position can stay but make it secondary style to avoid visual competition with the sticky bar
+
+Do NOT remove the contact section CTA buttons at the bottom — those serve users who scroll to the end
+
+Constraints
+Do NOT change any copy/text
+
+Do NOT change brand colors, fonts, or visual identity
+
+Do NOT modify desktop layout (apply all new styles inside @media (max-width: 768px))
+
+Preserve all existing anchor IDs (#pelne-menu, #main-content, etc.)
+
+Safe area insets are required for iOS: env(safe-area-inset-bottom) on the sticky bar
+
+Deliverables
+Modify only the files necessary. After changes:
+
+Confirm which files were modified
+
+Show the CSS diff for the sticky bar
+
+Verify no existing desktop styles were broken

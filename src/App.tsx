@@ -390,11 +390,10 @@ function SectionHeading({
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.32 }}
-      className="max-w-3xl space-y-4"
+      className="relative z-10 max-w-3xl space-y-4"
     >
-      <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/6 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.3em] text-[color:var(--ember)] backdrop-blur-sm">
-        <span className="h-2 w-2 rounded-full bg-[color:var(--fire)] shadow-[0_0_20px_rgba(255,106,0,0.8)]" />
-        {eyebrow}
+      <div className="font-mono text-xs font-semibold uppercase tracking-[0.3em] text-[color:var(--gold)]">
+        // {eyebrow}
       </div>
       <div className="space-y-3">
         <h2 className="font-display text-5xl uppercase leading-none text-white sm:text-6xl lg:text-7xl">
@@ -932,6 +931,26 @@ export default function App() {
             <>
               {/* --- HERO SCREEN --- */}
               <div className="relative z-30 mx-auto flex min-h-[100svh] w-full max-w-7xl flex-col items-center justify-between px-4 pb-4 pt-28 sm:justify-end sm:pt-32 sm:px-6 lg:px-8 pointer-events-none">
+                
+                {/* HUD Elements (Dekoracja w stylu premium brutalism) */}
+                <motion.div 
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 1.2, duration: 1 }}
+                  className="absolute left-4 top-1/2 hidden -translate-y-1/2 flex-col items-center gap-6 lg:flex pointer-events-auto"
+                >
+                  <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-[color:var(--gold)] [writing-mode:vertical-rl] rotate-180 opacity-70">
+                    // KRAFT_KEBAB_01
+                  </div>
+                  <div className="h-32 w-px bg-white/10 relative">
+                    <motion.div 
+                      animate={{ height: ["0%", "100%", "0%"], top: ["0%", "0%", "100%"] }}
+                      transition={{ duration: 4, ease: "easeInOut", repeat: Infinity }}
+                      className="absolute w-full bg-[color:var(--fire)] shadow-[0_0_10px_rgba(255,106,0,0.8)]" 
+                    />
+                  </div>
+                </motion.div>
+
                 {/* Mobile brand identity – eleganckie wejście po intro */}
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
@@ -1043,8 +1062,11 @@ export default function App() {
           ) : null}
         </section>
 
-        <section id="odbior" className="scroll-mt-28 px-4 py-20 sm:px-6 lg:px-8 lg:py-24">
-          <div className="mx-auto max-w-7xl">
+        <section id="odbior" className="relative scroll-mt-28 overflow-hidden px-4 py-20 sm:px-6 lg:px-8 lg:py-24">
+          <div className="pointer-events-none absolute -left-10 top-0 select-none font-display text-[22vw] leading-none text-white/[0.02]">
+            ODBIÓR
+          </div>
+          <div className="relative z-10 mx-auto max-w-7xl">
             <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
               <SectionHeading
                 eyebrow="Jak zamawiasz"
@@ -1075,8 +1097,11 @@ export default function App() {
           </div>
         </section>
 
-        <section id="menu" className="scroll-mt-28 px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
-          <div className="mx-auto max-w-7xl space-y-12">
+        <section id="menu" className="relative scroll-mt-28 overflow-hidden px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
+          <div className="pointer-events-none absolute -right-10 top-20 select-none font-display text-[26vw] leading-none text-[color:var(--fire)]/[0.02]">
+            MENU
+          </div>
+          <div className="relative z-10 mx-auto max-w-7xl space-y-12">
             <SectionHeading
               eyebrow="Menu"
               title="Najczęściej zamawiane"
@@ -1138,8 +1163,11 @@ export default function App() {
           </div>
         </section>
 
-        <section id="mieso" className="scroll-mt-28 px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
-          <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[0.92fr_1.08fr] lg:items-center">
+        <section id="mieso" className="relative scroll-mt-28 overflow-hidden px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
+          <div className="pointer-events-none absolute left-0 top-1/2 -translate-y-1/2 select-none font-display text-[30vw] leading-none text-white/[0.02]">
+            KRAFT
+          </div>
+          <div className="relative z-10 mx-auto grid max-w-7xl gap-12 lg:grid-cols-[0.92fr_1.08fr] lg:items-center">
             <motion.div
               initial={{ opacity: 0, x: -40, filter: "blur(12px)" }}
               whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
@@ -1182,8 +1210,11 @@ export default function App() {
           </div>
         </section>
 
-        <section id="sosy" className="scroll-mt-28 px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
-          <div className="mx-auto max-w-7xl space-y-12">
+        <section id="sosy" className="relative scroll-mt-28 overflow-hidden px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
+          <div className="pointer-events-none absolute -right-20 top-0 select-none font-display text-[24vw] leading-none text-[color:var(--fire)]/[0.02]">
+            OGIEŃ
+          </div>
+          <div className="relative z-10 mx-auto max-w-7xl space-y-12">
             <SectionHeading
               eyebrow="Sosy"
               title="Dobierz swój ogień"
