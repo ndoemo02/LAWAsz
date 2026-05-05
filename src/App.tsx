@@ -953,7 +953,7 @@ export default function App() {
           {introDone ? (
             <>
               {/* --- HERO SCREEN --- */}
-              <div className="relative z-30 mx-auto flex min-h-[100svh] w-full max-w-7xl flex-col items-start justify-end px-4 pb-6 pt-28 sm:px-6 lg:px-8 pointer-events-none">
+              <div className="relative z-30 mx-auto flex min-h-[100svh] w-full max-w-7xl flex-col items-start justify-end px-4 pb-6 pt-16 sm:px-6 lg:px-8 pointer-events-none">
                 
                 {/* HUD Elements (Dekoracja w stylu premium brutalism) */}
                 <motion.div 
@@ -992,8 +992,8 @@ export default function App() {
 
                     {/* Giant two-colour headline */}
                     <h1 className="font-display uppercase leading-none">
-                      <span className="block text-[4rem] text-[color:var(--fire)] drop-shadow-[0_2px_24px_rgba(255,106,0,0.5)] sm:text-[5.5rem] lg:text-[7rem]">&#346;wiadomy</span>
-                      <span className="block text-[4rem] text-white sm:text-[5.5rem] lg:text-[7rem]">Street Food</span>
+                      <span className="block text-[4rem] text-[color:var(--fire)] drop-shadow-[0_2px_24px_rgba(255,106,0,0.5)] sm:text-[5.5rem] lg:text-[5.5rem]">&#346;wiadomy</span>
+                      <span className="block text-[4rem] text-white sm:text-[5.5rem] lg:text-[5.5rem]">Street Food</span>
                     </h1>
 
                     {/* Italic tagline — Playfair Display per brand brief */}
@@ -1043,7 +1043,7 @@ export default function App() {
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.5, duration: 0.88, ease: easeOutExpo }}
-                    className="hidden lg:flex flex-col gap-4 w-72 shrink-0 rounded-[1.8rem] border border-white/12 bg-black/54 p-6 backdrop-blur-xl"
+                    className="hidden lg:flex flex-col gap-4 w-64 shrink-0 rounded-[1.8rem] border border-white/12 bg-black/54 p-5 backdrop-blur-xl"
                   >
                     <Logo compact />
                     <div className="space-y-3 border-t border-white/8 pt-4 text-sm">
