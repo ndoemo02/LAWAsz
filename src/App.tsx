@@ -953,7 +953,7 @@ export default function App() {
           {introDone ? (
             <>
               {/* --- HERO SCREEN --- */}
-              <div className="relative z-30 mx-auto flex min-h-[100svh] w-full max-w-7xl flex-col items-center justify-between px-4 pb-4 pt-28 sm:justify-end sm:pt-32 sm:px-6 lg:px-8 pointer-events-none">
+              <div className="relative z-30 mx-auto flex min-h-[100svh] w-full max-w-7xl flex-col items-start justify-end px-4 pb-6 pt-28 sm:px-6 lg:px-8 pointer-events-none">
                 
                 {/* HUD Elements (Dekoracja w stylu premium brutalism) */}
                 <motion.div 
@@ -974,97 +974,100 @@ export default function App() {
                   </div>
                 </motion.div>
 
-                {/* Mobile brand identity – eleganckie wejście po intro */}
+                {/* === HERO COPY === */}
                 <motion.div
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={{ opacity: 0, y: 24 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 1, delay: 0.3, ease: easeOutExpo }}
-                  className="pointer-events-none flex sm:hidden flex-col items-center gap-3 pt-4 text-center"
+                  transition={{ delay: 0.18, duration: 0.88, ease: easeOutExpo }}
+                  className="pointer-events-auto w-full flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between lg:gap-10"
                 >
-                  <motion.div
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ delay: 0.8, type: "spring", stiffness: 200 }}
-                    className="h-2 w-2 rounded-full bg-[color:var(--fire)] shadow-[0_0_16px_rgba(255,106,0,1)]"
-                  />
-                  <motion.div 
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 1 }}
-                    className="text-[10px] font-semibold uppercase tracking-[0.38em] text-[color:var(--fire)]"
-                  >
-                    Świadomy Street Food
-                  </motion.div>
-                  <h1 className="font-display text-[2.4rem] uppercase leading-[1.1] tracking-[0.08em] text-white drop-shadow-[0_4px_32px_rgba(0,0,0,0.9)]">
-                    Własne mięso.<br/>Autorski lawasz.
-                  </h1>
-                  <p className="max-w-[280px] text-[11px] leading-relaxed tracking-wider text-white/80">
-                    Rzemieślniczy kebab w Piekarach Śląskich, na miejscu i na wynos.
-                  </p>
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 1.4, duration: 0.6 }}
-                    className="mt-2 inline-flex items-center gap-2 rounded-full border border-white/12 bg-black/40 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.28em] text-white/70 backdrop-blur-sm"
-                  >
-                    <span className="h-1.5 w-1.5 rounded-full bg-[color:var(--fire)] shadow-[0_0_10px_rgba(255,106,0,0.9)]" />
-                    Piekary Śląskie · odbiór osobisty
-                  </motion.div>
-                </motion.div>
+                  {/* LEFT: Main copy */}
+                  <div className="flex flex-col gap-4 max-w-2xl">
 
-                {/* Desktop location badge */}
-                <motion.div
-                  initial={{ opacity: 0, y: 26 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.62, ease: easeOutExpo }}
-                  className="pointer-events-auto mb-4 hidden sm:inline-flex w-fit items-center gap-3 rounded-full border border-white/12 bg-white/6 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.3em] text-white/80 backdrop-blur-sm"
-                >
-                  <span className="h-2.5 w-2.5 rounded-full bg-[color:var(--fire)] shadow-[0_0_18px_rgba(255,106,0,0.9)]" />
-                  Piekary Śląskie · odbiór osobisty
-                </motion.div>
+                    {/* Location badge */}
+                    <div className="inline-flex items-center gap-2 self-start rounded-2xl border border-white/12 bg-black/50 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.24em] text-white/80 backdrop-blur-sm">
+                      <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[color:var(--fire)] shadow-[0_0_10px_rgba(255,106,0,0.9)]" />
+                      Piekary Śląskie — Street Food Nowej Generacji
+                    </div>
 
-                {/* CTA buttons z animacją morph — na mobile znikają i “stają się” sticky barem */}
-                <motion.div
-                  style={{ opacity: heroCtaOpacity, y: heroCtaY, scale: heroCtaScale }}
-                  className="w-full flex justify-center z-20"
-                >
-                  <motion.div
-                    initial={{ opacity: 0, y: 22 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.44, duration: 0.72, ease: easeOutExpo }}
-                    className="pointer-events-auto mb-4 sm:mb-6 flex w-full max-w-md flex-col gap-3 sm:max-w-2xl sm:flex-row sm:gap-4"
-                  >
-                    <a
-                      href={PHONE_URL}
-                      aria-label="Zadzwoń i zamów"
-                      className="inline-flex min-h-14 flex-1 items-center justify-center rounded-full bg-[color:var(--fire)] px-7 py-4 text-sm font-semibold uppercase tracking-[0.24em] text-white shadow-[0_16px_40px_rgba(255,106,0,0.34)] transition hover:bg-[color:var(--lava)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
+                    {/* Giant two-colour headline */}
+                    <h1 className="font-display uppercase leading-none">
+                      <span className="block text-[4rem] text-[color:var(--fire)] drop-shadow-[0_2px_24px_rgba(255,106,0,0.5)] sm:text-[5.5rem] lg:text-[7rem]">&#346;wiadomy</span>
+                      <span className="block text-[4rem] text-white sm:text-[5.5rem] lg:text-[7rem]">Street Food</span>
+                    </h1>
+
+                    {/* Italic tagline */}
+                    <p className="max-w-lg text-lg italic font-medium leading-8 text-white/90 sm:text-xl">
+                      Rzemieślnicze mięso. Autorski lawasz. Zero kompromisów.
+                    </p>
+
+                    {/* Single body line */}
+                    <p className="max-w-md text-sm leading-7 text-white/58">
+                      Ciemny, ognisty i bezczelnie konkretny kebab z Piekar Śląskich — robiony na miejscu, bez gotowców i bez przepraszania.
+                    </p>
+
+                    {/* CTAs with morph scroll animation */}
+                    <motion.div
+                      style={{ opacity: heroCtaOpacity, y: heroCtaY, scale: heroCtaScale }}
+                      className="flex w-full flex-col gap-3 sm:flex-row"
                     >
-                      Zadzwoń i zamów
-                    </a>
-                    <a
-                      href={MAPS_URL}
-                      target="_blank"
-                      rel="noreferrer"
-                      aria-label="Otwórz trasę do lokalu"
-                      className="inline-flex min-h-14 flex-1 items-center justify-center rounded-full border border-white/14 bg-white/6 px-7 py-4 text-sm font-semibold uppercase tracking-[0.24em] text-white/88 backdrop-blur-sm transition hover:border-white/24 hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
+                      <a
+                        href="#menu"
+                        className="inline-flex min-h-14 flex-1 items-center justify-center rounded-full bg-[color:var(--fire)] px-7 py-4 text-sm font-semibold uppercase tracking-[0.24em] text-white shadow-[0_16px_40px_rgba(255,106,0,0.36)] transition hover:bg-[color:var(--lava)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)]"
+                      >
+                        Zobacz menu
+                      </a>
+                      <a
+                        href="#mieso"
+                        className="inline-flex min-h-14 flex-1 items-center justify-center rounded-full border border-white/14 bg-white/6 px-7 py-4 text-sm font-semibold uppercase tracking-[0.24em] text-white/88 backdrop-blur-sm transition hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)]"
+                      >
+                        Nasza historia
+                      </a>
+                    </motion.div>
+
+                    {/* Scroll hint */}
+                    <motion.a
+                      href="#dlaczego"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 1.1, duration: 0.8 }}
+                      className="flex items-center gap-3 self-start text-[10px] font-semibold uppercase tracking-[0.32em] text-white/40"
                     >
-                      Jak dojechać
-                    </a>
+                      <span className="h-6 w-px bg-white/20" />
+                      Scroll
+                    </motion.a>
+                  </div>
+
+                  {/* RIGHT: Info card — desktop only */}
+                  <motion.div
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.5, duration: 0.88, ease: easeOutExpo }}
+                    className="hidden lg:flex flex-col gap-4 w-72 shrink-0 rounded-[1.8rem] border border-white/12 bg-black/54 p-6 backdrop-blur-xl"
+                  >
+                    <Logo compact />
+                    <div className="space-y-3 border-t border-white/8 pt-4 text-sm">
+                      <div>
+                        <div className="text-[10px] uppercase tracking-[0.2em] text-white/38">Slogan</div>
+                        <div className="mt-1 text-white/78">Świadomy street food. Zero kompromisów.</div>
+                      </div>
+                      <div>
+                        <div className="text-[10px] uppercase tracking-[0.2em] text-white/38">Signature</div>
+                        <div className="mt-1 text-white/78">Mięso naszej produkcji zawinięte w autorski LAWASZ.</div>
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2 border-t border-white/8 pt-4">
+                      <div className="rounded-xl border border-white/8 bg-white/4 p-3">
+                        <div className="text-[10px] uppercase tracking-[0.16em] text-white/38">Adres</div>
+                        <div className="mt-1 text-xs text-white/74">ul. Księdza Józefa Krupy 11</div>
+                      </div>
+                      <div className="rounded-xl border border-white/8 bg-white/4 p-3">
+                        <div className="text-[10px] uppercase tracking-[0.16em] text-white/38">Telefon</div>
+                        <div className="mt-1 text-xs text-white/74">+48 789 969 998</div>
+                      </div>
+                    </div>
                   </motion.div>
                 </motion.div>
-
-                <motion.a
-                  href="#odbior"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.96, duration: 0.8 }}
-                  className="pointer-events-auto hidden flex-col items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.32em] text-white/55 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a] lg:flex"
-                >
-                  Scroll
-                  <span className="flex h-12 w-7 items-start justify-center rounded-full border border-white/16 p-1.5">
-                    <span className="h-2.5 w-2.5 animate-bounce rounded-full bg-[color:var(--fire)]" />
-                  </span>
-                </motion.a>
               </div>
 
               {/* --- POST HERO TRUST POINTS --- */}
