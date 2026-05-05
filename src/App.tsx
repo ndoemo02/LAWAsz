@@ -996,8 +996,8 @@ export default function App() {
                       <span className="block text-[4rem] text-white sm:text-[5.5rem] lg:text-[7rem]">Street Food</span>
                     </h1>
 
-                    {/* Italic tagline */}
-                    <p className="max-w-lg text-lg italic font-medium leading-8 text-white/90 sm:text-xl">
+                    {/* Italic tagline — Playfair Display per brand brief */}
+                    <p className="font-tagline max-w-lg text-lg leading-8 text-white/90 sm:text-xl">
                       Rzemieślnicze mięso. Autorski lawasz. Zero kompromisów.
                     </p>
 
