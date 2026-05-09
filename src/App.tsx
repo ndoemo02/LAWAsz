@@ -926,7 +926,9 @@ export default function App() {
               transition={{ duration: 4.8, times: [0, 0.76, 1], ease: "easeInOut" }}
               className="absolute inset-0 z-30 flex items-center justify-center overflow-hidden bg-[radial-gradient(circle_at_center,rgba(255,106,0,0.07),transparent_34%),linear-gradient(180deg,rgba(5,5,5,0.4)_0%,rgba(8,8,8,0.18)_42%,rgba(8,8,8,0)_72%),linear-gradient(180deg,rgba(4,4,4,0.82)_0%,rgba(4,4,4,0.12)_54%,rgba(4,4,4,0)_100%)] px-4 sm:px-6"
             >
-              <div className="relative flex w-full max-w-md items-center justify-center">
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[38svh] min-h-56 bg-[linear-gradient(180deg,rgba(9,9,9,0)_0%,rgba(9,9,9,0.5)_46%,#090909_94%)] backdrop-blur-[2px] [mask-image:linear-gradient(to_bottom,transparent_0%,black_34%,black_100%)]" />
+              <div className="pointer-events-none absolute inset-x-[-18%] bottom-[-30%] h-[28svh] min-h-40 bg-[radial-gradient(ellipse_at_center,rgba(255,106,0,0.14)_0%,rgba(255,61,0,0.06)_42%,transparent_74%)] blur-2xl" />
+              <div className="relative z-10 flex w-full max-w-md items-center justify-center">
                 <motion.div
                   className="absolute inset-x-6 h-52 rounded-full bg-[radial-gradient(circle,rgba(255,130,36,0.28),rgba(255,61,0,0.04)_58%,transparent_76%)] blur-3xl"
                   animate={{ opacity: [0.16, 0.74, 0.28, 0], scale: [0.94, 1.03, 1.08, 1.12], y: [10, 0, -12, -18] }}
