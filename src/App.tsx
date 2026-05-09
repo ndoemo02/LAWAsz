@@ -913,7 +913,10 @@ export default function App() {
             <div className="absolute inset-0 z-20 bg-[radial-gradient(circle_at_bottom,rgba(255,106,0,0.15),transparent_44%),linear-gradient(180deg,rgba(7,7,7,0.1)_0%,rgba(7,7,7,0.6)_86%)]" />
 
             {/* Potężny gradient blendujący dół sekcji z resztą strony */}
-            <div className="absolute inset-x-0 bottom-0 z-25 h-32 bg-gradient-to-t from-[#090909] to-transparent" />
+            <div className="pointer-events-none absolute inset-x-0 top-[calc(100svh-36svh)] z-[25] h-[36svh] min-h-56 overflow-hidden sm:top-[calc(100svh-28svh)] sm:h-[28svh] md:top-auto md:bottom-0 md:h-36 md:min-h-0">
+              <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(9,9,9,0)_0%,rgba(9,9,9,0.38)_42%,#090909_92%)]" />
+              <div className="absolute inset-x-[-18%] bottom-[-32%] h-2/3 bg-[radial-gradient(ellipse_at_center,rgba(255,106,0,0.18)_0%,rgba(255,61,0,0.08)_38%,transparent_72%)] blur-2xl" />
+            </div>
           </motion.div>
 
           {introPlaying ? (
